@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+       http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+       http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd">
+    
+    <import resource="si-monitoring-config.xml"/>
+    
+    <int:channel id="requestAsyncChannel"/>
+    <!--<int-http:inbound-channel-adapter
+            channel="requestAsyncChannel" status-code-expression="T(org.springframework.http.HttpStatus).NO_CONTENT"
+            supported-methods="POST" path="/aSyncRequest"
+            request-payload-type="ru.i_novus.integration.model.InputModel">
+    </int-http:inbound-channel-adapter>-->
+
+    <bean id="internalRequestPreparationService" class="ru.i_novus.integration.service.InternalRequestPreparationService"/>
+
+    <int-jms:outbound-channel-adapter id="jmsIn" destination="senderQueue" channel="requestAsyncChannel"
+                                      extract-payload="false"/>
+
+    <int-jms:message-driven-channel-adapter id="jmsOut" destination="senderQueue" channel="mqOutChannel" acknowledge="transacted"/>
+
+    <int:chain input-channel="mqOutChannel">
+        <int:service-activator ref="internalRequestPreparationService" method="requestASync"/>
+        <int:service-activator ref="internalWsClient" method="sendRequest"/>
+    </int:chain>
+
+</beans>

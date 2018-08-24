@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+       http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+       http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <import resource="si-monitoring-config.xml"/>
+
+    <int:channel id="requestChannel"/>
+    <int:channel id="responseChannel"/>
+    <int:channel id="requestRegistryChannel"/>
+    <int:channel id="nsiChannel">
+        <int:interceptors>
+            <int:wire-tap channel="logChannel"/>
+        </int:interceptors>
+    </int:channel>
+
+    <int:channel id="logChannel"/>
+    <int:logging-channel-adapter channel="logChannel" expression="'### Unmatched Message Type Channel ### '">
+        <int-jms:outbound-channel-adapter id="jmsIn" destination="monitoringQueue"/>
+    </int:logging-channel-adapter>
+
+    <int:service-activator ref="registryClient" method="getServiceUrl"
+                           input-channel="requestChannel" output-channel="requestRegistryChannel"/>
+
+    <int:router input-channel="requestRegistryChannel" expression="payload.recipient">
+        <int:mapping value="nsi" channel="nsiChannel"/>
+    </int:router>
+
+    <int:chain input-channel="nsiChannel" output-channel="responseChannel">
+        <int:service-activator ref="messagePrepareService" method="prepareNsiRequest"/>
+    </int:chain>
+
+</beans>
