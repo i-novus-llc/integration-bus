@@ -1,4 +1,34 @@
-Платформа для обмена сообщениями или файлами между системами.
+_Платформа для обмена сообщениями или файлами между системами._
 
-= Модули
-`integration:`
+link:++https://ci.i-novus.ru/view/platform/job/integration-bus.master.build/++[integration-bus.master.build]
+
+=== Модули
+*integration:*
+
+* для работы модуля необходимо указать настройки в файле `+placeholders.properties+`
+
+[source,java]
+----
+registry.address='путь до сервиса registry'
+sign.soap.key.store.password='пароль для keystore'
+sign.soap.key.store.region.alias.name='alias ключа ситемы'
+sign.soap.key.store.region.alias.password='пароль для alias'
+file.storage.temp.path='путь для папки входящих файлов'
+----
+* файл `+placeholders.properties+` необходимо поместить в
+classpath приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
+
+*registry:*
+
+* для работы модуля необходимо указать настройки в файле `+placeholders.properties+`
+
+[source,java]
+----
+datasource.url='jdbc:postgresql://localhost:5433/registry'
+datasource.username='user'
+datasource.password='password'
+----
+* файл `+placeholders.properties+` необходимо поместить в
+classpath приложения
+
+* создать db и указать параметры в properties
