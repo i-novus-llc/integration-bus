@@ -5,8 +5,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 @Service
-@PropertySource("classpath:placeholders.properties")
-public class PlaceholdersProperty{
+@PropertySource("file:./placeholders.properties")
+public class PlaceholdersProperty {
     @Value("${sign.soap.key.store.file.path}")
     String keyStorePath;
     @Value("${sign.soap.key.store.password}")
