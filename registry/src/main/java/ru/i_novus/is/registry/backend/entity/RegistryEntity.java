@@ -13,6 +13,9 @@ public class RegistryEntity {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "host")
+    private String host;
+
 
     public String getCode() {
         return code;
@@ -28,5 +31,13 @@ public class RegistryEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 }

@@ -1,11 +1,14 @@
 package ru.i_novus.integration.service;
 
+import org.apache.ws.security.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Component;
+import ru.i_novus.integration.model.DataModel;
 import ru.i_novus.integration.model.InputModel;
-import ru.i_novus.integration.rest.RegistryClient;
+import ru.i_novus.integration.rest.client.RegistryClient;
 import ru.i_novus.integration.ws.internal.model.*;
 
 import javax.activation.DataHandler;
@@ -21,6 +24,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+@Component
 public class InternalRequestPreparationService {
 
     @Autowired
@@ -31,15 +35,17 @@ public class InternalRequestPreparationService {
         IntegrationMessage message = objectFactory.createIntegrationMessage();
 
         MessageData messageData = objectFactory.createMessageData();
-        messageData.setGroupUid("test");
-        messageData.setUuid("test");
+        messageData.setGroupUid(UUIDGenerator.getUUID());
+        messageData.setUuid(UUIDGenerator.getUUID());
 
         DocumentData documentData = objectFactory.createDocumentData();
-        documentData.setBinaryData(getDocumentByStorage(msg.getPath()));
-        documentData.setDigestData("test");
-        documentData.setDocFormat("test");
-        documentData.setDocName("test");
-        documentData.setDocType(1);
+        for (DataModel dataModel : msg.getDataModels()) {
+            documentData.setBinaryData(getDocumentByStorage(dataModel.getPath()));
+            //documentData.setDigestData(null);
+            documentData.setDocFormat(dataModel.getMime());
+            documentData.setDocName(dataModel.getName());
+            //documentData.setDocType(1);
+        }
         messageData.getAppData().add(documentData);
 
         MessageInfo messageInfo = objectFactory.createMessageInfo();
@@ -70,7 +76,7 @@ public class InternalRequestPreparationService {
                 throw new RuntimeException(e);
             }
 
-            return new DataHandler( new FileDataSource(new File(filePath)));
+            return new DataHandler(new FileDataSource(new File(filePath)));
         }
     }
 }

@@ -18,9 +18,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for MessageInfo complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="MessageInfo">
  *   &lt;complexContent>
@@ -35,15 +35,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MessageInfo", propOrder = {
-    "sender",
-    "recipient",
-    "date",
-    "messageId"
+        "sender",
+        "recipient",
+        "date",
+        "messageId"
 })
 public class MessageInfo {
 
@@ -59,11 +57,9 @@ public class MessageInfo {
 
     /**
      * Gets the value of the sender property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSender() {
         return sender;
@@ -71,11 +67,9 @@ public class MessageInfo {
 
     /**
      * Sets the value of the sender property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSender(String value) {
         this.sender = value;
@@ -83,11 +77,9 @@ public class MessageInfo {
 
     /**
      * Gets the value of the recipient property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getRecipient() {
         return recipient;
@@ -95,11 +87,9 @@ public class MessageInfo {
 
     /**
      * Sets the value of the recipient property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setRecipient(String value) {
         this.recipient = value;
@@ -107,11 +97,9 @@ public class MessageInfo {
 
     /**
      * Gets the value of the date property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getDate() {
         return date;
@@ -119,11 +107,9 @@ public class MessageInfo {
 
     /**
      * Sets the value of the date property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setDate(XMLGregorianCalendar value) {
         this.date = value;
@@ -131,11 +117,9 @@ public class MessageInfo {
 
     /**
      * Gets the value of the messageId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMessageId() {
         return messageId;
@@ -143,11 +127,9 @@ public class MessageInfo {
 
     /**
      * Sets the value of the messageId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMessageId(String value) {
         this.messageId = value;

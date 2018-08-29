@@ -13,9 +13,9 @@ import javax.xml.bind.annotation.*;
 
 /**
  * <p>Java class for IntegrationMessage complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="IntegrationMessage">
  *   &lt;complexContent>
@@ -28,14 +28,12 @@ import javax.xml.bind.annotation.*;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "IntegrationMessage")
 @XmlType(name = "IntegrationMessage", propOrder = {
-    "messageData",
-    "message"
+        "messageData",
+        "message"
 })
 public class IntegrationMessage {
 
@@ -46,11 +44,9 @@ public class IntegrationMessage {
 
     /**
      * Gets the value of the messageData property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MessageInfo }
-     *     
+     *
+     * @return possible object is
+     * {@link MessageInfo }
      */
     public MessageInfo getMessageData() {
         return messageData;
@@ -58,11 +54,9 @@ public class IntegrationMessage {
 
     /**
      * Sets the value of the messageData property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MessageInfo }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link MessageInfo }
      */
     public void setMessageData(MessageInfo value) {
         this.messageData = value;
@@ -70,11 +64,9 @@ public class IntegrationMessage {
 
     /**
      * Gets the value of the message property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MessageData }
-     *     
+     *
+     * @return possible object is
+     * {@link MessageData }
      */
     public MessageData getMessage() {
         return message;
@@ -82,11 +74,9 @@ public class IntegrationMessage {
 
     /**
      * Sets the value of the message property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MessageData }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link MessageData }
      */
     public void setMessage(MessageData value) {
         this.message = value;

@@ -11,13 +11,18 @@
         </sql>
     </changeSet>
 
-    <changeSet id="create_registry_table" author="asamoilov" dbms="postgresql">
+    <changeSet id="create_monitoring_table" author="asamoilov" dbms="postgresql">
         <sql>
-            CREATE TABLE integration.registry
+            CREATE TABLE integration.monitoring
             (
-            code character varying(50) NOT NULL,
-            url character varying(250) NOT NULL,
-            host character varying(250) NOT NULL,
+            id integer NOT NULL,
+            uid character varying(50) NOT NULL,
+            dateTime date NOT NULL,
+            sender character varying(50) NOT NULL,
+            receiver character varying(50) NOT NULL,
+            operation character varying(250) NOT NULL,
+            status character varying(50) NOT NULL,
+            error text,
             CONSTRAINT registry_pk PRIMARY KEY (code)
             );
         </sql>

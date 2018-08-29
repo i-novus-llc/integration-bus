@@ -38,7 +38,7 @@ public class InternalWsClient {
         integrationEndpoint.request(request.getPayload());
     }
 
-    private InternalWsEndpoint getPort(){
+    private InternalWsEndpoint getPort() {
         InternalWsEndpoint port;
         Map<String, Object> props = new HashMap<>();
         props.put("mtom-enabled", Boolean.TRUE);
@@ -68,9 +68,9 @@ public class InternalWsClient {
     }
 
     private void bindingSOAPHandler(Object port, SOAPHandler<SOAPMessageContext> soapHandler) {
-        BindingProvider provider = (BindingProvider)port;
+        BindingProvider provider = (BindingProvider) port;
         Binding binding = provider.getBinding();
-        ((SOAPBinding)binding).setMTOMEnabled(true);
+        ((SOAPBinding) binding).setMTOMEnabled(true);
         List<Handler> handlerChain = binding.getHandlerChain();
         handlerChain.add(soapHandler);
         binding.setHandlerChain(handlerChain);

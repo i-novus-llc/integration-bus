@@ -18,9 +18,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for DocumentData complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="DocumentData">
  *   &lt;complexContent>
@@ -36,16 +36,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DocumentData", propOrder = {
-    "docName",
-    "docFormat",
-    "digestData",
-    "binaryData",
-    "docType"
+        "docName",
+        "docFormat",
+        "digestData",
+        "binaryData",
+        "docType"
 })
 public class DocumentData {
 
@@ -63,11 +61,9 @@ public class DocumentData {
 
     /**
      * Gets the value of the docName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDocName() {
         return docName;
@@ -75,11 +71,9 @@ public class DocumentData {
 
     /**
      * Sets the value of the docName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDocName(String value) {
         this.docName = value;
@@ -87,11 +81,9 @@ public class DocumentData {
 
     /**
      * Gets the value of the docFormat property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDocFormat() {
         return docFormat;
@@ -99,11 +91,9 @@ public class DocumentData {
 
     /**
      * Sets the value of the docFormat property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDocFormat(String value) {
         this.docFormat = value;
@@ -111,11 +101,9 @@ public class DocumentData {
 
     /**
      * Gets the value of the digestData property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDigestData() {
         return digestData;
@@ -123,11 +111,9 @@ public class DocumentData {
 
     /**
      * Sets the value of the digestData property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDigestData(String value) {
         this.digestData = value;
@@ -135,11 +121,9 @@ public class DocumentData {
 
     /**
      * Gets the value of the binaryData property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DataHandler }
-     *     
+     *
+     * @return possible object is
+     * {@link DataHandler }
      */
     public DataHandler getBinaryData() {
         return binaryData;
@@ -147,11 +131,9 @@ public class DocumentData {
 
     /**
      * Sets the value of the binaryData property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DataHandler }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DataHandler }
      */
     public void setBinaryData(DataHandler value) {
         this.binaryData = value;
@@ -159,11 +141,9 @@ public class DocumentData {
 
     /**
      * Gets the value of the docType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
+     *
+     * @return possible object is
+     * {@link Integer }
      */
     public Integer getDocType() {
         return docType;
@@ -171,11 +151,9 @@ public class DocumentData {
 
     /**
      * Sets the value of the docType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Integer }
      */
     public void setDocType(Integer value) {
         this.docType = value;

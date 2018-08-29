@@ -4,8 +4,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
 @Service
-@PropertySource("file:./placeholders.properties")
+@PropertySource("file:${app.home}/placeholders.properties")
 public class PlaceholdersProperty {
     @Value("${sign.soap.key.store.file.path}")
     String keyStorePath;
@@ -19,6 +25,20 @@ public class PlaceholdersProperty {
     String tempPath;
     @Value("${registry.address}")
     String registryAddress;
+
+    KeyStore keyStore;
+
+    public KeyStore getKeyStore() {
+        if (keyStore == null) {
+            try {
+                keyStore = KeyStore.getInstance("JKS");
+                keyStore.load(this.getClass().getClassLoader().getResourceAsStream("getKeyStorePath()"), getKeyStorePassword().toCharArray());
+            } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return keyStore;
+    }
 
     public String getKeyStorePath() {
         return keyStorePath;

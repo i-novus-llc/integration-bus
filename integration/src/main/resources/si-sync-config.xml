@@ -16,27 +16,29 @@
 
     <import resource="si-monitoring-config.xml"/>
 
-    <int:channel id="requestChannel"/>
-    <int:channel id="responseChannel"/>
-    <int:channel id="requestRegistryChannel"/>
-    <int:channel id="nsiChannel">
+    <int:channel id="requestChannel">
         <int:interceptors>
-            <int:wire-tap channel="logChannel"/>
+            <int:wire-tap channel="monitoringChannel"/>
         </int:interceptors>
     </int:channel>
-
-    <int:channel id="logChannel"/>
-    <int:logging-channel-adapter channel="logChannel" expression="'### Unmatched Message Type Channel ### '">
-        <int-jms:outbound-channel-adapter id="jmsIn" destination="monitoringQueue"/>
-    </int:logging-channel-adapter>
-
+    <int:channel id="requestRegistryChannel"/>
     <int:service-activator ref="registryClient" method="getServiceUrl"
                            input-channel="requestChannel" output-channel="requestRegistryChannel"/>
 
+    <int:channel id="nsiChannel">
+        <int:interceptors>
+            <int:wire-tap channel="monitoringChannel"/>
+        </int:interceptors>
+    </int:channel>
     <int:router input-channel="requestRegistryChannel" expression="payload.recipient">
         <int:mapping value="nsi" channel="nsiChannel"/>
     </int:router>
 
+    <int:channel id="responseChannel">
+        <int:interceptors>
+            <int:wire-tap channel="monitoringChannel"/>
+        </int:interceptors>
+    </int:channel>
     <int:chain input-channel="nsiChannel" output-channel="responseChannel">
         <int:service-activator ref="messagePrepareService" method="prepareNsiRequest"/>
     </int:chain>

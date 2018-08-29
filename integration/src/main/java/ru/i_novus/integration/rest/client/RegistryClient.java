@@ -1,4 +1,4 @@
-package ru.i_novus.integration.rest;
+package ru.i_novus.integration.rest.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.cxf.helpers.IOUtils;
@@ -30,6 +30,21 @@ public class RegistryClient {
                 .fromClient(WebClient.create(property.getRegistryAddress())
                         .accept(MediaType.APPLICATION_JSON))
                 .replacePath("/service/info/" + code);
+        try {
+            Response response = client.get();
+            checkResponseError(response, client);
+            return IOUtils.toString((InputStream) response.getEntity(), "UTF-8");
+        } finally {
+            if (client.getResponse() != null)
+                client.getResponse().close();
+        }
+    }
+
+    public String getServiceCodeByHost(String host) throws IOException {
+        WebClient client = WebClient
+                .fromClient(WebClient.create(property.getRegistryAddress())
+                        .accept(MediaType.APPLICATION_JSON))
+                .replacePath("/service/info/url" + host);
         try {
             Response response = client.get();
             checkResponseError(response, client);

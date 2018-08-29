@@ -25,7 +25,7 @@ public class MessagePrepareService {
 
         if (messageParam.get("method").equals("versions")) {
             sb.append("/").append(VERSIONS).append(IDENTIFIER_PARAM_NAME).append(messageParam.get("identifier"))
-            .append(VERSIONS_PARAM_NAME).append(messageParam.get("version")).append(PAGE).append(messageParam.get("page"));
+                    .append(VERSIONS_PARAM_NAME).append(messageParam.get("version")).append(PAGE).append(messageParam.get("page"));
         }
 
         if (messageParam.get("method").equals("data")) {

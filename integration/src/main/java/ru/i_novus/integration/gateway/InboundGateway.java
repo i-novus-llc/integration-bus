@@ -1,4 +1,4 @@
-package ru.i_novus.integration;
+package ru.i_novus.integration.gateway;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.messaging.Message;
@@ -9,5 +9,5 @@ public interface InboundGateway {
     Message syncRequest(Message message);
 
     @Gateway(requestChannel = "requestAsyncChannel")
-    void aSyncRequest(InputModel model);
+    void aSyncRequest(Message<InputModel> model);
 }

@@ -2,6 +2,10 @@ _Платформа для обмена сообщениями или файла
 
 link:++https://ci.i-novus.ru/view/platform/job/integration-bus.master.build/++[integration-bus.master.build]
 
+`+jar необходимо запускать с командой:
+-Dapp.home="/opt/integration/"
+в эту директорию необходимо положить файл с properties и keystore'+`
+
 === Модули
 *integration:*
 

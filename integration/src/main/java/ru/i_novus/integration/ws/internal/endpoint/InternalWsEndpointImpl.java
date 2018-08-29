@@ -1,10 +1,8 @@
 package ru.i_novus.integration.ws.internal.endpoint;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.ws.security.util.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
@@ -20,12 +18,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @WebService(endpointInterface = "ru.i_novus.integration.ws.internal.endpoint.InternalWsEndpoint", serviceName = "InternalWsEndpoint",
         portName = "IntegrationEndpointPort", targetNamespace = "http://ws.integration.i_novus.ru/internal")
 @BindingType(value = SOAPBinding.SOAP12HTTP_MTOM_BINDING)
-@PropertySource("classpath:placeholders.properties")
 public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     @Autowired
@@ -48,7 +46,7 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     private void saveDocumentInStorage(List<DocumentData> list) throws IOException {
 
         for (DocumentData data : list) {
-            try (OutputStream outputStream = new FileOutputStream(new File(property.getTempPath() + "/" + UUIDGenerator.getUUID()))) {
+            try (OutputStream outputStream = new FileOutputStream(new File(property.getTempPath() + "/" + UUID.randomUUID().toString()))) {
                 IOUtils.copy(data.getBinaryData().getInputStream(), outputStream);
             }
         }
