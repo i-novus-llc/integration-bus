@@ -3,10 +3,11 @@ package ru.i_novus.integration.amqp;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
+import ru.i_novus.integration.configuration.PlaceholdersProperty;
 
 @Configuration
 public class AmqConfig {
@@ -14,8 +15,8 @@ public class AmqConfig {
     private static final String RECEIVER_QUEUE = "receiver.queue";
     private static final String MONITORING_QUEUE = "monitoring.queue";
 
-    @Value("${amq.broker.url}")
-    private String jmsBrokerUrl;
+    @Autowired
+    PlaceholdersProperty property;
 
     @Bean
     public RedeliveryPolicy redeliveryPolicy() {
@@ -32,7 +33,7 @@ public class AmqConfig {
     @Bean
     public ActiveMQConnectionFactory jmsConnectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(jmsBrokerUrl);
+        connectionFactory.setBrokerURL(property.getAmqBrokerUrl());
         connectionFactory.setNonBlockingRedelivery(true);
         connectionFactory.setRedeliveryPolicy(redeliveryPolicy());
         connectionFactory.setTrustAllPackages(true);

@@ -25,6 +25,8 @@ public class PlaceholdersProperty {
     String tempPath;
     @Value("${registry.address}")
     String registryAddress;
+    @Value("${amq.broker.url}")
+    String amqBrokerUrl;
 
     KeyStore keyStore;
 
@@ -62,5 +64,9 @@ public class PlaceholdersProperty {
 
     public String getRegistryAddress() {
         return registryAddress;
+    }
+
+    public String getAmqBrokerUrl() {
+        return amqBrokerUrl;
     }
 }
