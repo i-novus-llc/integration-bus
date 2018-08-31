@@ -14,7 +14,7 @@ public class AmqConfig {
     private static final String RECEIVER_QUEUE = "receiver.queue";
     private static final String MONITORING_QUEUE = "monitoring.queue";
 
-    @Value("${broker-url}")
+    @Value("${amq.broker.url}")
     private String jmsBrokerUrl;
 
     @Bean

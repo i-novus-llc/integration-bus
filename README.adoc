@@ -18,6 +18,7 @@ sign.soap.key.store.password='пароль для keystore'
 sign.soap.key.store.region.alias.name='alias ключа ситемы'
 sign.soap.key.store.region.alias.password='пароль для alias'
 file.storage.temp.path='путь для папки входящих файлов'
+amq.broker.url='failover://tcp://localhost:61617'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
 classpath приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
