@@ -1,16 +1,16 @@
 package ru.i_novus.integration.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InputModel implements Serializable {
     private String recipient;
-    @JsonIgnore
     private String sender;
-    @JsonIgnore
     private String host;
+    private String status;
     private List<DataModel> dataModels;
 
     public String getRecipient() {
@@ -37,6 +37,14 @@ public class InputModel implements Serializable {
         this.host = host;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public List<DataModel> getDataModels() {
         return dataModels;
     }
@@ -44,4 +52,5 @@ public class InputModel implements Serializable {
     public void setDataModels(List<DataModel> dataModels) {
         this.dataModels = dataModels;
     }
+
 }

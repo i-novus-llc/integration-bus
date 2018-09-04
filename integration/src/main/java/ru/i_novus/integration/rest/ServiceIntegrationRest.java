@@ -6,13 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 import ru.i_novus.integration.gateway.InboundGateway;
-import ru.i_novus.integration.model.InputModel;
-import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.integration.model.MonitoringHeaderModel;
+import ru.i_novus.integration.model.*;
 import ru.i_novus.integration.rest.client.RegistryClient;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -37,9 +36,12 @@ public class ServiceIntegrationRest {
 
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
     public void aSyncRequest(@RequestBody InputModel model, @RequestHeader HttpHeaders headers) throws IOException {
-        inboundGateway.aSyncRequest(MessageBuilder.createMessage(model,
-                new MonitoringHeaderModel(new HashMap<>(), UUID.randomUUID().toString(),
-                        model.getRecipient(), LocalDateTime.now(),
-                        registryClient.getServiceCodeByHost(headers.getHost().getHostString()), MessageStatusEnum.CREATE.getId())));
+        MonitoringModel monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), model.getRecipient(),
+                registryClient.getServiceCodeByHost(headers.getHost().getHostString()), "", MessageStatusEnum.CREATE.getId());
+        CommonModel commonModel = new CommonModel();
+        commonModel.setMonitoringModel(monitoringModel);
+        commonModel.setObject(model);
+
+        inboundGateway.aSyncRequest(commonModel);
     }
 }

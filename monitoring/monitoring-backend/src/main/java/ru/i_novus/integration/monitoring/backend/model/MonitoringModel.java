@@ -1,26 +1,16 @@
-package ru.i_novus.integration.model;
+package ru.i_novus.integration.monitoring.backend.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class MonitoringModel implements Serializable {
+public class MonitoringModel {
 
     private String uid;
     private Date dateTime;
     private String sender;
     private String receiver;
     private String operation;
-    private int status;
+    private String status;
     private String error;
-
-    public MonitoringModel(String uid, Date dateTime, String sender, String receiver, String operation, int status) {
-        this.uid = uid;
-        this.dateTime = dateTime;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.operation = operation;
-        this.status = status;
-    }
 
     public String getUid() {
         return uid;
@@ -62,11 +52,11 @@ public class MonitoringModel implements Serializable {
         this.operation = operation;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

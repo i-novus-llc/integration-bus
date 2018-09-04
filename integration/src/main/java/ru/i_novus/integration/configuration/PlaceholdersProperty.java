@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -25,16 +27,18 @@ public class PlaceholdersProperty {
     String tempPath;
     @Value("${registry.address}")
     String registryAddress;
+    @Value("${monitoring.address}")
+    String monitoringAddress;
     @Value("${amq.broker.url}")
     String amqBrokerUrl;
 
-    KeyStore keyStore;
+    private KeyStore keyStore;
 
     public KeyStore getKeyStore() {
         if (keyStore == null) {
-            try {
+            try (InputStream is = new FileInputStream(keyStorePath)) {
                 keyStore = KeyStore.getInstance("JKS");
-                keyStore.load(this.getClass().getClassLoader().getResourceAsStream("getKeyStorePath()"), getKeyStorePassword().toCharArray());
+                keyStore.load(is, getKeyStorePassword().toCharArray());
             } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
                 e.printStackTrace();
             }
@@ -64,6 +68,10 @@ public class PlaceholdersProperty {
 
     public String getRegistryAddress() {
         return registryAddress;
+    }
+
+    public String getMonitoringAddress() {
+        return monitoringAddress;
     }
 
     public String getAmqBrokerUrl() {

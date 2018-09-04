@@ -6,6 +6,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.DataModel;
 import ru.i_novus.integration.model.InputModel;
 import ru.i_novus.integration.rest.client.RegistryClient;
@@ -30,7 +31,7 @@ public class InternalRequestPreparationService {
     @Autowired
     RegistryClient registryClient;
 
-    public Message<IntegrationMessage> requestASync(InputModel msg) throws IOException, DatatypeConfigurationException {
+    public Message<CommonModel> requestASync(Message<CommonModel> modelMessage) throws IOException, DatatypeConfigurationException {
         ObjectFactory objectFactory = new ObjectFactory();
         IntegrationMessage message = objectFactory.createIntegrationMessage();
 
@@ -38,8 +39,9 @@ public class InternalRequestPreparationService {
         messageData.setGroupUid(UUIDGenerator.getUUID());
         messageData.setUuid(UUIDGenerator.getUUID());
 
+        InputModel inputModel = (InputModel) modelMessage.getPayload().getObject();
         DocumentData documentData = objectFactory.createDocumentData();
-        for (DataModel dataModel : msg.getDataModels()) {
+        for (DataModel dataModel : inputModel.getDataModels()) {
             documentData.setBinaryData(getDocumentByStorage(dataModel.getPath()));
             //documentData.setDigestData(null);
             documentData.setDocFormat(dataModel.getMime());
@@ -60,8 +62,12 @@ public class InternalRequestPreparationService {
         message.setMessage(messageData);
         message.setMessageData(messageInfo);
 
-        return MessageBuilder.createMessage(message,
-                new MessageHeaders(Collections.singletonMap("url", registryClient.getServiceUrlByCode(msg.getRecipient()))));
+        CommonModel integrationRequest = new CommonModel();
+        integrationRequest.setObject(message);
+        integrationRequest.setMonitoringModel(modelMessage.getPayload().getMonitoringModel());
+
+        return MessageBuilder.createMessage(integrationRequest,
+                new MessageHeaders(Collections.singletonMap("url", registryClient.getServiceUrlByCode(inputModel.getRecipient()))));
 
     }
 

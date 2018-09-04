@@ -33,10 +33,6 @@ public class MonitoringHeaderModel extends MessageHeaders {
         super(headers, id, timestamp);
     }
 
-    public MonitoringModel fillMonitoringModel() {
-        return new MonitoringModel(uid, dateTime, sender, receiver, operation, status, error);
-    }
-
     public String getUid() {
         return uid;
     }

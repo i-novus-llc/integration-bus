@@ -5,11 +5,12 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import ru.i_novus.common.sign.soap.SignatureSOAPHandler;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.model.CommonModel;
+import ru.i_novus.integration.service.MonitoringService;
 import ru.i_novus.integration.ws.internal.model.IOException_Exception;
 import ru.i_novus.integration.ws.internal.model.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.model.InternalWsEndpoint;
@@ -31,11 +32,16 @@ public class InternalWsClient {
     @Autowired
     PlaceholdersProperty property;
 
-    public void sendRequest(Message<IntegrationMessage> request) throws IOException_Exception {
+    @Autowired
+    MonitoringService monitoringService;
+
+    public Message sendRequest(Message<CommonModel<IntegrationMessage>> request) throws IOException_Exception {
         InternalWsEndpoint integrationEndpoint = getPort();
         BindingProvider bindingProvider = (BindingProvider) integrationEndpoint;
         bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, request.getHeaders().get("url", String.class));
-        integrationEndpoint.request(request.getPayload());
+        integrationEndpoint.request(request.getPayload().getObject());
+
+        return request;
     }
 
     private InternalWsEndpoint getPort() {
@@ -53,14 +59,8 @@ public class InternalWsClient {
         policy.setReceiveTimeout(300000L);
         conduit.setClient(policy);
 
-        KeyStore store;
+        KeyStore store = property.getKeyStore();
 
-        try {
-            store = KeyStore.getInstance("JKS");
-            store.load(new ClassPathResource("keystore").getInputStream(), property.getKeyStorePassword().toCharArray());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         bindingSOAPHandler(port,
                 new SignatureSOAPHandler(store, property.getKeyStoreAlias(), property.getKeyStoreAliasPassword()));
 

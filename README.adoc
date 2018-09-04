@@ -37,3 +37,26 @@ datasource.password='password'
 classpath приложения
 
 * создать db и указать параметры в properties
+
+*monitoring-backend:*
+
+* для работы модуля необходимо указать настройки:
+
+[source,java]
+----
+datasource.url='jdbc:postgresql://localhost:5433/monitoring'
+datasource.username='user'
+datasource.password='password'
+----
+
+* создать db и указать параметры в properties
+
+*monitoring-frontend:*
+
+* war файл для запуска в tomcat
+
+
+----
+создать db (общая с monitoring-backend) и в Tomcat создать ресурс jdbc/monitoring
+
+

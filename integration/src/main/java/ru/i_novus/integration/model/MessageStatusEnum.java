@@ -2,7 +2,7 @@ package ru.i_novus.integration.model;
 
 public enum MessageStatusEnum {
     CREATE(1),
-    ERROR(3),
+    ERROR(2),
     QUEUE(3),
     SEND(4);
 

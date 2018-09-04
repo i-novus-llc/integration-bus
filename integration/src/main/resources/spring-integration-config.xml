@@ -15,22 +15,20 @@
 
     <import resource="si-monitoring-config.xml"/>
 
-    <int:channel id="requestAsyncChannel">
-        <int:interceptors>
-            <ref bean="monitoringInterceptor"/>
-        </int:interceptors>
-    </int:channel>
+    <int:channel id="requestAsyncChannel"/>
 
     <int:chain input-channel="requestAsyncChannel">
+        <int:service-activator expression="@monitoringService.create(payload, 1)"/>
         <int-jms:outbound-channel-adapter id="jmsIn" destination="senderQueue" extract-payload="false"/>
     </int:chain>
 
     <int-jms:message-driven-channel-adapter id="jmsOut" destination="senderQueue" channel="mqOutChannel"
-                                            acknowledge="transacted"/>
+                                            acknowledge="transacted" error-channel="errorChannel"/>
 
     <int:chain input-channel="mqOutChannel">
         <int:service-activator ref="internalRequestPreparationService" method="requestASync"/>
         <int:service-activator ref="internalWsClient" method="sendRequest"/>
+        <int:service-activator expression="@monitoringService.fineStatus(payload)"/>
     </int:chain>
 
 </beans>

@@ -13,6 +13,7 @@
     <modules>
         <module>integration</module>
         <module>registry</module>
+        <module>monitoring</module>
     </modules>
 
     <parent>

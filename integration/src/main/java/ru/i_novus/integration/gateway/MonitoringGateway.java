@@ -5,6 +5,6 @@ import org.springframework.messaging.Message;
 
 public interface MonitoringGateway {
 
-    @Gateway(requestChannel = "monitoringJmsChannel")
+    @Gateway(requestChannel = "monitoringJmsInChannel")
     void putToQueue(Message model);
 }
