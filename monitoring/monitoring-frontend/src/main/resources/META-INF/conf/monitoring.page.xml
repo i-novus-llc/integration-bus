@@ -17,7 +17,7 @@
                         <wgt:column column-field-id="sender" name="Отправитель"/>
                         <wgt:column column-field-id="receiver" name="Получатель"/>
                         <wgt:column column-field-id="operation" name="Действие"/>
-                        <wgt:column column-field-id="status" name="Статус"/>
+                        <wgt:column column-field-id="status.name" name="Статус"/>
                         <wgt:column column-field-id="error" name="Ошибка"/>
                     </wgt:columns>
                     <wgt:filters opened="true">
@@ -25,8 +25,14 @@
                         <ctrl:date-time id="date_time" label="Дата\Время" default-value="noe()"/>
                         <ctrl:input-text id="sender" label="Отправитель"/>
                         <ctrl:input-text id="receiver" label="Получатель"/>
-                        <ctrl:input-text id="operation" label="Действие"/>
-                        <ctrl:input-text id="status" label="Статус"/>
+                        <ctrl:select id="status" label="Статус">
+                            <ctrl:options>
+                                <ctrl:option>{"id":1, "name":"Создан"}</ctrl:option>
+                                <ctrl:option>{"id":2, "name":"Ошибка"}</ctrl:option>
+                                <ctrl:option>{"id":3, "name":"В очереди"}</ctrl:option>
+                                <ctrl:option>{"id":4, "name":"Доставлено"}</ctrl:option>
+                            </ctrl:options>
+                        </ctrl:select>
                     </wgt:filters>
                 </wgt:table>
             </container>

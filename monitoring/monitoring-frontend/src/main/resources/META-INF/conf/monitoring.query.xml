@@ -59,10 +59,28 @@
             <filters auto-generate="true"/>
         </field>
         <field>
-            <id>status</id>
+            <id>status.id</id>
             <domain>string</domain>
             <display/>
-            <filters auto-generate="true"/>
+            <filters>
+                <filter type="eq" filter-field="status">:status.id=status</filter>
+            </filters>
+            <expression>status</expression>
+        </field>
+        <field>
+            <id>status.name</id>
+            <domain>string</domain>
+            <display/>
+            <filters>
+                <filter type="eq" filter-field="status">:status=status</filter>
+            </filters>
+            <expression>
+                (case when status = '1' then 'Создан'
+                when status = '2' then 'Ошибка'
+                when status = '3' then 'В очереди'
+                when status = '4' then 'Доставлено'
+                end)
+            </expression>
         </field>
         <field>
             <id>error</id>
