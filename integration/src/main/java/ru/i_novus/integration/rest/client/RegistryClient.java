@@ -32,7 +32,7 @@ public class RegistryClient {
                 .replacePath("/service/info/" + code);
         try {
             Response response = client.get();
-            checkResponseError(response, client);
+            checkResponseError(response);
             return IOUtils.toString((InputStream) response.getEntity(), "UTF-8");
         } finally {
             if (client.getResponse() != null)
@@ -40,20 +40,20 @@ public class RegistryClient {
         }
     }
 
-    public String getServiceCodeByHost(String host) throws IOException {
+    /*public String getServiceCodeByHost(String host) throws IOException {
         WebClient client = WebClient
                 .fromClient(WebClient.create(property.getRegistryAddress())
                         .accept(MediaType.APPLICATION_JSON))
                 .replacePath("/service/info/url" + host);
         try {
             Response response = client.get();
-            checkResponseError(response, client);
+            checkResponseError(response);
             return IOUtils.toString((InputStream) response.getEntity(), "UTF-8");
         } finally {
             if (client.getResponse() != null)
                 client.getResponse().close();
         }
-    }
+    }*/
 
     public Message getServiceUrl(Message message) throws IOException {
         Map<String, String> messageParam = (Map) message.getPayload();
@@ -63,7 +63,7 @@ public class RegistryClient {
                 .replacePath("/service/info/" + messageParam.get("recipient"));
         try {
             Response response = client.get();
-            checkResponseError(response, client);
+            checkResponseError(response);
             messageParam.put("url", IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
 
             return message;
@@ -73,11 +73,11 @@ public class RegistryClient {
         }
     }
 
-    private void checkResponseError(Response response, WebClient client) throws IOException {
+    private void checkResponseError(Response response) throws IOException {
         if (response.getStatus() != HttpStatus.OK.value()) {
             throw new RuntimeException(messageSource.getMessage("registry.service.error", null, Locale.ENGLISH)
                     , new Throwable((String) new ObjectMapper()
-                    .readValue(IOUtils.toString((InputStream) client.get().getEntity(), "UTF-8"), HashMap.class).get("message")));
+                    .readValue(IOUtils.toString((InputStream) response.getEntity(), "UTF-8"), HashMap.class).get("message")));
         }
     }
 

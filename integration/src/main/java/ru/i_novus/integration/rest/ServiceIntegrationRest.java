@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
+import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.gateway.InboundGateway;
 import ru.i_novus.integration.model.*;
 import ru.i_novus.integration.rest.client.RegistryClient;
@@ -26,18 +27,21 @@ public class ServiceIntegrationRest {
     @Autowired
     RegistryClient registryClient;
 
+    @Autowired
+    PlaceholdersProperty property;
+
     @GetMapping(path = "/syncRequest")
     public Object syncRequest(@RequestParam Map<String, String> requestParams, @RequestHeader HttpHeaders headers) throws IOException {
         return inboundGateway.syncRequest(MessageBuilder.createMessage(requestParams,
                 new MonitoringHeaderModel(new HashMap<>(), UUID.randomUUID().toString(),
-                        requestParams.get("receiver"), LocalDateTime.now(),
-                        registryClient.getServiceCodeByHost(headers.getHost().getHostString()), MessageStatusEnum.CREATE.getId()))).getPayload();
+                        requestParams.get("receiver"), LocalDateTime.now(), property.getEnvCode(),
+                        MessageStatusEnum.CREATE.getId()))).getPayload();
     }
 
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
     public void aSyncRequest(@RequestBody InputModel model, @RequestHeader HttpHeaders headers) throws IOException {
         MonitoringModel monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), model.getRecipient(),
-                registryClient.getServiceCodeByHost(headers.getHost().getHostString()), "", MessageStatusEnum.CREATE.getId());
+                property.getEnvCode(), "", MessageStatusEnum.CREATE.getId());
         CommonModel commonModel = new CommonModel();
         commonModel.setMonitoringModel(monitoringModel);
         commonModel.setObject(model);
