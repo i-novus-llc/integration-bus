@@ -28,7 +28,7 @@ public class MonitoringClient {
     MessageSource messageSource;
 
     public void sendMonitoringMessage(MonitoringModel model) throws IOException {
-        List<Object> providers = new ArrayList<Object>();
+        List<Object> providers = new ArrayList<>();
         providers.add(new JacksonJsonProvider());
 
         WebClient client = WebClient.create(property.getMonitoringAddress() + "/service/save", providers)
@@ -36,7 +36,6 @@ public class MonitoringClient {
         try {
             Response response = client.post(model);
             checkResponseError(response);
-            //return IOUtils.toString((InputStream) response.getEntity(), "UTF-8");
         } finally {
             if (client.getResponse() != null)
                 client.getResponse().close();
@@ -46,7 +45,7 @@ public class MonitoringClient {
 
     private void checkResponseError(Response response) throws IOException {
         if (response.getStatus() != HttpStatus.OK.value()) {
-            throw new RuntimeException(messageSource.getMessage("registry.service.error", null, Locale.ENGLISH)
+            throw new RuntimeException(messageSource.getMessage("monitoring.service.error", null, Locale.ENGLISH)
                     , new Throwable((String) new ObjectMapper()
                     .readValue(IOUtils.toString((InputStream) response.getEntity(), "UTF-8"), HashMap.class).get("message")));
         }

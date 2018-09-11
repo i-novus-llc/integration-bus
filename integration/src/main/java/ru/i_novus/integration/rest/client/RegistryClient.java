@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.model.CommonModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -55,8 +56,8 @@ public class RegistryClient {
         }
     }*/
 
-    public Message getServiceUrl(Message message) throws IOException {
-        Map<String, String> messageParam = (Map) message.getPayload();
+    public Message getServiceUrl(Message<CommonModel> message) throws IOException {
+        Map<String, String> messageParam = (Map) message.getPayload().getObject();
         WebClient client = WebClient
                 .fromClient(WebClient.create(property.getRegistryAddress())
                         .accept(MediaType.APPLICATION_JSON))

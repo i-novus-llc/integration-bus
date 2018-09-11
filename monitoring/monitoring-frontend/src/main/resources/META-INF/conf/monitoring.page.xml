@@ -13,7 +13,7 @@
                     <wgt:query-id>monitoring</wgt:query-id>
                     <wgt:columns>
                         <wgt:column column-field-id="uid" name="Идентификатор"/>
-                        <wgt:column column-field-id="date_time" name="Дата\Время"/>
+                        <wgt:column column-field-id="date_time" name="Дата\Время" format="date 'DD.MM.YYYY HH:mm'"/>
                         <wgt:column column-field-id="sender" name="Отправитель"/>
                         <wgt:column column-field-id="receiver" name="Получатель"/>
                         <wgt:column column-field-id="operation" name="Действие"/>

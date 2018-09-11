@@ -22,7 +22,7 @@
                            input-channel="requestChannel" output-channel="requestRegistryChannel"/>
 
     <int:channel id="nsiChannel"/>
-    <int:router input-channel="requestRegistryChannel" expression="payload.recipient">
+    <int:router input-channel="requestRegistryChannel" expression="payload.monitoringModel.receiver">
         <int:mapping value="nsi" channel="nsiChannel"/>
     </int:router>
 

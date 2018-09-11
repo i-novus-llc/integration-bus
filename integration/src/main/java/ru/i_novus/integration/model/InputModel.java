@@ -9,7 +9,6 @@ import java.util.List;
 public class InputModel implements Serializable {
     private String recipient;
     private String sender;
-    private String host;
     private String status;
     private List<DataModel> dataModels;
 
@@ -27,14 +26,6 @@ public class InputModel implements Serializable {
 
     public void setSender(String sender) {
         this.sender = sender;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
     }
 
     public String getStatus() {

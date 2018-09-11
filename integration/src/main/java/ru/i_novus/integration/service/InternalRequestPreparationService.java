@@ -51,9 +51,9 @@ public class InternalRequestPreparationService {
         messageData.getAppData().add(documentData);
 
         MessageInfo messageInfo = objectFactory.createMessageInfo();
-        messageInfo.setMessageId("test");
-        messageInfo.setRecipient("test");
-        messageInfo.setSender("test");
+        messageInfo.setMessageId(modelMessage.getPayload().getMonitoringModel().getUid());
+        messageInfo.setRecipient(inputModel.getRecipient());
+        messageInfo.setSender(inputModel.getSender());
         GregorianCalendar c = new GregorianCalendar();
         c.setTime(new Date());
         XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
