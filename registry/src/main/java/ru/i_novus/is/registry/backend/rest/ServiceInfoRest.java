@@ -23,11 +23,4 @@ public class ServiceInfoRest {
 
         return registryEntity.get().getUrl();
     }
-
-    @GetMapping("/info/url{host}")
-    public String getServiceCode(@PathVariable String host) {
-        Optional<String> result = registryRepository.findCodeByHost(host);
-
-        return result.get();
-    }
 }
