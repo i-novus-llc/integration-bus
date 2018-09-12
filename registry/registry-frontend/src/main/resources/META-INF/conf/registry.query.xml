@@ -24,6 +24,9 @@
             <domain>string</domain>
             <display/>
             <expression>code</expression>
+            <filters>
+                <filter type="eq" filter-field="id">code=:id</filter>
+            </filters>
         </field>
 
         <field>

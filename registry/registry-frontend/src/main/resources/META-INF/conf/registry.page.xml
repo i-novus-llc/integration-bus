@@ -11,6 +11,18 @@
             <container id="main">
                 <wgt:table>
                     <wgt:query-id>registry</wgt:query-id>
+                    <wgt:action-menu>
+                        <wgt:menu-item id="create" label="Создать" context="false">
+                            <wgt:event>
+                                <wgt:show-modal page-id="registry_form" action-id="create"/>
+                            </wgt:event>
+                        </wgt:menu-item>
+                        <wgt:menu-item id="update" label="Изменить">
+                            <wgt:event>
+                                <wgt:show-modal page-id="registry_form" action-id="update"/>
+                            </wgt:event>
+                        </wgt:menu-item>
+                    </wgt:action-menu>
                     <wgt:columns>
                         <wgt:column column-field-id="id" name="Идентификатор"/>
                         <wgt:column column-field-id="name" name="Наименование системы"/>
