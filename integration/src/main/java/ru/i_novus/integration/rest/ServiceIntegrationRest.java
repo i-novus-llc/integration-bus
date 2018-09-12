@@ -41,7 +41,8 @@ public class ServiceIntegrationRest {
 
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
     public void aSyncRequest(@RequestBody InputModel model) {
-        MonitoringModel monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(),
+        MonitoringModel monitoringModel = new MonitoringModel(model.getUid() != null ? model.getUid() +
+                "-" + UUID.randomUUID().toString() : UUID.randomUUID().toString(), new Date(),
                 property.getEnvCode(), model.getRecipient(), "", MessageStatusEnum.CREATE.getId());
         CommonModel commonModel = new CommonModel();
         commonModel.setMonitoringModel(monitoringModel);
