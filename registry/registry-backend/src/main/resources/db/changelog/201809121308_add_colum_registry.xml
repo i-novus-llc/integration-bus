@@ -8,7 +8,7 @@
     <changeSet id="add_column_registry" author="asamoilov" dbms="postgresql">
         <sql>
             ALTER TABLE integration.registry ADD column name character varying(250);
-            ALTER TABLE edm.status ADD COLUMN is_removable boolean DEFAULT false;
+            ALTER TABLE integration.registry ADD COLUMN is_removable boolean DEFAULT false;
         </sql>
     </changeSet>
 
