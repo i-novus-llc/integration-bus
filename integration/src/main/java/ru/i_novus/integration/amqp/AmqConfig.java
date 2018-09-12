@@ -21,9 +21,8 @@ public class AmqConfig {
     @Bean
     public RedeliveryPolicy redeliveryPolicy() {
         RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
-        redeliveryPolicy.setInitialRedeliveryDelay(10000);
-        redeliveryPolicy.setUseCollisionAvoidance(true);
-        redeliveryPolicy.setRedeliveryDelay(10000);
+        redeliveryPolicy.setUseCollisionAvoidance(false);
+        redeliveryPolicy.setRedeliveryDelay(1800000);
         redeliveryPolicy.setUseExponentialBackOff(false);
         redeliveryPolicy.setMaximumRedeliveries(-1);
 
@@ -45,8 +44,7 @@ public class AmqConfig {
     public CachingConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
         cachingConnectionFactory.setTargetConnectionFactory(jmsConnectionFactory());
-        cachingConnectionFactory.setCacheProducers(false);
-        cachingConnectionFactory.setSessionCacheSize(10);
+        cachingConnectionFactory.setReconnectOnException(true);
 
         return cachingConnectionFactory;
     }

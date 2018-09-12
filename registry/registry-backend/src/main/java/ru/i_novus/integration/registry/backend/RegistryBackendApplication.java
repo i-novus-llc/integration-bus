@@ -1,12 +1,12 @@
-package ru.i_novus.is.registry.backend;
+package ru.i_novus.integration.registry.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RegistryApplication {
+public class RegistryBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RegistryApplication.class, args);
+        SpringApplication.run(RegistryBackendApplication.class, args);
     }
 }

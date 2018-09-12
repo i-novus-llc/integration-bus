@@ -25,7 +25,7 @@ env.code='код окружения'
 * файл `+placeholders.properties+` необходимо поместить в
 classpath приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
 
-*registry:*
+*registry-backend:*
 
 * для работы модуля необходимо указать настройки в файле `+placeholders.properties+`
 
@@ -39,6 +39,15 @@ datasource.password='password'
 classpath приложения
 
 * создать db и указать параметры в properties
+
+*registry-frontend:*
+
+* war файл для запуска в tomcat
+
+
+----
+создать db (общая с registry-backend) и в Tomcat создать ресурс jdbc/registry
+----
 
 *monitoring-backend:*
 

@@ -1,6 +1,9 @@
-package ru.i_novus.is.registry.backend.entity;
+package ru.i_novus.integration.registry.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(schema = "integration", name = "registry")

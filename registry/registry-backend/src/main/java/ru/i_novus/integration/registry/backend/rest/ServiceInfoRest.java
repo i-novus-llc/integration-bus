@@ -1,12 +1,12 @@
-package ru.i_novus.is.registry.backend.rest;
+package ru.i_novus.integration.registry.backend.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.i_novus.is.registry.backend.entity.RegistryEntity;
-import ru.i_novus.is.registry.backend.repository.RegistryRepository;
+import ru.i_novus.integration.registry.backend.entity.RegistryEntity;
+import ru.i_novus.integration.registry.backend.repository.RegistryRepository;
 
 import java.util.Optional;
 
