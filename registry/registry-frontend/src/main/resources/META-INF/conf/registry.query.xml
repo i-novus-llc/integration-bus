@@ -27,8 +27,20 @@
         </field>
 
         <field>
+            <id>name</id>
+            <domain>string</domain>
+            <display/>
+        </field>
+
+        <field>
             <id>url</id>
             <domain>string</domain>
+            <display/>
+        </field>
+
+        <field>
+            <id>disable</id>
+            <domain>boolean</domain>
             <display/>
         </field>
 

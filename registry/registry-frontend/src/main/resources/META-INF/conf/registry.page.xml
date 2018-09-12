@@ -13,7 +13,11 @@
                     <wgt:query-id>registry</wgt:query-id>
                     <wgt:columns>
                         <wgt:column column-field-id="id" name="Идентификатор"/>
-                        <wgt:column column-field-id="url" name="url"/>
+                        <wgt:column column-field-id="name" name="Наименование системы"/>
+                        <wgt:column column-field-id="url" name="URL системы"/>
+                        <wgt:column column-field-id="disable" name="Приостановлена">
+                            <wgt:checkbox/>
+                        </wgt:column>
                     </wgt:columns>
                 </wgt:table>
             </container>
