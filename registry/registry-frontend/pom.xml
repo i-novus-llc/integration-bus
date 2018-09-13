@@ -82,7 +82,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>monitoring-frontend</finalName>
+        <finalName>registry-frontend</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
