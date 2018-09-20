@@ -10,6 +10,8 @@ import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.model.CommonModel;
+import ru.i_novus.is.integration.common.api.ParticipantModel;
+import ru.i_novus.is.integration.common.api.RegistryInfoModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,15 +28,16 @@ public class RegistryClient {
     @Autowired
     MessageSource messageSource;
 
-    public String getServiceUrlByCode(String code) throws IOException {
+    public ParticipantModel getServiceParticipant(String receiver, String sender) throws IOException {
+        RegistryInfoModel registryInfoModel = new RegistryInfoModel();
         WebClient client = WebClient
                 .fromClient(WebClient.create(property.getRegistryAddress())
                         .accept(MediaType.APPLICATION_JSON))
-                .replacePath("/service/info/" + code);
+                .replacePath("/service/participant");
         try {
-            Response response = client.get();
+            Response response = client.post(registryInfoModel);
             checkResponseError(response);
-            return IOUtils.toString((InputStream) response.getEntity(), "UTF-8");
+            return (ParticipantModel) response.getEntity();
         } finally {
             if (client.getResponse() != null)
                 client.getResponse().close();

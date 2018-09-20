@@ -1,9 +1,8 @@
-package ru.i_novus.integration.model;
+package ru.i_novus.is.integration.common.api;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class MonitoringModel implements Serializable {
+public class MonitoringModel {
 
     private String uid;
     private Date dateTime;
@@ -20,6 +19,9 @@ public class MonitoringModel implements Serializable {
         this.receiver = receiver;
         this.operation = operation;
         this.status = status;
+    }
+
+    public MonitoringModel() {
     }
 
     public String getUid() {

@@ -7,9 +7,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.gateway.MonitoringGateway;
-import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.integration.model.MonitoringModel;
 import ru.i_novus.integration.model.CommonModel;
+import ru.i_novus.integration.model.MessageStatusEnum;
+import ru.i_novus.is.integration.common.api.MonitoringModel;
 
 import java.util.Date;
 

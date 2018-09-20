@@ -8,9 +8,11 @@ import ru.i_novus.integration.gateway.InboundGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.InputModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.integration.model.MonitoringModel;
 import ru.i_novus.integration.rest.client.RegistryClient;
+import ru.i_novus.is.integration.common.api.MonitoringModel;
+import ru.i_novus.is.integration.common.api.ParticipantModel;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -29,10 +31,12 @@ public class ServiceIntegrationRest {
     PlaceholdersProperty property;
 
     @GetMapping(path = "/syncRequest")
-    public Object syncRequest(@RequestParam Map<String, String> requestParams) {
+    public Object syncRequest(@RequestParam Map<String, String> requestParams) throws IOException {
         MonitoringModel monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), property.getEnvCode(),
                 requestParams.get("recipient"), "", MessageStatusEnum.CREATE.getId());
+        ParticipantModel participantModel = registryClient.getServiceParticipant(requestParams.get("recipient"), property.getEnvCode());
         CommonModel commonModel = new CommonModel();
+        commonModel.setParticipantModel(participantModel);
         commonModel.setMonitoringModel(monitoringModel);
         commonModel.setObject(requestParams);
 
@@ -40,11 +44,13 @@ public class ServiceIntegrationRest {
     }
 
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void aSyncRequest(@RequestBody InputModel model) {
+    public void aSyncRequest(@RequestBody InputModel model) throws IOException {
         MonitoringModel monitoringModel = new MonitoringModel(model.getUid() != null ? model.getUid() +
                 "-" + UUID.randomUUID().toString() : UUID.randomUUID().toString(), new Date(),
                 property.getEnvCode(), model.getRecipient(), "", MessageStatusEnum.CREATE.getId());
+        ParticipantModel participantModel = registryClient.getServiceParticipant(model.getRecipient(), property.getEnvCode());
         CommonModel commonModel = new CommonModel();
+        commonModel.setParticipantModel(participantModel);
         commonModel.setMonitoringModel(monitoringModel);
         commonModel.setObject(model);
 

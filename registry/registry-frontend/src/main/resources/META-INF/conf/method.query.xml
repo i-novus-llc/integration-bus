@@ -6,12 +6,12 @@
     <execution>
         <n2o:sql>
             <n2o:items-query>select :select
-                from integration.participant r
+                from integration.participant_method r
                 where :where
                 order by :order
             </n2o:items-query>
             <n2o:count-query>select count(r)
-                from integration.participant r
+                from integration.participant_method r
                 where :where
             </n2o:count-query>
             <n2o:alias>r</n2o:alias>
@@ -21,16 +21,34 @@
     <fields>
         <field>
             <id>id</id>
-            <domain>string</domain>
+            <domain>integer</domain>
             <display/>
-            <expression>code</expression>
             <filters>
-                <filter type="eq" filter-field="id">code=:id</filter>
+                <filter type="eq" filter-field="id">id=:id</filter>
             </filters>
         </field>
 
         <field>
-            <id>name</id>
+            <id>participant_code</id>
+            <domain>string</domain>
+            <display/>
+            <filters/>
+        </field>
+
+        <field>
+            <id>integration_type</id>
+            <domain>string</domain>
+            <display/>
+        </field>
+
+        <field>
+            <id>method_code</id>
+            <domain>string</domain>
+            <display/>
+        </field>
+
+        <field>
+            <id>url</id>
             <domain>string</domain>
             <display/>
         </field>
@@ -43,3 +61,4 @@
 
     </fields>
 </query>
+

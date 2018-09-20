@@ -1,33 +1,64 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <page xmlns="http://n2oapp.net/framework/config/schema/page-1.0"
-      xmlns:wgt="http://n2oapp.net/framework/config/schema/n2o-widget-3.0"
-      xmlns:ctrl="http://n2oapp.net/framework/config/schema/n2o-control-1.0">
+      xmlns:wgt="http://n2oapp.net/framework/config/schema/n2o-widget-3.0">
     <object-id>registry</object-id>
     <layout>n2o/layout/single</layout>
     <name> </name>
 
     <regions>
-        <region place="single" type="none">
+        <region place="single" type="list">
             <container id="main">
                 <wgt:table>
+                    <wgt:name>Системы</wgt:name>
                     <wgt:query-id>registry</wgt:query-id>
                     <wgt:action-menu>
-                        <wgt:menu-item id="create" label="Создать" context="false">
+                        <wgt:menu-item id="createParticipant" label="Создать" context="false">
                             <wgt:event>
-                                <wgt:show-modal page-id="registry_form" action-id="create"/>
+                                <wgt:show-modal page-id="registry_form" action-id="createParticipant"/>
                             </wgt:event>
                         </wgt:menu-item>
-                        <wgt:menu-item id="update" label="Изменить">
+                        <wgt:menu-item id="updateParticipant" label="Изменить">
                             <wgt:event>
-                                <wgt:show-modal page-id="registry_form" action-id="update"/>
+                                <wgt:show-modal page-id="registry_form" action-id="updateParticipant"/>
                             </wgt:event>
                         </wgt:menu-item>
                     </wgt:action-menu>
                     <wgt:columns>
-                        <wgt:column column-field-id="id" name="Идентификатор"/>
+                        <wgt:column column-field-id="id" name="Код системы"/>
                         <wgt:column column-field-id="name" name="Наименование системы"/>
-                        <wgt:column column-field-id="url" name="URL системы"/>
                         <wgt:column column-field-id="disable" name="Приостановлена">
+                            <wgt:checkbox/>
+                        </wgt:column>
+                    </wgt:columns>
+                </wgt:table>
+            </container>
+
+            <container id="method" depends-on="main">
+                <wgt:table master-field-id="id" detail-field-id="participant_code">
+                    <wgt:name>Код сервиса (операции)</wgt:name>
+                    <wgt:query-id>method</wgt:query-id>
+                    <wgt:action-menu>
+                        <wgt:menu-item id="createMethod" label="Создать" context="false">
+                            <wgt:event>
+                                <wgt:show-modal page-id="method" action-id="createMethod" master-field-id="participant_code" detail-field-id="participant_code"/>
+                            </wgt:event>
+                        </wgt:menu-item>
+                        <wgt:menu-item id="updateMethod" label="Изменить">
+                            <wgt:event>
+                                <wgt:show-modal page-id="method" action-id="updateMethod"/>
+                            </wgt:event>
+                        </wgt:menu-item>
+                        <wgt:menu-item id="permission" label="Доступы">
+                            <wgt:event>
+                                <wgt:show-modal page-id="permission" master-field-id="id" detail-field-id="participant_method_id"/>
+                            </wgt:event>
+                        </wgt:menu-item>
+                    </wgt:action-menu>
+                    <wgt:columns>
+                        <wgt:column column-field-id="method_code" name="Наименование сервиса"/>
+                        <wgt:column column-field-id="url" name="URL сервиса"/>
+                        <wgt:column column-field-id="integration_type" name="Тип взаимодействия"/>
+                        <wgt:column column-field-id="disable" name="Приостановлен">
                             <wgt:checkbox/>
                         </wgt:column>
                     </wgt:columns>

@@ -5,35 +5,117 @@
         xmlns:sql="http://n2oapp.net/framework/config/schema/action-sql-1.0">
     <name>registry</name>
     <actions>
-        <action id="create">
+        <action id="createParticipant">
             <invocation>
                 <sql:sql>
-                    INSERT INTO integration.registry(
-                    code, url, name, disable)
-                    VALUES (:id, :url, :name, :disable);
+                    INSERT INTO integration.participant(
+                    code, name, disable)
+                    VALUES (:id, :name, :disable);
                 </sql:sql>
             </invocation>
             <in-parameters>
                 <param name="id" mapping="['id']" domain="string"/>
                 <param name="name" mapping="['name']" domain="string"/>
-                <param name="url" mapping="['url']" domain="string"/>
                 <param name="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
         </action>
 
-        <action id="update">
+        <action id="updateParticipant">
             <invocation>
                 <sql:sql>
-                    UPDATE integration.registry
-                    SET url=:url, name=:name, disable=:disable
+                    UPDATE integration.participant
+                    SET name=:name, disable=:disable
                     WHERE code=:id;
                 </sql:sql>
             </invocation>
             <in-parameters>
                 <param name="id" mapping="['id']" domain="string"/>
                 <param name="name" mapping="['name']" domain="string"/>
+                <param name="disable" mapping="['disable']" domain="boolean"/>
+            </in-parameters>
+        </action>
+
+        <action id="createMethod">
+            <invocation>
+                <sql:sql>
+                    INSERT INTO integration.participant_method(
+                    id, participant_code, method_code, url, disable, integration_type)
+                    VALUES (nextval('integration.participant_method_id_seq'), :participant_code, :method_code, :url, :disable, :integration_type.id);
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="participant_code" mapping="['participant_code']" domain="string"/>
+                <param name="method_code" mapping="['method_code']" domain="string"/>
+                <param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>
                 <param name="url" mapping="['url']" domain="string"/>
                 <param name="disable" mapping="['disable']" domain="boolean"/>
+            </in-parameters>
+        </action>
+
+        <action id="updateMethod">
+            <invocation>
+                <sql:sql>
+                    UPDATE integration.participant_method
+                    SET method_code=:method_code, url=:url, disable=:disable, integration_type=:integration_type.id
+                    WHERE id=:id;
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="id" mapping="['id']" domain="integer"/>
+                <param name="method_code" mapping="['method_code']" domain="string"/>
+                <param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>
+                <param name="url" mapping="['url']" domain="string"/>
+                <param name="disable" mapping="['disable']" domain="boolean"/>
+            </in-parameters>
+        </action>
+
+        <action id="permissionCreate">
+            <invocation>
+                <sql:sql>
+                    INSERT INTO integration.participant_permission(
+                    id, participant_method_id, participant_code, group_code, callback_url,
+                    sync)
+                    VALUES (nextval('integration.participant_permission_id_seq'),
+                    :participant_method_id, :participant.id, :group.id, :callback_url, :sync);
+
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="participant_method_id" mapping="['participant_method_id']" domain="integer"/>
+                <param name="participant.id" mapping="['participant.id']" domain="string"/>
+                <param name="group.id" mapping="['group.id']" domain="string"/>
+                <param name="callback_url" mapping="['callback_url']" domain="string"/>
+                <param name="sync" mapping="['sync']" domain="boolean"/>
+            </in-parameters>
+        </action>
+
+        <action id="permissionUpdate">
+            <invocation>
+                <sql:sql>
+                    UPDATE integration.participant_permission
+                    SET participant_code=:participant.id, group_code=:group.id,
+                    callback_url=:callback_url, sync=:sync
+                    WHERE id=:id;
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="id" mapping="['id']" domain="integer"/>
+                <param name="participant.id" mapping="['participant.id']" domain="string"/>
+                <param name="group.id" mapping="['group.id']" domain="string"/>
+                <param name="callback_url" mapping="['callback_url']" domain="string"/>
+                <param name="sync" mapping="['sync']" domain="boolean"/>
+            </in-parameters>
+        </action>
+
+        <action id="permissionDelete">
+            <invocation>
+                <sql:sql>
+                    DELETE FROM integration.participant_permission
+                    WHERE id=:id;
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="id" mapping="['id']" domain="integer"/>
             </in-parameters>
         </action>
     </actions>

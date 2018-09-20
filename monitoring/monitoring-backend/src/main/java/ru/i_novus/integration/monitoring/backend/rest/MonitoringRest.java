@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.i_novus.integration.monitoring.backend.entity.MonitoringEntity;
-import ru.i_novus.integration.monitoring.backend.model.MonitoringModel;
 import ru.i_novus.integration.monitoring.backend.repository.MonitoringRepository;
+import ru.i_novus.is.integration.common.api.MonitoringModel;
 
 @RestController
 @RequestMapping("/monitoring/service")

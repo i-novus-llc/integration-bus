@@ -1,13 +1,17 @@
 package ru.i_novus.integration.registry.backend.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.i_novus.integration.registry.backend.entity.RegistryEntity;
-import ru.i_novus.integration.registry.backend.repository.RegistryRepository;
+import org.springframework.web.bind.annotation.*;
+import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
+import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
+import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
+import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
+import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
+import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
+import ru.i_novus.is.integration.common.api.ParticipantModel;
+import ru.i_novus.is.integration.common.api.RegistryInfoModel;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,12 +19,34 @@ import java.util.Optional;
 public class ServiceInfoRest {
 
     @Autowired
-    RegistryRepository registryRepository;
+    ParticipantRepository participantRepository;
+    @Autowired
+    ParticipantMethodRepository participantMethodRepository;
+    @Autowired
+    ParticipantPermissionRepository participantPermissionRepository;
 
-    @GetMapping("/info/{code}")
-    public String getServiceInfo(@PathVariable String code) {
-        Optional<RegistryEntity> registryEntity = registryRepository.findById(code);
+    @PostMapping("/prepareRequest")
+    public ParticipantModel getServiceInfo(@RequestBody RegistryInfoModel model) {
+        Optional<ParticipantEntity> receiver = participantRepository.findById(model.getReceiver());
 
-        return registryEntity.get().getUrl();
+        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.find(model.getSender(), model.getMethod());
+
+        List<ParticipantPermissionEntity> permissions = participantPermissionRepository.find(senderMethod.get().getId(),
+                receiver.get().getCode(), receiver.get().getGroupCode());
+
+        ParticipantPermissionEntity permission = permissions.isEmpty() ? null : permissions.stream()
+                .filter(p-> p.getParticipantCode() != null).findFirst().get();
+
+        ParticipantModel participantModel = new ParticipantModel();
+        if (permission != null) {
+            participantModel.setUrl(senderMethod.get().getUrl());
+            participantModel.setCallbackUrl(permission.getCallbackUrl());
+            participantModel.setSync(permission.isSync());
+            participantModel.setIntegration_type(participantModel.getIntegration_type());
+        } else {
+            throw new RuntimeException("permission error");
+        }
+
+        return participantModel;
     }
 }

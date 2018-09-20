@@ -1,0 +1,83 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="create_schema_integration" author="asamoilov" dbms="postgresql">
+        <sql>
+            CREATE SCHEMA integration;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_registry_table_participant" author="asamoilov" dbms="postgresql">
+        <sql>
+            CREATE TABLE integration.participant
+            (
+            code character varying(50) NOT NULL,
+            group_code character varying(50),
+            name character varying(250),
+            disable boolean DEFAULT false,
+            CONSTRAINT participant_pk PRIMARY KEY (code)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_registry_table_participant_group" author="asamoilov" dbms="postgresql">
+        <sql>
+            CREATE TABLE integration.participant_group
+            (
+            code character varying(50) NOT NULL,
+            name character varying(50) NOT NULL,
+            CONSTRAINT participant_group_pk PRIMARY KEY (code)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_registry_table_integration_type" author="asamoilov" dbms="postgresql">
+        <sql>
+            CREATE TABLE integration.integration_type
+            (
+            code character varying(50) NOT NULL,
+            name character varying(50) NOT NULL,
+            CONSTRAINT integration_type_pk PRIMARY KEY (code)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_registry_table_participant_method" author="asamoilov" dbms="postgresql">
+        <sql>
+            CREATE sequence integration.participant_method_id_seq;
+
+            CREATE TABLE integration.participant_method
+            (
+            id integer NOT NULL,
+            participant_code character varying(50) NOT NULL,
+            method_code character varying(50) NOT NULL,
+            integration_type character varying(50) NOT NULL,
+            url character varying(250) NOT NULL,
+            disable boolean DEFAULT false,
+            CONSTRAINT participant_method_pk PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_registry_table_participant_permission" author="asamoilov" dbms="postgresql">
+        <sql>
+            CREATE sequence integration.participant_permission_id_seq;
+
+            CREATE TABLE integration.participant_permission
+            (
+            id integer NOT NULL,
+            participant_method_id integer NOT NULL,
+            participant_code character varying(50),
+            group_code character varying(50),
+            callback_url character varying(250),
+            sync boolean NOT NULL,
+            CONSTRAINT participant_permission_pk PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

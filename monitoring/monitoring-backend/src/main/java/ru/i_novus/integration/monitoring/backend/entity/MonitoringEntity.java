@@ -1,6 +1,7 @@
 package ru.i_novus.integration.monitoring.backend.entity;
 
-import ru.i_novus.integration.monitoring.backend.model.MonitoringModel;
+
+import ru.i_novus.is.integration.common.api.MonitoringModel;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class MonitoringEntity {
         this.sender = model.getSender();
         this.receiver = model.getReceiver();
         this.operation = model.getOperation();
-        this.status = model.getStatus();
+        this.status = Integer.toString(model.getStatus());
         this.error = model.getError();
     }
 

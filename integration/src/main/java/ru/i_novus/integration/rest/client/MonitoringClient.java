@@ -3,13 +3,13 @@ package ru.i_novus.integration.rest.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
-import ru.i_novus.integration.model.MonitoringModel;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import ru.i_novus.is.integration.common.api.MonitoringModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
