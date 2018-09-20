@@ -81,7 +81,7 @@
                 (case when status = '1' then 'Создан'
                 when status = '2' then 'Ошибка'
                 when status = '3' then 'В очереди'
-                when status = '4' then 'Доставлено'
+                when status = '4' then 'Удачно'
                 end)
             </expression>
         </field>

@@ -12,7 +12,7 @@
                 <wgt:table>
                     <wgt:query-id>monitoring</wgt:query-id>
                     <wgt:columns>
-                        <wgt:column column-field-id="uid" name="Идентификатор"/>
+                        <wgt:column column-field-id="uid" name="Идентификатор сообщения"/>
                         <wgt:column column-field-id="date_time" name="Дата\Время" format="date 'DD.MM.YYYY HH:mm'"/>
                         <wgt:column column-field-id="sender" name="Отправитель"/>
                         <wgt:column column-field-id="receiver" name="Получатель"/>
@@ -30,7 +30,7 @@
                                 <ctrl:option>{"id":1, "name":"Создан"}</ctrl:option>
                                 <ctrl:option>{"id":2, "name":"Ошибка"}</ctrl:option>
                                 <ctrl:option>{"id":3, "name":"В очереди"}</ctrl:option>
-                                <ctrl:option>{"id":4, "name":"Доставлено"}</ctrl:option>
+                                <ctrl:option>{"id":4, "name":"Удачно"}</ctrl:option>
                             </ctrl:options>
                         </ctrl:select>
                     </wgt:filters>

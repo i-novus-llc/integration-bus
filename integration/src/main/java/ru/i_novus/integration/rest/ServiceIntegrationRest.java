@@ -33,7 +33,7 @@ public class ServiceIntegrationRest {
     @GetMapping(path = "/syncRequest/{method}")
     public Object syncRequest(@RequestParam Map<String, String> requestParams, @PathVariable("method") String method) throws IOException {
         MonitoringModel monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), property.getEnvCode(),
-                requestParams.get("recipient"), "", MessageStatusEnum.CREATE.getId());
+                requestParams.get("recipient"), method, MessageStatusEnum.CREATE.getId());
         ParticipantModel participantModel = registryClient.getServiceParticipant(requestParams.get("recipient"), property.getEnvCode(), method);
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
@@ -47,7 +47,7 @@ public class ServiceIntegrationRest {
     public void aSyncRequest(@RequestBody InputModel model) throws IOException {
         MonitoringModel monitoringModel = new MonitoringModel(model.getUid() != null ? model.getUid() +
                 "-" + UUID.randomUUID().toString() : UUID.randomUUID().toString(), new Date(),
-                property.getEnvCode(), model.getRecipient(), "", MessageStatusEnum.CREATE.getId());
+                property.getEnvCode(), model.getRecipient(), model.getMethod(), MessageStatusEnum.CREATE.getId());
         ParticipantModel participantModel = registryClient.getServiceParticipant(model.getRecipient(), property.getEnvCode(), model.getMethod());
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
