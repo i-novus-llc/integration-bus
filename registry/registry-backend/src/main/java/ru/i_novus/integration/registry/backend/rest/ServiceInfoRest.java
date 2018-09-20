@@ -27,12 +27,13 @@ public class ServiceInfoRest {
 
     @PostMapping("/prepareRequest")
     public ParticipantModel getServiceInfo(@RequestBody RegistryInfoModel model) {
+        Optional<ParticipantEntity> sender = participantRepository.findById(model.getSender());
         Optional<ParticipantEntity> receiver = participantRepository.findById(model.getReceiver());
 
-        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.find(model.getSender(), model.getMethod());
+        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.find(model.getReceiver(), model.getMethod());
 
         List<ParticipantPermissionEntity> permissions = participantPermissionRepository.find(senderMethod.get().getId(),
-                receiver.get().getCode(), receiver.get().getGroupCode());
+                sender.get().getCode(), sender.get().getGroupCode());
 
         ParticipantPermissionEntity permission = permissions.isEmpty() ? null : permissions.stream()
                 .filter(p-> p.getParticipantCode() != null).findFirst().get();
@@ -42,7 +43,8 @@ public class ServiceInfoRest {
             participantModel.setUrl(senderMethod.get().getUrl());
             participantModel.setCallbackUrl(permission.getCallbackUrl());
             participantModel.setSync(permission.isSync());
-            participantModel.setIntegration_type(participantModel.getIntegration_type());
+            participantModel.setIntegrationType(participantModel.getIntegrationType());
+            participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {
             throw new RuntimeException("permission error");
         }

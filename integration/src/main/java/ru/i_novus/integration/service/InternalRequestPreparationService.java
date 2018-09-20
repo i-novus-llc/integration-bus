@@ -65,9 +65,10 @@ public class InternalRequestPreparationService {
         CommonModel integrationRequest = new CommonModel();
         integrationRequest.setObject(message);
         integrationRequest.setMonitoringModel(modelMessage.getPayload().getMonitoringModel());
+        integrationRequest.setParticipantModel(modelMessage.getPayload().getParticipantModel());
 
         return MessageBuilder.createMessage(integrationRequest,
-                new MessageHeaders(Collections.singletonMap("url", registryClient.getServiceUrlByCode(inputModel.getRecipient()))));
+                new MessageHeaders(Collections.singletonMap("url", modelMessage.getPayload().getParticipantModel().getUrl())));
 
     }
 

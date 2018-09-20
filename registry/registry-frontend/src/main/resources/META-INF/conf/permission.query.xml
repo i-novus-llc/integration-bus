@@ -32,7 +32,7 @@
             <id>participant_method_id</id>
             <domain>integer</domain>
             <display/>
-            <filters/>
+            <filters auto-generate="true"/>
         </field>
 
         <field>

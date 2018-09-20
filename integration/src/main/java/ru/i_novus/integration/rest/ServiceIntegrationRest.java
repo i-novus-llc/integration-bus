@@ -30,11 +30,11 @@ public class ServiceIntegrationRest {
     @Autowired
     PlaceholdersProperty property;
 
-    @GetMapping(path = "/syncRequest")
-    public Object syncRequest(@RequestParam Map<String, String> requestParams) throws IOException {
+    @GetMapping(path = "/syncRequest/{method}")
+    public Object syncRequest(@RequestParam Map<String, String> requestParams, @PathVariable("method") String method) throws IOException {
         MonitoringModel monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), property.getEnvCode(),
                 requestParams.get("recipient"), "", MessageStatusEnum.CREATE.getId());
-        ParticipantModel participantModel = registryClient.getServiceParticipant(requestParams.get("recipient"), property.getEnvCode());
+        ParticipantModel participantModel = registryClient.getServiceParticipant(requestParams.get("recipient"), property.getEnvCode(), method);
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
         commonModel.setMonitoringModel(monitoringModel);
@@ -48,7 +48,7 @@ public class ServiceIntegrationRest {
         MonitoringModel monitoringModel = new MonitoringModel(model.getUid() != null ? model.getUid() +
                 "-" + UUID.randomUUID().toString() : UUID.randomUUID().toString(), new Date(),
                 property.getEnvCode(), model.getRecipient(), "", MessageStatusEnum.CREATE.getId());
-        ParticipantModel participantModel = registryClient.getServiceParticipant(model.getRecipient(), property.getEnvCode());
+        ParticipantModel participantModel = registryClient.getServiceParticipant(model.getRecipient(), property.getEnvCode(), model.getMethod());
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
         commonModel.setMonitoringModel(monitoringModel);

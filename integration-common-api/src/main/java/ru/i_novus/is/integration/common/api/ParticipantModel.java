@@ -1,10 +1,13 @@
 package ru.i_novus.is.integration.common.api;
 
-public class ParticipantModel {
+import java.io.Serializable;
+
+public class ParticipantModel implements Serializable {
     private String url;
     private String callbackUrl;
     private boolean sync;
-    private String integration_type;
+    private String integrationType;
+    private String method;
 
     public String getUrl() {
         return url;
@@ -30,11 +33,19 @@ public class ParticipantModel {
         this.sync = sync;
     }
 
-    public String getIntegration_type() {
-        return integration_type;
+    public String getIntegrationType() {
+        return integrationType;
     }
 
-    public void setIntegration_type(String integration_type) {
-        this.integration_type = integration_type;
+    public void setIntegrationType(String integrationType) {
+        this.integrationType = integrationType;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 }

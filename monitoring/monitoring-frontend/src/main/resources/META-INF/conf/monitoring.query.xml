@@ -8,7 +8,7 @@
             <n2o:items-query>select :select
                 from integration.monitoring m
                 where :where
-                order by :order
+                order by date_time DESC, :order
             </n2o:items-query>
             <n2o:count-query>select count(m)
                 from integration.monitoring m
@@ -38,7 +38,10 @@
             <id>date_time</id>
             <domain>date</domain>
             <display/>
-            <filters auto-generate="true"/>
+            <filters>
+                <filter type="more" filter-field="date_time.begin">date_time>=:date_time.begin</filter>
+                <filter type="less" filter-field="date_time.end">:date_time.end>=date_time</filter>
+            </filters>
         </field>
         <field>
             <id>sender</id>

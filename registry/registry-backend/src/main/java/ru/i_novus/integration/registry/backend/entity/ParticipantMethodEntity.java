@@ -3,7 +3,7 @@ package ru.i_novus.integration.registry.backend.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "integration", name = "participant_group")
+@Table(schema = "integration", name = "participant_method")
 public class ParticipantMethodEntity {
 
     @Id

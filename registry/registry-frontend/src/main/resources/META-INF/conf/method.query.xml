@@ -32,7 +32,7 @@
             <id>participant_code</id>
             <domain>string</domain>
             <display/>
-            <filters/>
+            <filters auto-generate="true"/>
         </field>
 
         <field>

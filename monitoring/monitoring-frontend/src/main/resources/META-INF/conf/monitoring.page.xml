@@ -22,7 +22,7 @@
                     </wgt:columns>
                     <wgt:filters opened="true">
                         <ctrl:input-text id="uid" label="Идентификатор"/>
-                        <ctrl:date-time id="date_time" label="Дата\Время" default-value="noe()"/>
+                        <ctrl:date-interval id="date_time" label="Дата\Время" format="DD.MM.YYYY HH:mm" begin-default-time="now()"/>
                         <ctrl:input-text id="sender" label="Отправитель"/>
                         <ctrl:input-text id="receiver" label="Получатель"/>
                         <ctrl:select id="status" label="Статус">

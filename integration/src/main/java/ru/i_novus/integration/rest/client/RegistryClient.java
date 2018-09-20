@@ -3,6 +3,7 @@ package ru.i_novus.integration.rest.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class RegistryClient {
@@ -28,16 +27,21 @@ public class RegistryClient {
     @Autowired
     MessageSource messageSource;
 
-    public ParticipantModel getServiceParticipant(String receiver, String sender) throws IOException {
+    public ParticipantModel getServiceParticipant(String receiver, String sender, String  method) throws IOException {
+        List<Object> providers = new ArrayList<>();
+        providers.add(new JacksonJsonProvider());
+
         RegistryInfoModel registryInfoModel = new RegistryInfoModel();
-        WebClient client = WebClient
-                .fromClient(WebClient.create(property.getRegistryAddress())
-                        .accept(MediaType.APPLICATION_JSON))
-                .replacePath("/service/participant");
+        registryInfoModel.setSender(sender);
+        registryInfoModel.setReceiver(receiver);
+        registryInfoModel.setMethod(method);
+        WebClient client = WebClient.create(property.getRegistryAddress() + "/service/prepareRequest", providers)
+                .type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+
         try {
             Response response = client.post(registryInfoModel);
             checkResponseError(response);
-            return (ParticipantModel) response.getEntity();
+            return response.readEntity(ParticipantModel.class);
         } finally {
             if (client.getResponse() != null)
                 client.getResponse().close();

@@ -17,12 +17,9 @@
     <import resource="si-monitoring-config.xml"/>
 
     <int:channel id="requestChannel"/>
-    <int:channel id="requestRegistryChannel"/>
-    <int:service-activator ref="registryClient" method="getServiceUrl"
-                           input-channel="requestChannel" output-channel="requestRegistryChannel"/>
 
     <int:channel id="nsiChannel"/>
-    <int:router input-channel="requestRegistryChannel" expression="payload.monitoringModel.receiver">
+    <int:router input-channel="requestChannel" expression="payload.monitoringModel.receiver">
         <int:mapping value="nsi" channel="nsiChannel"/>
     </int:router>
 
