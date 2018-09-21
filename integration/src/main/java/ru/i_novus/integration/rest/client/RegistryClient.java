@@ -83,8 +83,8 @@ public class RegistryClient {
 
     private void checkResponseError(Response response) throws IOException {
         if (response.getStatus() != HttpStatus.OK.value()) {
-            throw new RuntimeException(messageSource.getMessage("registry.service.error :" + response.getStatus() +
-                     " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8"), null, Locale.ENGLISH)
+            throw new RuntimeException(messageSource.getMessage("registry.service.error", null, Locale.ENGLISH)
+                    + response.getStatus() + " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8")
                     , new Throwable((String) new ObjectMapper()
                     .readValue(IOUtils.toString((InputStream) response.getEntity(), "UTF-8"), HashMap.class).get("message")));
         }

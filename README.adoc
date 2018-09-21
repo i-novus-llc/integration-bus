@@ -13,7 +13,7 @@ link:++https://ci.i-novus.ru/view/platform/job/integration-bus.master.build/++[i
 
 [source,java]
 ----
-registry.address='путь до сервиса registry'
+registry.address='http://localhost:8099/registry'
 sign.soap.key.store.password='пароль для keystore'
 sign.soap.key.store.region.alias.name='alias ключа ситемы'
 sign.soap.key.store.region.alias.password='пароль для alias'
