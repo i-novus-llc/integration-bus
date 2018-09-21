@@ -22,6 +22,11 @@
                                 <wgt:show-modal page-id="registry_form" action-id="updateParticipant"/>
                             </wgt:event>
                         </wgt:menu-item>
+                        <wgt:menu-item id="deleteParticipant" label="Удалить">
+                            <wgt:event>
+                                <wgt:invoke-action action-id="deleteParticipant"/>
+                            </wgt:event>
+                        </wgt:menu-item>
                     </wgt:action-menu>
                     <wgt:columns>
                         <wgt:column column-field-id="id" name="Код системы"/>
@@ -48,6 +53,11 @@
                                 <wgt:show-modal page-id="method" action-id="updateMethod"/>
                             </wgt:event>
                         </wgt:menu-item>
+                        <wgt:menu-item id="deleteMethod" label="Удалить">
+                            <wgt:event>
+                                <wgt:invoke-action action-id="deleteMethod"/>
+                            </wgt:event>
+                        </wgt:menu-item>
                         <wgt:menu-item id="permission" label="Доступы">
                             <wgt:event>
                                 <wgt:show-modal page-id="permission" master-field-id="id" detail-field-id="participant_method_id"/>
@@ -57,7 +67,6 @@
                     <wgt:columns>
                         <wgt:column column-field-id="method_code" name="Наименование сервиса"/>
                         <wgt:column column-field-id="url" name="URL сервиса"/>
-                        <wgt:column column-field-id="integration_type" name="Тип взаимодействия"/>
                         <wgt:column column-field-id="disable" name="Приостановлен">
                             <wgt:checkbox/>
                         </wgt:column>

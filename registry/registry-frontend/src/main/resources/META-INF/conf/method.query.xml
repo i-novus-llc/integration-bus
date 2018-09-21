@@ -36,12 +36,6 @@
         </field>
 
         <field>
-            <id>integration_type</id>
-            <domain>string</domain>
-            <display/>
-        </field>
-
-        <field>
             <id>method_code</id>
             <domain>string</domain>
             <display/>

@@ -35,18 +35,30 @@
             </in-parameters>
         </action>
 
+        <action id="deleteParticipant">
+            <invocation>
+                <sql:sql>
+                    DELETE FROM integration.participant
+                    WHERE code=:id;
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="id" mapping="['id']" domain="string"/>
+            </in-parameters>
+        </action>
+
         <action id="createMethod">
             <invocation>
                 <sql:sql>
                     INSERT INTO integration.participant_method(
                     id, participant_code, method_code, url, disable, integration_type)
-                    VALUES (nextval('integration.participant_method_id_seq'), :participant_code, :method_code, :url, :disable, :integration_type.id);
+                    VALUES (nextval('integration.participant_method_id_seq'), :participant_code, :method_code, :url, :disable, '-');
                 </sql:sql>
             </invocation>
             <in-parameters>
                 <param name="participant_code" mapping="['participant_code']" domain="string"/>
                 <param name="method_code" mapping="['method_code']" domain="string"/>
-                <param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>
+                <!--<param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>-->
                 <param name="url" mapping="['url']" domain="string"/>
                 <param name="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
@@ -56,16 +68,28 @@
             <invocation>
                 <sql:sql>
                     UPDATE integration.participant_method
-                    SET method_code=:method_code, url=:url, disable=:disable, integration_type=:integration_type.id
+                    SET method_code=:method_code, url=:url, disable=:disable, integration_type='-'
                     WHERE id=:id;
                 </sql:sql>
             </invocation>
             <in-parameters>
                 <param name="id" mapping="['id']" domain="integer"/>
                 <param name="method_code" mapping="['method_code']" domain="string"/>
-                <param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>
+                <!--<param name="integration_type.id" mapping="['integration_type_id']" domain="string"/>-->
                 <param name="url" mapping="['url']" domain="string"/>
                 <param name="disable" mapping="['disable']" domain="boolean"/>
+            </in-parameters>
+        </action>
+
+        <action id="deleteMethod">
+            <invocation>
+                <sql:sql>
+                    DELETE FROM integration.participant_method
+                    WHERE id=:id;
+                </sql:sql>
+            </invocation>
+            <in-parameters>
+                <param name="id" mapping="['id']" domain="integer"/>
             </in-parameters>
         </action>
 
