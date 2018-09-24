@@ -51,8 +51,8 @@
             <invocation>
                 <sql:sql>
                     INSERT INTO integration.participant_method(
-                    id, participant_code, method_code, url, disable, integration_type)
-                    VALUES (nextval('integration.participant_method_id_seq'), :participant_code, :method_code, :url, :disable, '-');
+                    id, participant_code, method_code, url, disable)
+                    VALUES (nextval('integration.participant_method_id_seq'), :participant_code, :method_code, :url, :disable);
                 </sql:sql>
             </invocation>
             <in-parameters>
@@ -68,7 +68,7 @@
             <invocation>
                 <sql:sql>
                     UPDATE integration.participant_method
-                    SET method_code=:method_code, url=:url, disable=:disable, integration_type='-'
+                    SET method_code=:method_code, url=:url, disable=:disable
                     WHERE id=:id;
                 </sql:sql>
             </invocation>
