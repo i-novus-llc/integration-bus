@@ -1,0 +1,38 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="create_integration_participant_group_code_fk" author="asamoilov" dbms="postgresql">
+        <sql>
+            ALTER TABLE integration.participant ADD CONSTRAINT integration_participant_group_code_fk FOREIGN KEY (group_code)
+            REFERENCES integration.participant_group (code) ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_integration_participant_method_fk" author="asamoilov" dbms="postgresql">
+        <sql>
+            ALTER TABLE integration.participant_method ADD CONSTRAINT integration_participant_method_participant_code_fk FOREIGN KEY (participant_code)
+            REFERENCES integration.participant (code) ON DELETE CASCADE;
+
+            ALTER TABLE integration.participant_method ADD CONSTRAINT integration_participant_method_integration_type_fk FOREIGN KEY (integration_type)
+            REFERENCES integration.integration_type (code) ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_integration_participant_permission_fk" author="asamoilov" dbms="postgresql">
+        <sql>
+            ALTER TABLE integration.participant_permission ADD CONSTRAINT integration_participant_permission_participant_method_id_fk FOREIGN KEY (participant_method_id)
+            REFERENCES integration.participant_method (id) ON DELETE CASCADE;
+
+            ALTER TABLE integration.participant_permission ADD CONSTRAINT integration_participant_permission_participant_code_fk FOREIGN KEY (participant_code)
+            REFERENCES integration.participant (code) ON DELETE CASCADE;
+
+            ALTER TABLE integration.participant_permission ADD CONSTRAINT integration_participant_permission_participant_group_code_fk FOREIGN KEY (group_code)
+            REFERENCES integration.participant_group (code) ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

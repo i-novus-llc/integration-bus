@@ -3,7 +3,7 @@
       xmlns:wgt="http://n2oapp.net/framework/config/schema/n2o-widget-2.0">
     <object-id>registry</object-id>
     <layout>n2o/layout/single</layout>
-    <name> </name>
+    <name>Доступы</name>
 
     <regions>
         <region place="single" type="panel">

@@ -42,12 +42,12 @@
             <expression>participant_code</expression>
         </field>
 
-        <field>
+        <!--<field>
             <id>group.id</id>
             <domain>string</domain>
             <display/>
             <expression>group_code</expression>
-        </field>
+        </field>-->
 
         <field>
             <id>callback_url</id>
