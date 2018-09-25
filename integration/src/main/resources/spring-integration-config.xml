@@ -23,7 +23,7 @@
     </int:chain>
 
     <int-jms:message-driven-channel-adapter id="jmsOut" destination="senderQueue" channel="mqOutChannel"
-                                            acknowledge="transacted" error-channel="errorChannel"/>
+                                            acknowledge="transacted"/>
 
     <int:chain input-channel="mqOutChannel">
         <int:service-activator ref="internalRequestPreparationService" method="requestASync"/>
