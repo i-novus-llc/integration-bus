@@ -88,12 +88,8 @@ public class InternalRequestPreparationService {
 
         try (InputStream docStream = new FileInputStream(new File(filePath))) {
             byte[] fromFile;
-            try {
-                fromFile = new byte[docStream.available()];
-                docStream.read(fromFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            fromFile = new byte[docStream.available()];
+            docStream.read(fromFile);
 
             return new DataHandler(new FileDataSource(new File(filePath)));
         }

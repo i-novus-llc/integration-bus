@@ -45,29 +45,30 @@ public class InternalWsClient {
     @Autowired
     MonitoringGateway monitoringGateway;
 
-    public Message sendRequest(Message<CommonModel<IntegrationMessage>> request) {
-        try {
-            InternalWsEndpoint integrationEndpoint = getPort();
-            BindingProvider bindingProvider = (BindingProvider) integrationEndpoint;
-            bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, request.getHeaders().get("url", String.class));
-            if (integrationEndpoint.request(request.getPayload().getObject())) {
-                request.getPayload().getObject().getMessage().getAppData().forEach(d -> {
-                    FileDataSource fileDataSource = (FileDataSource) d.getBinaryData().getDataSource();
-                    try {
-                        Files.delete(fileDataSource.getFile().toPath());
-                    } catch (IOException e) {
-                        LOGGER.info(e.getMessage());
-                    }
-                });
+    public void sendRequest(Message<CommonModel<IntegrationMessage>> request) {
+        if (request.getPayload().getObject() != null) {
+            try {
+                InternalWsEndpoint integrationEndpoint = getPort();
+                BindingProvider bindingProvider = (BindingProvider) integrationEndpoint;
+                bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, request.getHeaders().get("url", String.class));
+                if (integrationEndpoint.request(request.getPayload().getObject())) {
+                    request.getPayload().getObject().getMessage().getAppData().forEach(d -> {
+                        FileDataSource fileDataSource = (FileDataSource) d.getBinaryData().getDataSource();
+                        try {
+                            Files.delete(fileDataSource.getFile().toPath());
+                        } catch (IOException e) {
+                            LOGGER.info(e.getMessage());
+                        }
+                    });
+                }
+                monitoringService.fineStatus(request.getPayload());
+            } catch (Exception e) {
+                request.getPayload().getMonitoringModel().setError(e.getMessage());
+                monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
+
+                throw new RuntimeException(e);
             }
-        } catch (Exception e) {
-            request.getPayload().getMonitoringModel().setError(e.getMessage());
-            monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
-
-           throw new RuntimeException(e);
         }
-
-        return request;
     }
 
     private InternalWsEndpoint getPort() {

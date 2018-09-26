@@ -22,13 +22,11 @@
         <int-jms:outbound-channel-adapter id="jmsIn" destination="senderQueue" extract-payload="false"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsOut" destination="senderQueue" channel="mqOutChannel"
-                                            acknowledge="transacted"/>
+    <int-jms:message-driven-channel-adapter id="jmsOut" destination="senderQueue" channel="mqOutChannel"/>
 
     <int:chain input-channel="mqOutChannel">
         <int:service-activator ref="internalRequestPreparationService" method="requestASync"/>
         <int:service-activator ref="internalWsClient" method="sendRequest"/>
-        <int:service-activator expression="@monitoringService.fineStatus(payload)"/>
     </int:chain>
 
 </beans>
