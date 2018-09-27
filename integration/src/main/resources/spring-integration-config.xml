@@ -19,6 +19,7 @@
 
     <int:chain input-channel="requestAsyncChannel">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
+        <int:service-activator expression="@monitoringService.create(payload, 3)"/>
         <int-jms:outbound-channel-adapter id="jmsIn" destination="senderQueue" extract-payload="false"/>
     </int:chain>
 
