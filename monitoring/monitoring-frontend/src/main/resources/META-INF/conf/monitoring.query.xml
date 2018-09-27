@@ -32,7 +32,9 @@
             <domain>string</domain>
             <display/>
             <sorting/>
-            <filters auto-generate="true"/>
+            <filters>
+                <filter type="eq" filter-field="uid">(upper(:expression) like '%'||upper(:uid)||'%')</filter>
+            </filters>
         </field>
         <field>
             <id>date_time</id>
