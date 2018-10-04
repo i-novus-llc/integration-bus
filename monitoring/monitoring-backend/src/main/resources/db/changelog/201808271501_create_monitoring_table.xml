@@ -7,15 +7,15 @@
 
     <changeSet id="create_schema_integration" author="asamoilov" dbms="postgresql">
         <sql>
-            CREATE SCHEMA integration;
+            CREATE SCHEMA monitoring;
         </sql>
     </changeSet>
 
     <changeSet id="create_monitoring_table" author="asamoilov" dbms="postgresql">
         <sql>
-            create sequence integration.monitoring_id_seq;
+            create sequence monitoring.monitoring_id_seq;
 
-            CREATE TABLE integration.monitoring
+            CREATE TABLE monitoring.monitoring
             (
             id integer NOT NULL,
             uid character varying(50) NOT NULL,
@@ -25,7 +25,7 @@
             operation character varying(250) NOT NULL,
             status character varying(50) NOT NULL,
             error text,
-            CONSTRAINT registry_pk PRIMARY KEY (id)
+            CONSTRAINT monitoring_pk PRIMARY KEY (id)
             );
         </sql>
     </changeSet>

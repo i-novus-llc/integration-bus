@@ -37,6 +37,12 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>net.n2oapp.framework.security</groupId>
+            <artifactId>security-admin-db</artifactId>
+            <version>${security.admin.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

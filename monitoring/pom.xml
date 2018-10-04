@@ -16,7 +16,6 @@
 
     <modules>
         <module>monitoring-backend</module>
-        <module>monitoring-frontend</module>
     </modules>
 
     <properties>

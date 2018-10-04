@@ -7,7 +7,7 @@
 
     <changeSet id="change_type" author="asamoilov" dbms="postgresql">
         <sql>
-            ALTER TABLE integration.monitoring ALTER COLUMN date_time SET DATA TYPE timestamp;
+            ALTER TABLE monitoring.monitoring ALTER COLUMN date_time SET DATA TYPE timestamp;
         </sql>
     </changeSet>
 

@@ -7,12 +7,12 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(schema = "integration", name = "monitoring")
+@Table(schema = "monitoring", name = "monitoring")
 public class MonitoringEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(name = "id_gen", sequenceName = "integration.monitoring_id_seq",
+    @SequenceGenerator(name = "id_gen", sequenceName = "monitoring.monitoring_id_seq",
             allocationSize = 1)
     private Integer id;
 

@@ -31,7 +31,7 @@ classpath приложения вместе с `+keystore (алгоритм RSA 
 
 [source,java]
 ----
-datasource.url='jdbc:postgresql://localhost:5433/registry'
+datasource.url='jdbc:postgresql://localhost:5433/integration'
 datasource.username='user'
 datasource.password='password'
 ----
@@ -40,34 +40,28 @@ classpath приложения
 
 * создать db и указать параметры в properties
 
-*registry-frontend:*
-
-* war файл для запуска в tomcat
-
-
-----
-создать db (общая с registry-backend) и в Tomcat создать ресурс jdbc/registry
-----
-
 *monitoring-backend:*
 
 * для работы модуля необходимо указать настройки:
 
 [source,java]
 ----
-datasource.url='jdbc:postgresql://localhost:5433/monitoring'
+datasource.url='jdbc:postgresql://localhost:5433/integration'
 datasource.username='user'
 datasource.password='password'
 ----
 
 * создать db и указать параметры в properties
 
-*monitoring-frontend:*
+*integration-control-ui:*
 
 * war файл для запуска в tomcat
 
 
 ----
-создать db (общая с monitoring-backend) и в Tomcat создать ресурс jdbc/monitoring
+создать db (общая с registry-backend) и в Tomcat создать ресурс jdbc/integration
+----
+
+
 
 

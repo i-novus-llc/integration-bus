@@ -16,7 +16,6 @@
 
     <modules>
         <module>registry-backend</module>
-        <module>registry-frontend</module>
     </modules>
 
     <properties>
