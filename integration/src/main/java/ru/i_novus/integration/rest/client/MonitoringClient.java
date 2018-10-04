@@ -1,6 +1,5 @@
 package ru.i_novus.integration.rest.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -16,7 +15,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,8 +44,7 @@ public class MonitoringClient {
     private void checkResponseError(Response response) throws IOException {
         if (response.getStatus() != HttpStatus.OK.value()) {
             throw new RuntimeException(messageSource.getMessage("monitoring.service.error", null, Locale.ENGLISH)
-                    , new Throwable((String) new ObjectMapper()
-                    .readValue(IOUtils.toString((InputStream) response.getEntity(), "UTF-8"), HashMap.class).get("message")));
+                    + response.getStatus() + " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
         }
     }
 }
