@@ -12,6 +12,7 @@
 
     <modules>
         <module>integration-common-api</module>
+        <module>integration-control-ui</module>
         <module>integration</module>
         <module>registry</module>
         <module>monitoring</module>
