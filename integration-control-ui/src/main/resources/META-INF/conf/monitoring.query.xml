@@ -46,6 +46,12 @@
             </filters>
         </field>
         <field>
+            <id>date_time_text</id>
+            <domain>string</domain>
+            <display/>
+            <expression>to_char(date_time, 'DD.MM.YYYY HH24:MI:SS MS')</expression>
+        </field>
+        <field>
             <id>sender</id>
             <domain>string</domain>
             <display/>

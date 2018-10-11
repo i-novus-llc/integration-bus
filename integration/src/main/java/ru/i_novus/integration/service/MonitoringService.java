@@ -2,6 +2,7 @@ package ru.i_novus.integration.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandlingException;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -35,19 +36,21 @@ public class MonitoringService {
     }
 
     public void createError(Message message) {
-        MonitoringModel model = (MonitoringModel) message.getPayload();
-        model.setStatus(MessageStatusEnum.ERROR.getId());
-        model.setDateTime(new Date());
+        MonitoringModel model;
+        if (message instanceof MessageHandlingException) {
+            MessageHandlingException exceptionMessage = (MessageHandlingException) message;
+            CommonModel commonModel = (CommonModel) exceptionMessage.getFailedMessage().getPayload();
+            model = commonModel.getMonitoringModel();
+            model.setStatus(MessageStatusEnum.ERROR.getId());
+            model.setDateTime(new Date());
+            model.setError(exceptionMessage.getMessage());
+        } else {
+            model = (MonitoringModel) message.getPayload();
+            model.setStatus(MessageStatusEnum.ERROR.getId());
+            model.setDateTime(new Date());
+        }
 
         monitoringGateway.putToQueue(MessageBuilder.withPayload(model).build());
     }
 
-    /*public void createError(MessageHandlingException message) {
-        CommonModel commonModel = (CommonModel) message.getFailedMessage().getPayload();
-        MonitoringModel monitoringModel = commonModel.getMonitoringModel();
-        monitoringModel.setStatus(MessageStatusEnum.ERROR.getId());
-        monitoringModel.setDateTime(new Date());
-        monitoringModel.setError(message.getMessage());
-        monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
-    }*/
 }

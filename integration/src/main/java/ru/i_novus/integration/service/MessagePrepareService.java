@@ -1,5 +1,6 @@
 package ru.i_novus.integration.service;
 
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.messaging.Message;
@@ -38,12 +39,8 @@ public class MessagePrepareService {
 
         if (participantModel.getMethod().equals("data")) {
             if (messageParam.get("page").equals("1")) {
-                MonitoringModel monitoringModel = message.getPayload().getMonitoringModel();
-                monitoringModel.setDateTime(new Date());
-                monitoringModel.setStatus(MessageStatusEnum.CREATE.getId());
-                monitoringModel.setOperation(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH)
-                        + messageParam.get("identifier") + VERSIONS_PARAM_NAME + messageParam.get("version"));
-                monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
+                monitoringMessage(message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
+                        messageParam.get("version"), MessageStatusEnum.CREATE.getId());
             }
             sb.append(PARAM).append(IDENTIFIER_PARAM_NAME).append(messageParam.get("identifier"))
                     .append(VERSIONS_PARAM_NAME).append(messageParam.get("version")).append(PAGE).append(messageParam.get("page"));
@@ -52,6 +49,21 @@ public class MessagePrepareService {
         if (participantModel.getMethod().equals("versions")) {
             sb.append(PARAM).append(IDENTIFIER_PARAM_NAME).append(messageParam.get("identifier"));
         }
-        return MessageBuilder.withPayload(restTemplate.getForEntity(sb.toString(), String.class).getBody()).build();
+        Message result = MessageBuilder.withPayload(restTemplate.getForEntity(sb.toString(), String.class).getBody()).build();
+
+        if (new JsonParser().parse(result.getPayload().toString()).getAsJsonObject().get("list").toString().equals("[]")) {
+            monitoringMessage(message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
+                    messageParam.get("version"), MessageStatusEnum.SEND.getId());
+        }
+
+        return result;
+    }
+
+    private void monitoringMessage(MonitoringModel monitoringModel, String identifier, String version, int status){
+        monitoringModel.setDateTime(new Date());
+        monitoringModel.setStatus(status);
+        monitoringModel.setOperation(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) +
+                identifier + messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH) + version);
+        monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
     }
 }
