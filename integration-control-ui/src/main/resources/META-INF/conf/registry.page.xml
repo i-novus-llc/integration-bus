@@ -39,7 +39,12 @@
                     <wgt:filters opened="true">
                         <ctrl:input-text id="id" label="Код системы"/>
                         <ctrl:input-text id="name" label="Наименование системы"/>
-                        <ctrl:checkbox id="disable" label="Приостановлена" default-value="false"/>
+                        <ctrl:select id="disable_select" label="Приостановлена">
+                            <ctrl:options>
+                                <ctrl:option>{"id":1, "name":"Да"}</ctrl:option>
+                                <ctrl:option>{"id":2, "name":"Нет"}</ctrl:option>
+                            </ctrl:options>
+                        </ctrl:select>
                     </wgt:filters>
                 </wgt:table>
             </container>

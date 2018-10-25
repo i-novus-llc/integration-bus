@@ -42,8 +42,16 @@
             <id>disable</id>
             <domain>boolean</domain>
             <display/>
+        </field>
+
+        <field>
+            <id>disable_select.id</id>
+            <domain>integer</domain>
             <filters>
-                <filter type="eq" filter-field="disable">disable=:disable</filter>
+                <filter type="eq" filter-field="disable_select.id">
+                    (case when :disable_select.id = 2 then (disable is false or disable is null)
+                    when :disable_select.id = 1 then disable is true end)
+                </filter>
             </filters>
         </field>
 
