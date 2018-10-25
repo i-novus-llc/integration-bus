@@ -14,8 +14,12 @@
                     <wgt:query-id>sys_permission</wgt:query-id>
                     <fs:field-set>
                         <ctrl:hidden id="participant_method_id"/>
-                        <ctrl:classifier id="participant" label="Идентификатор участника">
-                            <ctrl:query query-id="participant" value-field-id="id" label-field-id="name"/>
+                        <ctrl:classifier id="participant" label="Идентификатор участника" required="true">
+                            <ctrl:query query-id="participant" value-field-id="id" label-field-id="name">
+                                <ctrl:pre-filters>
+                                    <ctrl:pre-filter field-id="participant_method_id" ref="participant_method_id"/>
+                                </ctrl:pre-filters>
+                            </ctrl:query>
                         </ctrl:classifier>
                         <!--<ctrl:classifier id="group" label="Код группы">
                             <ctrl:query query-id="group" label-field-id="name" value-field-id="id"/>

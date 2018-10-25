@@ -94,10 +94,17 @@
             </expression>
         </field>
         <field>
+            <id>comment</id>
+            <domain>string</domain>
+            <display/>
+            <filters>
+                <filter type="eq" filter-field="comment">(upper(:expression) like '%'||upper(:comment)||'%')</filter>
+            </filters>
+        </field>
+        <field>
             <id>error</id>
             <domain>string</domain>
             <display/>
-            <filters auto-generate="true"/>
         </field>
     </fields>
 </query>

@@ -18,6 +18,7 @@
                         <wgt:column column-field-id="receiver" name="Получатель"/>
                         <wgt:column column-field-id="operation" name="Действие"/>
                         <wgt:column column-field-id="status.name" name="Статус"/>
+                        <wgt:column column-field-id="comment" name="Комментарий"/>
                         <wgt:column column-field-id="error" name="Ошибка"/>
                     </wgt:columns>
                     <wgt:filters opened="true">
@@ -36,6 +37,7 @@
                                 <ctrl:option>{"id":4, "name":"Удачно"}</ctrl:option>
                             </ctrl:options>
                         </ctrl:select>
+                        <ctrl:input-text id="comment" label="Комментарий"/>
                     </wgt:filters>
                 </wgt:table>
             </container>

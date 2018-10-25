@@ -33,12 +33,18 @@
             <id>name</id>
             <domain>string</domain>
             <display/>
+            <filters>
+                <filter type="eq" filter-field="uid">(upper(:expression) like '%'||upper(:name)||'%')</filter>
+            </filters>
         </field>
 
         <field>
             <id>disable</id>
             <domain>boolean</domain>
             <display/>
+            <filters>
+                <filter type="eq" filter-field="disable">disable=:disable</filter>
+            </filters>
         </field>
 
     </fields>
