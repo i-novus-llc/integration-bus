@@ -37,6 +37,9 @@ public class MonitoringEntity {
     @Column(name = "error")
     private String error;
 
+    @Column(name = "comment")
+    private String comment;
+
     public MonitoringEntity() {
     }
 
@@ -112,5 +115,13 @@ public class MonitoringEntity {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -12,6 +12,7 @@ public class MonitoringModel implements Serializable {
     private String operation;
     private int status;
     private String error;
+    private String comment;
 
     public MonitoringModel(String uid, Date dateTime, String sender, String receiver, String operation, int status) {
         this.uid = uid;
@@ -79,5 +80,13 @@ public class MonitoringModel implements Serializable {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -30,6 +30,9 @@ public class ServiceInfoRest {
         Optional<ParticipantEntity> sender = participantRepository.findById(model.getSender());
         Optional<ParticipantEntity> receiver = participantRepository.findById(model.getReceiver());
 
+        if (!sender.isPresent()) throw new RuntimeException("service :" + model.getSender() + " disable");
+        if (!receiver.isPresent()) throw new RuntimeException("service :" + model.getReceiver() + " disable");
+
         Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.find(model.getReceiver(), model.getMethod());
 
         List<ParticipantPermissionEntity> permissions = participantPermissionRepository.find(senderMethod.get().getId(),

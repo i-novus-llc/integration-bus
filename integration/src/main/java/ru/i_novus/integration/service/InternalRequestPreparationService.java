@@ -51,10 +51,8 @@ public class InternalRequestPreparationService {
             DocumentData documentData = objectFactory.createDocumentData();
             for (DataModel dataModel : inputModel.getDataModels()) {
                 documentData.setBinaryData(getDocumentByStorage(dataModel.getPath()));
-                //documentData.setDigestData(null);
                 documentData.setDocFormat(dataModel.getMime());
                 documentData.setDocName(dataModel.getName());
-                //documentData.setDocType(1);
             }
             messageData.getAppData().add(documentData);
 

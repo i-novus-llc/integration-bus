@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <page xmlns="http://n2oapp.net/framework/config/schema/page-1.0"
+      xmlns:ctrl="http://n2oapp.net/framework/config/schema/n2o-control-1.0"
       xmlns:wgt="http://n2oapp.net/framework/config/schema/n2o-widget-3.0">
     <object-id>registry</object-id>
     <layout>n2o/layout/single</layout>
@@ -14,12 +15,12 @@
                     <wgt:action-menu>
                         <wgt:menu-item id="createParticipant" label="Создать" context="false">
                             <wgt:event>
-                                <wgt:show-modal page-id="registry_form" action-id="createParticipant"/>
+                                <wgt:show-modal page-id="registry_form" action-id="createParticipant" refresh-after-submit="true"/>
                             </wgt:event>
                         </wgt:menu-item>
                         <wgt:menu-item id="updateParticipant" label="Изменить">
                             <wgt:event>
-                                <wgt:show-modal page-id="registry_form" action-id="updateParticipant"/>
+                                <wgt:show-modal page-id="registry_form" action-id="updateParticipant" refresh-after-submit="true"/>
                             </wgt:event>
                         </wgt:menu-item>
                         <wgt:menu-item id="deleteParticipant" label="Удалить">
@@ -35,6 +36,11 @@
                             <wgt:checkbox/>
                         </wgt:column>
                     </wgt:columns>
+                    <wgt:filters opened="true">
+                        <ctrl:input-text id="id" label="Код системы"/>
+                        <ctrl:input-text id="name" label="Наименование системы"/>
+                        <ctrl:checkbox id="disable" label="Приостановлена" default-value="false"/>
+                    </wgt:filters>
                 </wgt:table>
             </container>
 
@@ -45,12 +51,14 @@
                     <wgt:action-menu>
                         <wgt:menu-item id="createMethod" label="Создать" context="false">
                             <wgt:event>
-                                <wgt:show-modal page-id="method" action-id="createMethod" master-field-id="participant_code" detail-field-id="participant_code"/>
+                                <wgt:show-modal page-id="method" action-id="createMethod"
+                                                master-field-id="participant_code" detail-field-id="participant_code"
+                                                refresh-after-submit="true"/>
                             </wgt:event>
                         </wgt:menu-item>
                         <wgt:menu-item id="updateMethod" label="Изменить">
                             <wgt:event>
-                                <wgt:show-modal page-id="method" action-id="updateMethod"/>
+                                <wgt:show-modal page-id="method" action-id="updateMethod" refresh-after-submit="true"/>
                             </wgt:event>
                         </wgt:menu-item>
                         <wgt:menu-item id="deleteMethod" label="Удалить">
@@ -60,7 +68,8 @@
                         </wgt:menu-item>
                         <wgt:menu-item id="permission" label="Доступы">
                             <wgt:event>
-                                <wgt:show-modal page-id="permission" master-field-id="id" detail-field-id="participant_method_id"/>
+                                <wgt:show-modal page-id="permission" master-field-id="id"
+                                                detail-field-id="participant_method_id" refresh-after-submit="true"/>
                             </wgt:event>
                         </wgt:menu-item>
                     </wgt:action-menu>

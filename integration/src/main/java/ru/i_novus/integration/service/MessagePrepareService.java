@@ -62,7 +62,8 @@ public class MessagePrepareService {
     private void monitoringMessage(MonitoringModel monitoringModel, String identifier, String version, int status){
         monitoringModel.setDateTime(new Date());
         monitoringModel.setStatus(status);
-        monitoringModel.setOperation(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) +
+        monitoringModel.setOperation(identifier);
+        monitoringModel.setComment(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) +
                 identifier + messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH) + version);
         monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
     }

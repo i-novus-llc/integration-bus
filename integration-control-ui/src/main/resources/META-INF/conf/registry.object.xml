@@ -101,7 +101,6 @@
                     sync)
                     VALUES (nextval('integration.participant_permission_id_seq'),
                     :participant_method_id, :participant.id, :group.id, :callback_url, :sync);
-
                 </sql:sql>
             </invocation>
             <in-parameters>

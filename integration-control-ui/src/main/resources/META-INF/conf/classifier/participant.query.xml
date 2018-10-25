@@ -12,7 +12,7 @@
             </n2o:items-query>
             <n2o:count-query>select count(a)
                 from integration.participant a
-                where :where
+                where a.disable = false and :where
             </n2o:count-query>
             <n2o:alias>a</n2o:alias>
         </n2o:sql>
@@ -26,11 +26,26 @@
             <expression>code</expression>
             <filters auto-generate="true"/>
         </field>
+
         <field>
             <id>name</id>
             <domain>string</domain>
             <display/>
             <expression>code || ' ' || name</expression>
+            <filters>
+                <filter type="eq" filter-field="name">(upper(:expression) like '%'||upper(:name)||'%')</filter>
+            </filters>
+        </field>
+
+        <field>
+            <id>participant_method_id</id>
+            <domain>integer</domain>
+            <filters>
+                <filter type="eq" filter-field="participant_method_id">
+                    (select id from integration.participant_permission pp
+                    where pp.participant_code = code and pp.participant_method_id = :participant_method_id) is null
+                </filter>
+            </filters>
         </field>
 
     </fields>
