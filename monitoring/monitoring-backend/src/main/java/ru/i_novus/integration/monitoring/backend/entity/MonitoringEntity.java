@@ -51,6 +51,7 @@ public class MonitoringEntity {
         this.operation = model.getOperation();
         this.status = Integer.toString(model.getStatus());
         this.error = model.getError();
+        this.comment = model.getComment();
     }
 
     public Integer getId() {

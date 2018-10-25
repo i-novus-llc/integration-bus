@@ -7,12 +7,12 @@
         <n2o:sql>
             <n2o:items-query>select :select
                 from integration.participant a
-                where a.disable = false and :where
+                where (a.disable = false or a.disable is null) and :where
                 order by :order
             </n2o:items-query>
             <n2o:count-query>select count(a)
                 from integration.participant a
-                where a.disable = false and :where
+                where (a.disable = false or a.disable is null) and :where
             </n2o:count-query>
             <n2o:alias>a</n2o:alias>
         </n2o:sql>
@@ -42,8 +42,9 @@
             <domain>integer</domain>
             <filters>
                 <filter type="eq" filter-field="participant_method_id">
-                    (select id from integration.participant_permission pp
+                    ((select id from integration.participant_permission pp
                     where pp.participant_code = code and pp.participant_method_id = :participant_method_id) is null
+                    and (select participant_code from integration.participant_method where id = :participant_method_id) != code)
                 </filter>
             </filters>
         </field>

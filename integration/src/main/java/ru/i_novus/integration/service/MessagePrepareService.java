@@ -39,7 +39,7 @@ public class MessagePrepareService {
 
         if (participantModel.getMethod().equals("data")) {
             if (messageParam.get("page").equals("1")) {
-                monitoringMessage(message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
+                monitoringMessage(participantModel.getMethod(), message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
                         messageParam.get("version"), MessageStatusEnum.CREATE.getId());
             }
             sb.append(PARAM).append(IDENTIFIER_PARAM_NAME).append(messageParam.get("identifier"))
@@ -52,17 +52,17 @@ public class MessagePrepareService {
         Message result = MessageBuilder.withPayload(restTemplate.getForEntity(sb.toString(), String.class).getBody()).build();
 
         if (new JsonParser().parse(result.getPayload().toString()).getAsJsonObject().get("list").toString().equals("[]")) {
-            monitoringMessage(message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
+            monitoringMessage(participantModel.getMethod(), message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
                     messageParam.get("version"), MessageStatusEnum.SEND.getId());
         }
 
         return result;
     }
 
-    private void monitoringMessage(MonitoringModel monitoringModel, String identifier, String version, int status){
+    private void monitoringMessage(String operation,MonitoringModel monitoringModel, String identifier, String version, int status){
         monitoringModel.setDateTime(new Date());
         monitoringModel.setStatus(status);
-        monitoringModel.setOperation(identifier);
+        monitoringModel.setOperation(operation);
         monitoringModel.setComment(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) +
                 identifier + messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH) + version);
         monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
