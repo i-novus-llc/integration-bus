@@ -14,7 +14,7 @@
                     <wgt:query-id>sys_permission</wgt:query-id>
                     <fs:field-set>
                         <ctrl:hidden id="participant_method_id"/>
-                        <ctrl:classifier id="participant" label="Идентификатор участника" required="true" css-class="n2o-label-6">
+                        <ctrl:classifier id="participant" label="Идентификатор участника" required="true" css-class="n2o-label-6" cache="off">
                             <ctrl:query query-id="participant" value-field-id="id" label-field-id="name">
                                 <ctrl:pre-filters>
                                     <ctrl:pre-filter field-id="participant_method_id" ref="participant_method_id"/>

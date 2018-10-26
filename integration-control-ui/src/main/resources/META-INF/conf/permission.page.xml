@@ -14,10 +14,10 @@
                     <wgt:action-menu>
                         <wgt:menu-item id="add" primary="true" context="false" icon="icon-plus">
                             <wgt:show-modal page-id="permission_form" action-id="permissionCreate" detail-field-id="participant_method_id"
-                                            master-field-id="participant_method_id"/>
+                                            master-field-id="participant_method_id" refresh-after-submit="true"/>
                         </wgt:menu-item>
                         <wgt:menu-item id="update">
-                            <wgt:show-modal page-id="permission_form" action-id="permissionUpdate"/>
+                            <wgt:show-modal page-id="permission_form" action-id="permissionUpdate" refresh-after-submit="true"/>
                         </wgt:menu-item>
                         <wgt:menu-item id="delete">
                             <wgt:invoke-action action-id="permissionDelete"/>
