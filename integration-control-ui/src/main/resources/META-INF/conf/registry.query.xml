@@ -25,7 +25,7 @@
             <display/>
             <expression>code</expression>
             <filters>
-                <filter type="eq" filter-field="id">code=:id</filter>
+                <filter type="eq" filter-field="id">(upper(code) like '%'||upper(:id)||'%')</filter>
             </filters>
         </field>
 
@@ -34,7 +34,7 @@
             <domain>string</domain>
             <display/>
             <filters>
-                <filter type="eq" filter-field="uid">(upper(:expression) like '%'||upper(:name)||'%')</filter>
+                <filter type="eq" filter-field="name">(upper(:expression) like '%'||upper(:name)||'%')</filter>
             </filters>
         </field>
 
