@@ -51,8 +51,8 @@ public class MonitoringService {
 
     public void createError(Message message) {
         MonitoringModel model;
-        if (message instanceof MessageHandlingException) {
-            MessageHandlingException exceptionMessage = (MessageHandlingException) message;
+        if (message.getPayload() instanceof MessageHandlingException) {
+            MessageHandlingException exceptionMessage = (MessageHandlingException) message.getPayload();
             CommonModel commonModel = (CommonModel) exceptionMessage.getFailedMessage().getPayload();
             model = commonModel.getMonitoringModel();
             model.setStatus(MessageStatusEnum.ERROR.getId());
