@@ -2,6 +2,9 @@ FROM openjdk:8-jre-alpine
 
 LABEL maintainer="apatronov@i-novus.ru"
 
+RUN apk add tzdata
+ENV TZ=Europe/Moscow
+
 ENV APP_HOME=./config
 ARG JAR_FILE
 RUN mkdir config
