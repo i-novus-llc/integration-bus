@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="InternalWsEndpointService" targetNamespace="http://ws.integration.i_novus.ru/internal"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                  xmlns:tns="http://ws.integration.i_novus.ru/internal"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="InternalWsEndpointService" targetNamespace="http://ws.integration.i_novus.ru/internal" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <wsdl:types>
-        <xs:schema xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
-                   elementFormDefault="unqualified" targetNamespace="http://ws.integration.i_novus.ru/internal">
+        <xs:schema xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.integration.i_novus.ru/internal">
             <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
             <xs:element name="IntegrationMessage" type="tns:IntegrationMessage"/>
+            <xs:element name="adapter" type="tns:adapter"/>
+            <xs:element name="adapterResponse" type="tns:adapterResponse"/>
             <xs:element name="request" type="tns:request"/>
             <xs:element name="requestResponse" type="tns:requestResponse"/>
             <xs:complexType name="request">
@@ -42,12 +39,22 @@
                     <xs:element minOccurs="0" name="DocName" type="xs:string"/>
                     <xs:element minOccurs="0" name="DocFormat" type="xs:string"/>
                     <xs:element minOccurs="0" name="DigestData" type="xs:string"/>
-                    <xs:element minOccurs="0" name="BinaryData" type="xs:base64Binary"
-                                xmime:expectedContentTypes="application/octet-stream"/>
+                    <xs:element minOccurs="0" name="BinaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
                     <xs:element minOccurs="0" name="DocType" type="xs:int"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="requestResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="adapter">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="IntegrationMessage" type="xs:anyType"/>
+                    <xs:element minOccurs="0" name="RecipientUrl" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="adapterResponse">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="return" type="xs:boolean"/>
                 </xs:sequence>
@@ -64,8 +71,16 @@
         <wsdl:part name="parameters" element="tns:request">
         </wsdl:part>
     </wsdl:message>
+    <wsdl:message name="adapter">
+        <wsdl:part name="parameters" element="tns:adapter">
+        </wsdl:part>
+    </wsdl:message>
     <wsdl:message name="requestResponse">
         <wsdl:part name="parameters" element="tns:requestResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="adapterResponse">
+        <wsdl:part name="parameters" element="tns:adapterResponse">
         </wsdl:part>
     </wsdl:message>
     <wsdl:message name="IOException">
@@ -81,6 +96,14 @@
             <wsdl:fault name="IOException" message="tns:IOException">
             </wsdl:fault>
         </wsdl:operation>
+        <wsdl:operation name="adapter">
+            <wsdl:input name="adapter" message="tns:adapter">
+            </wsdl:input>
+            <wsdl:output name="adapterResponse" message="tns:adapterResponse">
+            </wsdl:output>
+            <wsdl:fault name="IOException" message="tns:IOException">
+            </wsdl:fault>
+        </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="InternalWsEndpointServiceSoapBinding" type="tns:InternalWsEndpoint">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -90,6 +113,18 @@
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="requestResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IOException">
+                <soap:fault name="IOException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="adapter">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="adapter">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="adapterResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
             <wsdl:fault name="IOException">
