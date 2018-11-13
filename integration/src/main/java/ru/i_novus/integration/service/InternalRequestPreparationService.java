@@ -21,9 +21,7 @@ import javax.activation.FileDataSource;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -48,13 +46,14 @@ public class InternalRequestPreparationService {
             messageData.setUuid(UUIDGenerator.getUUID());
 
             InputModel inputModel = (InputModel) modelMessage.getPayload().getObject();
-            DocumentData documentData = objectFactory.createDocumentData();
+
             for (DataModel dataModel : inputModel.getDataModels()) {
+                DocumentData documentData = objectFactory.createDocumentData();
                 documentData.setBinaryData(getDocumentByStorage(dataModel.getPath()));
                 documentData.setDocFormat(dataModel.getMime());
                 documentData.setDocName(dataModel.getName());
+                messageData.getAppData().add(documentData);
             }
-            messageData.getAppData().add(documentData);
 
             MessageInfo messageInfo = objectFactory.createMessageInfo();
             messageInfo.setMessageId(modelMessage.getPayload().getMonitoringModel().getUid());
@@ -83,13 +82,6 @@ public class InternalRequestPreparationService {
     }
 
     private DataHandler getDocumentByStorage(String filePath) throws IOException {
-
-        try (InputStream docStream = new FileInputStream(new File(filePath))) {
-            byte[] fromFile;
-            fromFile = new byte[docStream.available()];
-            docStream.read(fromFile);
-
-            return new DataHandler(new FileDataSource(new File(filePath)));
-        }
+        return new DataHandler(new FileDataSource(new File(filePath)));
     }
 }

@@ -33,6 +33,8 @@ public class PlaceholdersProperty {
     String amqBrokerUrl;
     @Value("${env.code}")
     String envCode;
+    @Value("${central.adapter.url}")
+    String adapterUrl;
 
     private KeyStore keyStore;
 
@@ -82,5 +84,9 @@ public class PlaceholdersProperty {
 
     public String getEnvCode() {
         return envCode;
+    }
+
+    public String getAdapterUrl() {
+        return adapterUrl;
     }
 }

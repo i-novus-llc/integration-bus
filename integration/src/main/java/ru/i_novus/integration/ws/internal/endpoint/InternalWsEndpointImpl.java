@@ -9,6 +9,7 @@ import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
 import ru.i_novus.integration.ws.internal.DocumentData;
 import ru.i_novus.integration.ws.internal.IntegrationMessage;
+import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
@@ -27,6 +28,8 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     @Autowired
     PlaceholdersProperty property;
+    @Autowired
+    InternalWsClient client;
 
     public InternalWsEndpointImpl() {
         AutowiredAnnotationBeanPostProcessor bpp = new AutowiredAnnotationBeanPostProcessor();
@@ -40,6 +43,12 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
         saveDocumentInStorage(message.getMessage().getAppData());
         return true;
+    }
+
+    @Override
+    public Boolean adapter(Object message, String recipientUrl) {
+
+        return client.sendRequest(message, recipientUrl);
     }
 
     private void saveDocumentInStorage(List<DocumentData> list) throws IOException {

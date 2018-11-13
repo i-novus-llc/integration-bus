@@ -12,4 +12,8 @@ public interface InternalWsEndpoint {
 
     @WebMethod()
     Boolean request(@WebParam(name = "IntegrationMessage") IntegrationMessage message) throws IOException;
+
+    @WebMethod()
+    Boolean adapter(@WebParam(name = "IntegrationMessage") Object message,
+                    @WebParam(name = "RecipientUrl")String recipientUrl) throws IOException;
 }
