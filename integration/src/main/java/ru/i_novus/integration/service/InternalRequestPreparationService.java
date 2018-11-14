@@ -11,6 +11,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.DataModel;
@@ -39,6 +40,8 @@ public class InternalRequestPreparationService {
     RegistryClient registryClient;
     @Autowired
     MonitoringGateway monitoringGateway;
+    @Autowired
+    PlaceholdersProperty property;
 
     public Message<CommonModel> requestASync(Message<CommonModel> modelMessage) {
         CommonModel integrationRequest = new CommonModel();
@@ -87,7 +90,11 @@ public class InternalRequestPreparationService {
     }
 
     private DataHandler getDocumentByStorage(String filePath) throws IOException {
-        File tempFile = new File(filePath + ".gz");
+        File tmpDirectory = new File(property.getTempPath() + "/tmp");
+        if (!tmpDirectory.exists()) {
+            tmpDirectory.mkdirs();
+        }
+        File tempFile = new File(tmpDirectory.getPath() + "/" + new File(filePath).getName() + ".gz");
         try (GzipCompressorOutputStream out = new GzipCompressorOutputStream(new FileOutputStream(tempFile))){
             try (FileInputStream in = new FileInputStream(filePath)) {
                 IOUtils.copy(in, out);

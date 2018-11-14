@@ -72,7 +72,8 @@ public class InternalWsClient {
                     request.getPayload().getObject().getMessage().getAppData().forEach(d -> {
                         FileDataSource fileDataSource = (FileDataSource) d.getBinaryData().getDataSource();
                         try {
-                            Files.deleteIfExists(new File(fileDataSource.getFile().getPath().replace(".gz","")).toPath());
+                            String mainDir = new File(fileDataSource.getFile().getParent()).getParent();
+                            Files.deleteIfExists(new File(mainDir + "/" + fileDataSource.getFile().getName().replace(".gz", "")).toPath());
                             Files.deleteIfExists(fileDataSource.getFile().toPath());
                         } catch (Exception e) {
                             LOGGER.info(e.getMessage());
@@ -81,7 +82,7 @@ public class InternalWsClient {
                 }
                 monitoringService.fineStatus(request.getPayload());
             } catch (Exception e) {
-                request.getPayload().getMonitoringModel().setError(e.getMessage()+ " StackTrace: " + ExceptionUtils.getStackTrace(e));
+                request.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
                 monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
 
                 throw new RuntimeException(e);
