@@ -1,5 +1,7 @@
 package ru.i_novus.integration.service;
 
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.io.IOUtils;
 import org.apache.ws.security.util.UUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,8 @@ import javax.activation.FileDataSource;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -82,6 +86,13 @@ public class InternalRequestPreparationService {
     }
 
     private DataHandler getDocumentByStorage(String filePath) throws IOException {
-        return new DataHandler(new FileDataSource(new File(filePath)));
+        File tempFile = new File(filePath + ".gz");
+        try (GzipCompressorOutputStream out = new GzipCompressorOutputStream(new FileOutputStream(tempFile))){
+            try (FileInputStream in = new FileInputStream(filePath)) {
+                IOUtils.copy(in, out);
+            }
+        }
+
+        return new DataHandler(new FileDataSource(tempFile));
     }
 }

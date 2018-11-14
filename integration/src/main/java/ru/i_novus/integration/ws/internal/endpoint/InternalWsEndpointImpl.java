@@ -1,5 +1,6 @@
 package ru.i_novus.integration.ws.internal.endpoint;
 
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
@@ -14,10 +15,8 @@ import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 
 @Service
@@ -53,9 +52,14 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     private void saveDocumentInStorage(List<DocumentData> list) throws IOException {
         for (DocumentData data : list) {
-            try (OutputStream outputStream = new FileOutputStream(new File(property.getTempPath() + "/" + data.getDocName()))) {
+            File tempFile = new File(property.getTempPath() + "/tmp/" + data.getDocName());
+            try (OutputStream outputStream = new FileOutputStream(tempFile)) {
                 IOUtils.copy(data.getBinaryData().getInputStream(), outputStream);
             }
+            try (GzipCompressorInputStream in = new GzipCompressorInputStream(new FileInputStream(tempFile))){
+                IOUtils.copy(in, new FileOutputStream(new File(property.getTempPath() + "/" + data.getDocName())));
+            }
+            Files.delete(tempFile.toPath());
         }
     }
 }
