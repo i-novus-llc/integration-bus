@@ -52,8 +52,12 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     private void saveDocumentInStorage(List<DocumentData> list) throws IOException {
         for (DocumentData data : list) {
-            File tempFile = new File(property.getTempPath() + "/tmp/" + data.getDocName());
-            tempFile.mkdirs();
+            File tmpDirectory = new File(property.getTempPath() + "/tmp");
+            if (!tmpDirectory.exists()) {
+                tmpDirectory.mkdirs();
+            }
+            File tempFile = new File(tmpDirectory.getPath() + data.getDocName());
+
             try (OutputStream outputStream = new FileOutputStream(tempFile)) {
                 IOUtils.copy(data.getBinaryData().getInputStream(), outputStream);
             }
