@@ -17,6 +17,8 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -52,7 +54,9 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     private void saveDocumentInStorage(List<DocumentData> list) throws IOException {
         for (DocumentData data : list) {
-            File tempFile = new File(property.getTempPath() + "/tmp/" + data.getDocName());
+            Path path = Paths.get(property.getTempPath() , "tmp" , data.getDocName());
+            Files.createDirectories(path);
+            File tempFile = path.toFile();
             try (OutputStream outputStream = new FileOutputStream(tempFile)) {
                 IOUtils.copy(data.getBinaryData().getInputStream(), outputStream);
             }
