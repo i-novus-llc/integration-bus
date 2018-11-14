@@ -2,6 +2,7 @@ package ru.i_novus.integration.service;
 
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.ws.security.util.UUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,8 +77,8 @@ public class InternalRequestPreparationService {
             integrationRequest.setParticipantModel(modelMessage.getPayload().getParticipantModel());
 
         } catch (Exception e) {
-            LOGGER.info(e.getLocalizedMessage());
-            modelMessage.getPayload().getMonitoringModel().setError(e.getMessage());
+            LOGGER.info(ExceptionUtils.getStackTrace(e));
+            modelMessage.getPayload().getMonitoringModel().setError(e.getMessage()+ " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
         }
         return MessageBuilder.createMessage(integrationRequest,

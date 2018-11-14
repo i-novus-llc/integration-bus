@@ -35,6 +35,8 @@ public class PlaceholdersProperty {
     String envCode;
     @Value("${central.adapter.url}")
     String adapterUrl;
+    @Value("${internal.ws.timeout:300000}")
+    String internalWsTimeOut;
 
     private KeyStore keyStore;
 
@@ -88,5 +90,9 @@ public class PlaceholdersProperty {
 
     public String getAdapterUrl() {
         return adapterUrl;
+    }
+
+    public String getInternalWsTimeOut() {
+        return internalWsTimeOut;
     }
 }

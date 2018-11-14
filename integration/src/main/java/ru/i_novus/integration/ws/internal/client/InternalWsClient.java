@@ -1,5 +1,6 @@
 package ru.i_novus.integration.ws.internal.client;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.jaxws.JaxWsClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -80,7 +81,7 @@ public class InternalWsClient {
                 }
                 monitoringService.fineStatus(request.getPayload());
             } catch (Exception e) {
-                request.getPayload().getMonitoringModel().setError(e.getMessage());
+                request.getPayload().getMonitoringModel().setError(e.getMessage()+ " StackTrace: " + ExceptionUtils.getStackTrace(e));
                 monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
 
                 throw new RuntimeException(e);
@@ -100,7 +101,7 @@ public class InternalWsClient {
         HTTPConduit conduit = (HTTPConduit) JaxWsClientProxy.getClient(port).getConduit();
         HTTPClientPolicy policy = new HTTPClientPolicy();
         policy.setAutoRedirect(true);
-        policy.setReceiveTimeout(300000L);
+        policy.setReceiveTimeout(Long.valueOf(property.getInternalWsTimeOut()));
         conduit.setClient(policy);
 
         KeyStore store = property.getKeyStore();

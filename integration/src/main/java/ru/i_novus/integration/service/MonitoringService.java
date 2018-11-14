@@ -1,5 +1,6 @@
 package ru.i_novus.integration.service;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.messaging.Message;
@@ -57,7 +58,7 @@ public class MonitoringService {
             model = commonModel.getMonitoringModel();
             model.setStatus(MessageStatusEnum.ERROR.getId());
             model.setDateTime(new Date());
-            model.setError(exceptionMessage.getMessage());
+            model.setError(exceptionMessage.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(exceptionMessage));
         } else {
             model = (MonitoringModel) message.getPayload();
             model.setStatus(MessageStatusEnum.ERROR.getId());

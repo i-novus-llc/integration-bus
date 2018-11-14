@@ -22,6 +22,7 @@ amq.broker.url='failover://tcp://localhost:61617'
 monitoring.address='http://localhost:8099/monitoring'
 env.code='код окружения'
 central.adapter.url='url центрального сегмента (http://localhost:8080/ws/internal)'
+internal.ws.timeout='таймаут отправки файлов (300000L)'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
 classpath приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
