@@ -72,8 +72,7 @@ public class InternalWsClient {
                     request.getPayload().getObject().getMessage().getAppData().forEach(d -> {
                         FileDataSource fileDataSource = (FileDataSource) d.getBinaryData().getDataSource();
                         try {
-                            String mainDir = new File(fileDataSource.getFile().getParent()).getParent();
-                            Files.deleteIfExists(new File(mainDir + "/" + fileDataSource.getFile().getName().replace(".gz", "")).toPath());
+                            Files.deleteIfExists(new File(property.getTempPath() + "/" + fileDataSource.getFile().getName().replace(".gz", "")).toPath());
                             Files.deleteIfExists(fileDataSource.getFile().toPath());
                         } catch (Exception e) {
                             LOGGER.info(e.getMessage());
