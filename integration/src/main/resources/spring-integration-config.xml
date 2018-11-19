@@ -20,6 +20,11 @@
     <int:chain input-channel="requestAsyncChannel">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
+        <int:header-enricher>
+            <int:header name="jms_correlationId" type="java.lang.String"
+                        expression="payload.monitoringModel.sender + ' -> '
+                        + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
+        </int:header-enricher>
         <int-jms:outbound-channel-adapter id="jmsIn" destination="senderQueue" extract-payload="false"/>
     </int:chain>
 
