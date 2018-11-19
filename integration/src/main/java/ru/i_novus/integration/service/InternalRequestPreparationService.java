@@ -60,6 +60,7 @@ public class InternalRequestPreparationService {
                 documentData.setBinaryData(getDocumentByStorage(dataModel.getPath()));
                 documentData.setDocFormat(dataModel.getMime());
                 documentData.setDocName(dataModel.getName());
+                documentData.setRemovePath(dataModel.getPath());
                 messageData.getAppData().add(documentData);
             }
 

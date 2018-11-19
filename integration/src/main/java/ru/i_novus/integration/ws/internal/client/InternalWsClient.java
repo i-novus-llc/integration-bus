@@ -26,8 +26,9 @@ import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import javax.xml.ws.soap.SOAPBinding;
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +73,14 @@ public class InternalWsClient {
                     request.getPayload().getObject().getMessage().getAppData().forEach(d -> {
                         FileDataSource fileDataSource = (FileDataSource) d.getBinaryData().getDataSource();
                         try {
-                            Files.deleteIfExists(new File(property.getTempPath() + "/" + fileDataSource.getFile().getName().replace(".gz", "")).toPath());
+                            request.getPayload().getObject().getMessage().getAppData()
+                                    .forEach(doc -> {
+                                        try {
+                                            Files.deleteIfExists(Paths.get(d.getRemovePath()));
+                                        } catch (IOException e) {
+                                            LOGGER.info(e.getMessage());
+                                        }
+                                    });
                             Files.deleteIfExists(fileDataSource.getFile().toPath());
                         } catch (Exception e) {
                             LOGGER.info(e.getMessage());

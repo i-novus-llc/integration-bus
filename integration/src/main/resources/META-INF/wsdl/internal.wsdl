@@ -41,6 +41,7 @@
                     <xs:element minOccurs="0" name="DigestData" type="xs:string"/>
                     <xs:element minOccurs="0" name="BinaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
                     <xs:element minOccurs="0" name="DocType" type="xs:int"/>
+                    <xs:element minOccurs="0" name="RemovePath" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="requestResponse">
