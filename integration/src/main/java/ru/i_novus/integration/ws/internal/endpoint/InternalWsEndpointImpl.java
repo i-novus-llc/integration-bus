@@ -36,9 +36,9 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     }
 
     @Override
-    public Boolean request(IntegrationMessage message) throws IOException {
+    public Boolean request(Object message) throws IOException {
 
-        fileStorageService.saveDocumentInStorage(message.getMessage());
+        fileStorageService.saveDocumentInStorage(message);
         return true;
     }
 
