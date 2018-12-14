@@ -4,12 +4,14 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
-import ru.i_novus.integration.ws.internal.model.*;
+import ru.i_novus.integration.ws.internal.model.DocumentData;
+import ru.i_novus.integration.ws.internal.model.MessageData;
+import ru.i_novus.integration.ws.internal.model.ObjectFactory;
+import ru.i_novus.integration.ws.internal.model.SplitDocumentModel;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import java.io.*;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -29,12 +31,10 @@ public class FileStorageService {
         return new DataHandler(new FileDataSource(new File(filePath)));
     }
 
-    public void saveDocumentInStorage(Object message) throws IOException {
-        IntegrationMessage integrationMessage = (IntegrationMessage) message;
-        DocumentData data = integrationMessage.getMessage().getAppData();
+    public void saveDocumentInStorage(MessageData messageData) throws IOException {
+        DocumentData data = messageData.getAppData();
 
-        File tmpDirectory = new File(property.getTempPath() + URL_SPLIT + TEMP_PATH + URL_SPLIT +
-                integrationMessage.getMessage().getGroupUid());
+        File tmpDirectory = new File(property.getTempPath() + URL_SPLIT + TEMP_PATH + URL_SPLIT + messageData.getGroupUid());
         if (!tmpDirectory.exists()) {
             tmpDirectory.mkdirs();
         }
