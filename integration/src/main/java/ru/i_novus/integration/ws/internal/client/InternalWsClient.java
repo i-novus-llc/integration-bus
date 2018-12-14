@@ -5,7 +5,6 @@ import org.apache.cxf.jaxws.JaxWsClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,10 @@ import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.service.FileStorageService;
 import ru.i_novus.integration.service.MonitoringService;
-import ru.i_novus.integration.ws.internal.model.*;
+import ru.i_novus.integration.ws.internal.model.IOException_Exception;
+import ru.i_novus.integration.ws.internal.model.IntegrationMessage;
+import ru.i_novus.integration.ws.internal.model.InternalWsEndpoint;
+import ru.i_novus.integration.ws.internal.model.SplitDocumentModel;
 
 import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
@@ -50,16 +52,13 @@ public class InternalWsClient {
     FileStorageService storageService;
 
     public Boolean sendRequest(Object request, String recipientUrl) {
-        ru.i_novus.integration.ws.internal.IntegrationMessage requestModel =
-                (ru.i_novus.integration.ws.internal.IntegrationMessage) request;
-        ModelMapper modelMapper = new ModelMapper();
-        IntegrationMessage integrationMessage = prepareRequestData(requestModel, modelMapper.map(request, IntegrationMessage.class));
+        IntegrationMessage requestModel = (IntegrationMessage) request;
 
         InternalWsEndpoint integrationEndpoint = getPort();
         BindingProvider bindingProvider = (BindingProvider) integrationEndpoint;
         bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, recipientUrl);
         try {
-            return integrationEndpoint.request(integrationMessage);
+            return integrationEndpoint.request(requestModel);
         } catch (IOException_Exception e) {
             throw new RuntimeException(e);
         }
@@ -128,28 +127,6 @@ public class InternalWsClient {
         List<Handler> handlerChain = binding.getHandlerChain();
         handlerChain.add(soapHandler);
         binding.setHandlerChain(handlerChain);
-    }
-
-    private IntegrationMessage prepareRequestData(ru.i_novus.integration.ws.internal.IntegrationMessage inputMessage,
-                                                  IntegrationMessage message) {
-        ObjectFactory objectFactory = new ObjectFactory();
-
-        SplitDocumentModel splitDocumentModel = objectFactory.createSplitDocumentModel();
-
-        ru.i_novus.integration.ws.internal.DocumentData dataModel = inputMessage.getMessage().getAppData();
-        splitDocumentModel.setCount(dataModel.getSplitDocument().getCount());
-        splitDocumentModel.setBinaryData(dataModel.getSplitDocument().getBinaryData());
-        splitDocumentModel.setIsLast(dataModel.getSplitDocument().isIsLast());
-
-        DocumentData documentData = objectFactory.createDocumentData();
-        documentData.setSplitDocument(splitDocumentModel);
-        documentData.setDocFormat(dataModel.getDocFormat());
-        documentData.setDocName(dataModel.getDocName());
-        message.getMessage().setAppData(documentData);
-
-
-        return message;
-
     }
 }
 

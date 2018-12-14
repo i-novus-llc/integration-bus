@@ -7,7 +7,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
 import ru.i_novus.integration.service.FileStorageService;
-import ru.i_novus.integration.ws.internal.IntegrationMessage;
+import ru.i_novus.integration.ws.internal.model.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.jws.WebService;
