@@ -1,6 +1,6 @@
 package ru.i_novus.integration.ws.internal.endpoint;
 
-import ru.i_novus.integration.ws.internal.model.IntegrationMessage;
+import ru.i_novus.integration.ws.internal.IntegrationMessage;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

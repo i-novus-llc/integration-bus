@@ -4,8 +4,8 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
-import ru.i_novus.integration.ws.internal.model.DocumentData;
-import ru.i_novus.integration.ws.internal.model.MessageData;
+import ru.i_novus.integration.ws.internal.DocumentData;
+import ru.i_novus.integration.ws.internal.MessageData;
 import ru.i_novus.integration.ws.internal.model.ObjectFactory;
 import ru.i_novus.integration.ws.internal.model.SplitDocumentModel;
 
