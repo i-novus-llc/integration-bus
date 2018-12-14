@@ -10,7 +10,7 @@
             <xs:element name="requestResponse" type="tns:requestResponse"/>
             <xs:complexType name="request">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="IntegrationMessage" type="xs:anyType"/>
+                    <xs:element minOccurs="0" name="IntegrationMessage" type="tns:IntegrationMessage"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="IntegrationMessage">
@@ -58,7 +58,7 @@
             </xs:complexType>
             <xs:complexType name="adapter">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="IntegrationMessage" type="xs:anyType"/>
+                    <xs:element minOccurs="0" name="IntegrationMessage" type="tns:IntegrationMessage"/>
                     <xs:element minOccurs="0" name="RecipientUrl" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
