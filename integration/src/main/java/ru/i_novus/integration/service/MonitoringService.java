@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class MonitoringService {
@@ -82,7 +81,7 @@ public class MonitoringService {
                     new Date(), property.getEnvCode(), model.getRecipient(), model.getMethod(), MessageStatusEnum.CREATE.getId());
 
             monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
-                    model.getDataModels().stream().map(m -> m.getName()).collect(Collectors.joining(", ")));
+                    model.getDataModel().getName());
         }
         return monitoringModel;
     }

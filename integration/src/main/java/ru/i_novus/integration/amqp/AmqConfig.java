@@ -14,6 +14,7 @@ public class AmqConfig {
     private static final String SENDER_QUEUE = "sender.queue";
     private static final String RECEIVER_QUEUE = "receiver.queue";
     private static final String MONITORING_QUEUE = "monitoring.queue";
+    private static final String PREPARATION_QUEUE = "preparation.queue";
 
     @Autowired
     PlaceholdersProperty property;
@@ -52,6 +53,11 @@ public class AmqConfig {
     @Bean
     public ActiveMQQueue senderQueue() {
         return new ActiveMQQueue(SENDER_QUEUE);
+    }
+
+    @Bean
+    public ActiveMQQueue preparationQueue() {
+        return new ActiveMQQueue(PREPARATION_QUEUE);
     }
 
     @Bean

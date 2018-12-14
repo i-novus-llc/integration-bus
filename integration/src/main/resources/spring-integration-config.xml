@@ -19,20 +19,30 @@
 
     <int:chain input-channel="requestAsyncChannel">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
+        <int:header-enricher>
+            <int:header name="jms_correlationId" type="java.lang.String"
+                        expression="payload.monitoringModel.sender + ' -> '
+                        + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
+        </int:header-enricher>
+        <int-jms:outbound-channel-adapter id="jmsPreparationIn" destination="preparationQueue"/>
+    </int:chain>
+
+    <int-jms:message-driven-channel-adapter id="jmsPreparation" destination="preparationQueue" channel="mqOutChannel"/>
+
+    <int:chain input-channel="mqOutChannel">
+        <int:service-activator ref="internalRequestPreparationService" method="preparePackage"/>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
         <int:header-enricher>
             <int:header name="jms_correlationId" type="java.lang.String"
                         expression="payload.monitoringModel.sender + ' -> '
                         + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
         </int:header-enricher>
-        <int-jms:outbound-channel-adapter id="jmsIn" destination="senderQueue" extract-payload="false"/>
+        <int-jms:outbound-channel-adapter id="jmsSendIn" destination="senderQueue"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsOut" destination="senderQueue" channel="mqOutChannel"/>
+    <int-jms:message-driven-channel-adapter id="jmsSend" destination="senderQueue" channel="mqSendChannel"/>
 
-    <int:chain input-channel="mqOutChannel">
-        <int:service-activator ref="internalRequestPreparationService" method="requestASync"/>
-        <int:service-activator ref="internalWsClient" method="sendAdapter"/>
+    <int:chain input-channel="mqSendChannel">
+    <int:service-activator ref="internalWsClient" method="sendAdapter"/>
     </int:chain>
-
 </beans>

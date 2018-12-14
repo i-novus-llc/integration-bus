@@ -31,7 +31,7 @@
                 <xs:sequence>
                     <xs:element minOccurs="0" name="groupUid" type="xs:string"/>
                     <xs:element minOccurs="0" name="Uuid" type="xs:string"/>
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="AppData" type="tns:DocumentData"/>
+                    <xs:element minOccurs="0" name="AppData" type="tns:DocumentData"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="DocumentData">
@@ -39,9 +39,16 @@
                     <xs:element minOccurs="0" name="DocName" type="xs:string"/>
                     <xs:element minOccurs="0" name="DocFormat" type="xs:string"/>
                     <xs:element minOccurs="0" name="DigestData" type="xs:string"/>
-                    <xs:element minOccurs="0" name="BinaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
                     <xs:element minOccurs="0" name="DocType" type="xs:int"/>
-                    <xs:element minOccurs="0" name="RemovePath" type="xs:string"/>
+                    <xs:element minOccurs="0" name="SplitDocument" type="tns:SplitDocumentModel"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="SplitDocumentModel">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="BinaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+                    <xs:element minOccurs="0" name="TemporaryPath" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Count" type="xs:int"/>
+                    <xs:element minOccurs="0" name="IsLast" type="xs:boolean"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="requestResponse">

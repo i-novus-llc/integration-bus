@@ -143,12 +143,12 @@
 
             <!-- cxf-codegen-plugin -->
             <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.3</version>
+                <version>1.10</version>
                 <executions>
                     <execution>
-                        <id>wsdla-report</id>
+                        <id>wsdl-report</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -157,11 +157,12 @@
                             <wsdlFiles>
                                 <wsdlFile>internal.wsdl</wsdlFile>
                             </wsdlFiles>
-                            <wsdlDirectory>
-                                ../integration/src/main/resources/META-INF/wsdl
-                            </wsdlDirectory>
-                            <bindingDirectory>${basedir}/src/jaxws/binding</bindingDirectory>
-                            <verbose>true</verbose>
+                            <wsdlDirectory>../integration/src/main/resources/META-INF/wsdl</wsdlDirectory>
+                            <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport/service</sourceDestDir>
+                            <bindingDirectory>../integration/src/main/resources/META-INF</bindingDirectory>
+                            <bindingFiles>
+                                <bindingFile>binding.xml</bindingFile>
+                            </bindingFiles>
                         </configuration>
                     </execution>
                 </executions>
@@ -171,16 +172,12 @@
                         <artifactId>webservices-api</artifactId>
                         <version>2.0</version>
                     </dependency>
+                    <dependency>
+                        <groupId>javax.jws</groupId>
+                        <artifactId>jsr181-api</artifactId>
+                        <version>1.0-MR1</version>
+                    </dependency>
                 </dependencies>
-                <configuration>
-                    <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport/service
-                    </sourceDestDir>
-                    <xnocompile>true</xnocompile>
-                    <verbose>true</verbose>
-                    <extension>true</extension>
-                    <catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
-                    <target>2.0</target>
-                </configuration>
             </plugin>
 
             <!-- Generate Java classes from WSDL during build -->

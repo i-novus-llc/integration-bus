@@ -1,23 +1,19 @@
 package ru.i_novus.integration.ws.internal.endpoint;
 
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
-import ru.i_novus.integration.ws.internal.DocumentData;
+import ru.i_novus.integration.service.FileStorageService;
 import ru.i_novus.integration.ws.internal.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
-import java.io.*;
-import java.nio.file.Files;
-import java.util.List;
+import java.io.IOException;
 
 @Service
 @WebService(endpointInterface = "ru.i_novus.integration.ws.internal.endpoint.InternalWsEndpoint", serviceName = "InternalWsEndpoint",
@@ -29,6 +25,8 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     PlaceholdersProperty property;
     @Autowired
     InternalWsClient client;
+    @Autowired
+    FileStorageService fileStorageService;
 
     public InternalWsEndpointImpl() {
         AutowiredAnnotationBeanPostProcessor bpp = new AutowiredAnnotationBeanPostProcessor();
@@ -40,7 +38,7 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     @Override
     public Boolean request(IntegrationMessage message) throws IOException {
 
-        saveDocumentInStorage(message.getMessage().getAppData());
+        fileStorageService.saveDocumentInStorage(message.getMessage());
         return true;
     }
 
@@ -50,21 +48,5 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
         return client.sendRequest(message, recipientUrl);
     }
 
-    private void saveDocumentInStorage(List<DocumentData> list) throws IOException {
-        for (DocumentData data : list) {
-            File tmpDirectory = new File(property.getTempPath() + "/tmp");
-            if (!tmpDirectory.exists()) {
-                tmpDirectory.mkdirs();
-            }
-            File tempFile = new File(tmpDirectory.getPath() + data.getDocName());
 
-            try (OutputStream outputStream = new FileOutputStream(tempFile)) {
-                IOUtils.copy(data.getBinaryData().getInputStream(), outputStream);
-            }
-            try (GzipCompressorInputStream in = new GzipCompressorInputStream(new FileInputStream(tempFile))){
-                IOUtils.copy(in, new FileOutputStream(new File(property.getTempPath() + "/" + data.getDocName())));
-            }
-            Files.delete(tempFile.toPath());
-        }
-    }
 }

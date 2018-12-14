@@ -1,13 +1,12 @@
 package ru.i_novus.integration.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class InputModel implements Serializable {
     private String uid;
     private String recipient;
     private String method;
-    private List<DataModel> dataModels;
+    private DataModel dataModel;
 
     public String getUid() {
         return uid;
@@ -33,12 +32,11 @@ public class InputModel implements Serializable {
         this.method = method;
     }
 
-    public List<DataModel> getDataModels() {
-        return dataModels;
+    public DataModel getDataModel() {
+        return dataModel;
     }
 
-    public void setDataModels(List<DataModel> dataModels) {
-        this.dataModels = dataModels;
+    public void setDataModel(DataModel dataModel) {
+        this.dataModel = dataModel;
     }
-
 }

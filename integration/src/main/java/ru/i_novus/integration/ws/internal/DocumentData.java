@@ -1,10 +1,9 @@
+
 package ru.i_novus.integration.ws.internal;
 
-import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlMimeType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -21,9 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="DocName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="DocFormat" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="DigestData" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="BinaryData" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
  *         &lt;element name="DocType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="RemovePath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="SplitDocument" type="{http://ws.integration.i_novus.ru/internal}SplitDocumentModel" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -37,9 +35,8 @@ import javax.xml.bind.annotation.XmlType;
         "docName",
         "docFormat",
         "digestData",
-        "binaryData",
         "docType",
-        "removePath"
+        "splitDocument"
 })
 public class DocumentData {
 
@@ -49,13 +46,10 @@ public class DocumentData {
     protected String docFormat;
     @XmlElement(name = "DigestData")
     protected String digestData;
-    @XmlElement(name = "BinaryData")
-    @XmlMimeType("application/octet-stream")
-    protected DataHandler binaryData;
     @XmlElement(name = "DocType")
     protected Integer docType;
-    @XmlElement(name = "RemovePath")
-    protected String removePath;
+    @XmlElement(name = "SplitDocument")
+    protected SplitDocumentModel splitDocument;
 
     /**
      * Gets the value of the docName property.
@@ -130,30 +124,6 @@ public class DocumentData {
     }
 
     /**
-     * Gets the value of the binaryData property.
-     *
-     * @return
-     *     possible object is
-     *     {@link DataHandler }
-     *
-     */
-    public DataHandler getBinaryData() {
-        return binaryData;
-    }
-
-    /**
-     * Sets the value of the binaryData property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link DataHandler }
-     *
-     */
-    public void setBinaryData(DataHandler value) {
-        this.binaryData = value;
-    }
-
-    /**
      * Gets the value of the docType property.
      *
      * @return
@@ -178,27 +148,27 @@ public class DocumentData {
     }
 
     /**
-     * Gets the value of the removePath property.
+     * Gets the value of the splitDocument property.
      *
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link SplitDocumentModel }
      *
      */
-    public String getRemovePath() {
-        return removePath;
+    public SplitDocumentModel getSplitDocument() {
+        return splitDocument;
     }
 
     /**
-     * Sets the value of the removePath property.
+     * Sets the value of the splitDocument property.
      *
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link SplitDocumentModel }
      *
      */
-    public void setRemovePath(String value) {
-        this.removePath = value;
+    public void setSplitDocument(SplitDocumentModel value) {
+        this.splitDocument = value;
     }
 
 }
