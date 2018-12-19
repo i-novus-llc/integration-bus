@@ -1,36 +1,9 @@
-
-package ru.i_novus.integration.ws.internal;
+package ru.i_novus.integration.ws.internal.api;
 
 import javax.activation.DataHandler;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlMimeType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 
-
-/**
- * <p>Java class for SplitDocumentModel complex type.
- *
- * <p>The following schema fragment specifies the expected content contained within this class.
- *
- * <pre>
- * &lt;complexType name="SplitDocumentModel">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="BinaryData" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
- *         &lt;element name="TemporaryPath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="Count" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="IsLast" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- *
- *
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SplitDocumentModel", propOrder = {
         "binaryData",
@@ -38,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
         "count",
         "isLast"
 })
-public class SplitDocumentModel {
+public class SplitDocumentModel implements Serializable {
 
     @XmlElement(name = "BinaryData")
     @XmlMimeType("application/octet-stream")

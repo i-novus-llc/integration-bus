@@ -102,34 +102,6 @@
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.12</version>
         </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jul-to-slf4j</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.18</version>
-        </dependency>
-
         <!--/JMS-->
 
     </dependencies>
@@ -139,45 +111,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <!-- cxf-codegen-plugin -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>1.10</version>
-                <executions>
-                    <execution>
-                        <id>wsdl-report</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>ru.i_novus.integration.ws.internal.model</packageName>
-                            <wsdlFiles>
-                                <wsdlFile>internal.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlDirectory>../integration/src/main/resources/META-INF/wsdl</wsdlDirectory>
-                            <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport/service</sourceDestDir>
-                            <bindingDirectory>../integration/src/main/resources/META-INF</bindingDirectory>
-                            <bindingFiles>
-                                <bindingFile>binding.xml</bindingFile>
-                            </bindingFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml</groupId>
-                        <artifactId>webservices-api</artifactId>
-                        <version>2.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.jws</groupId>
-                        <artifactId>jsr181-api</artifactId>
-                        <version>1.0-MR1</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <!-- Generate Java classes from WSDL during build -->

@@ -22,7 +22,7 @@ public class AmqConfig {
     @Bean
     public RedeliveryPolicy redeliveryPolicy() {
         RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
-        redeliveryPolicy.setUseCollisionAvoidance(false);
+        redeliveryPolicy.setUseCollisionAvoidance(true);
         redeliveryPolicy.setRedeliveryDelay(1800000);
         redeliveryPolicy.setUseExponentialBackOff(false);
         redeliveryPolicy.setMaximumRedeliveries(-1);

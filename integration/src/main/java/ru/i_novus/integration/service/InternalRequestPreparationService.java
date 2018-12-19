@@ -13,36 +13,36 @@ import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.DataModel;
 import ru.i_novus.integration.model.InputModel;
-import ru.i_novus.integration.rest.client.RegistryClient;
+import ru.i_novus.integration.ws.internal.api.DocumentData;
+import ru.i_novus.integration.ws.internal.api.IntegrationMessage;
+import ru.i_novus.integration.ws.internal.api.MessageData;
+import ru.i_novus.integration.ws.internal.api.MessageInfo;
 import ru.i_novus.integration.ws.internal.client.InternalWsClient;
-import ru.i_novus.integration.ws.internal.model.*;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class InternalRequestPreparationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
 
     @Autowired
-    RegistryClient registryClient;
-    @Autowired
     MonitoringGateway monitoringGateway;
     @Autowired
-    FileStorageService storageService;
+    FileService storageService;
 
     public Message<CommonModel> preparePackage(Message<CommonModel> modelMessage) {
         CommonModel integrationRequest = new CommonModel();
         try {
-            ObjectFactory objectFactory = new ObjectFactory();
-            IntegrationMessage message = objectFactory.createIntegrationMessage();
+            IntegrationMessage message = new IntegrationMessage();
 
-            MessageData messageData = objectFactory.createMessageData();
+            MessageData messageData = new MessageData();
             messageData.setGroupUid(UUIDGenerator.getUUID());
             messageData.setUuid(UUIDGenerator.getUUID());
 
@@ -50,13 +50,13 @@ public class InternalRequestPreparationService {
 
             DataModel dataModel = inputModel.getDataModel();
 
-            DocumentData documentData = objectFactory.createDocumentData();
+            DocumentData documentData = new DocumentData();
             documentData.setDocFormat(dataModel.getMime());
             documentData.setDocName(dataModel.getName());
             documentData.setSplitDocument(storageService.prepareSplitModel(dataModel.getPath(), messageData.getGroupUid()));
             messageData.setAppData(documentData);
 
-            MessageInfo messageInfo = objectFactory.createMessageInfo();
+            MessageInfo messageInfo = new MessageInfo();
             messageInfo.setMessageId(modelMessage.getPayload().getMonitoringModel().getUid());
             messageInfo.setRecipient(inputModel.getRecipient());
             messageInfo.setSender(modelMessage.getPayload().getMonitoringModel().getSender());
@@ -72,15 +72,18 @@ public class InternalRequestPreparationService {
             integrationRequest.setMonitoringModel(modelMessage.getPayload().getMonitoringModel());
             integrationRequest.setParticipantModel(modelMessage.getPayload().getParticipantModel());
 
-            Files.deleteIfExists(Paths.get(dataModel.getPath()));
+            Files.deleteIfExists(Paths.get(dataModel.getPath() + ".zip"));
         } catch (Exception e) {
             LOGGER.info(ExceptionUtils.getStackTrace(e));
             modelMessage.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
         }
+        Map<String, Object> messageHeaders = new HashMap<>();
+        messageHeaders.put("url", modelMessage.getPayload().getParticipantModel().getUrl());
+        messageHeaders.put("method", modelMessage.getPayload().getParticipantModel().getMethod());
 
         return MessageBuilder.createMessage(integrationRequest,
-                new MessageHeaders(Collections.singletonMap("url", modelMessage.getPayload().getParticipantModel().getUrl())));
+                new MessageHeaders(messageHeaders));
 
     }
 

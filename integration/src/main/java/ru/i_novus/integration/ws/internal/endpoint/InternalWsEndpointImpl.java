@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
-import ru.i_novus.integration.service.FileStorageService;
-import ru.i_novus.integration.ws.internal.IntegrationMessage;
+import ru.i_novus.integration.service.FileService;
 import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.jws.WebService;
+import javax.xml.bind.JAXBException;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     @Autowired
     InternalWsClient client;
     @Autowired
-    FileStorageService fileStorageService;
+    FileService fileService;
 
     public InternalWsEndpointImpl() {
         AutowiredAnnotationBeanPostProcessor bpp = new AutowiredAnnotationBeanPostProcessor();
@@ -36,16 +36,15 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     }
 
     @Override
-    public Boolean request(IntegrationMessage message) throws IOException {
+    public Boolean internal(String message) throws IOException, JAXBException {
+        fileService.saveDocumentInStorage(message);
 
-        fileStorageService.saveDocumentInStorage(message.getMessage());
         return true;
     }
 
     @Override
-    public Boolean adapter(Object message, String recipientUrl) {
-
-        return client.sendRequest(message, recipientUrl);
+    public Object[] adapter(String message, String recipientUrl, String method) throws Exception {
+        return client.sendRequest(message, recipientUrl, method);
     }
 
 

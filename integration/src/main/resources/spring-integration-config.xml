@@ -16,6 +16,7 @@
     <import resource="si-monitoring-config.xml"/>
 
     <int:channel id="requestAsyncChannel"/>
+    <int:channel id="mqOutChannel"/>
 
     <int:chain input-channel="requestAsyncChannel">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
@@ -32,17 +33,12 @@
     <int:chain input-channel="mqOutChannel">
         <int:service-activator ref="internalRequestPreparationService" method="preparePackage"/>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
-        <int:header-enricher>
-            <int:header name="jms_correlationId" type="java.lang.String"
-                        expression="payload.monitoringModel.sender + ' -> '
-                        + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
-        </int:header-enricher>
         <int-jms:outbound-channel-adapter id="jmsSendIn" destination="senderQueue"/>
     </int:chain>
 
     <int-jms:message-driven-channel-adapter id="jmsSend" destination="senderQueue" channel="mqSendChannel"/>
 
     <int:chain input-channel="mqSendChannel">
-    <int:service-activator ref="internalWsClient" method="sendAdapter"/>
+    <int:service-activator ref="internalWsClient" method="sendInternal"/>
     </int:chain>
 </beans>
