@@ -1,19 +1,18 @@
 package ru.i_novus.integration.ws.internal.endpoint;
 
-import ru.i_novus.integration.ws.internal.model.IntegrationMessage;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 @WebService(targetNamespace = "http://ws.integration.i_novus.ru/internal", name = "InternalWsEndpoint")
 public interface InternalWsEndpoint {
 
     @WebMethod()
-    Boolean request(@WebParam(name = "IntegrationMessage") IntegrationMessage message) throws IOException;
+    Boolean internal(@WebParam(name = "IntegrationMessage") String message) throws IOException, JAXBException;
 
     @WebMethod()
-    Boolean adapter(@WebParam(name = "IntegrationMessage") IntegrationMessage message,
-                    @WebParam(name = "RecipientUrl")String recipientUrl) throws IOException;
+    Object[] adapter(@WebParam(name = "Message") String message,
+                    @WebParam(name = "RecipientUrl")String recipientUrl, @WebParam(name = "Method")String method) throws Exception;
 }
