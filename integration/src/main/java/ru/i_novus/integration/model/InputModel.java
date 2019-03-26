@@ -3,6 +3,8 @@ package ru.i_novus.integration.model;
 import java.io.Serializable;
 
 public class InputModel implements Serializable {
+    private static final long serialVersionUID = 1370434225663592290L;
+
     private String uid;
     private String recipient;
     private String method;
