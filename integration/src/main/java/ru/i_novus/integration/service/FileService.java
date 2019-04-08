@@ -11,7 +11,6 @@ import ru.i_novus.integration.ws.internal.api.DocumentData;
 import ru.i_novus.integration.ws.internal.api.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.api.MessageData;
 import ru.i_novus.integration.ws.internal.api.SplitDocumentModel;
-import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -45,7 +44,9 @@ public class FileService {
             IOUtils.copy(data.getSplitDocument().getBinaryData().getInputStream(), outputStream);
         }
         if (data.getSplitDocument().isIsLast() != null && data.getSplitDocument().isIsLast()) {
-            File concatFile = new File(property.getTempPath() + URL_SPLIT + MERGE_FILE_PATH + URL_SPLIT + data.getDocName());
+            File margeDir = new File(property.getTempPath() + URL_SPLIT + MERGE_FILE_PATH);
+            margeDir.mkdirs();
+            File concatFile = new File(margeDir.getPath() + URL_SPLIT + data.getDocName());
             File[] fileList = new File(tmpDirectory.getPath()).listFiles();
             IntegrationFileUtils.sortedFilesByName(fileList);
             IntegrationFileUtils.mergeFile(concatFile, fileList);
