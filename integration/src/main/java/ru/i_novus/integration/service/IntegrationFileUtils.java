@@ -44,7 +44,7 @@ public class IntegrationFileUtils {
         try (FileInputStream fis = new FileInputStream(toSplit); BufferedInputStream bis = new BufferedInputStream(fis)) {
             int amount;
             while ((amount = bis.read(buffer)) > 0) {
-                File partFile = new File(dir + "\\" + Integer.toString(counter++));
+                File partFile = new File(dir + "/" + counter++);
 
                 try (FileOutputStream out = new FileOutputStream(partFile)) {
                     out.write(buffer, 0, amount);

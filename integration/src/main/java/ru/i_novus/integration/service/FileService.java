@@ -27,7 +27,7 @@ public class FileService {
 
     private static final String TEMP_PATH = "tmp";
     private static final String MERGE_FILE_PATH = "merge";
-    private static final String URL_SPLIT = "\\";
+    private static final char URL_SPLIT = '/';
     @Autowired
     private PlaceholdersProperty property;
 
