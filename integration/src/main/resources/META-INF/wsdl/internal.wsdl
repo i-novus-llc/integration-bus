@@ -1,70 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="InternalWsEndpointService" targetNamespace="http://ws.integration.i_novus.ru/internal" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <wsdl:types>
-        <xs:schema xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.integration.i_novus.ru/internal">
-            <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
-            <xs:element name="IntegrationMessage" type="tns:IntegrationMessage"/>
+        <xs:schema xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.integration.i_novus.ru/internal">
             <xs:element name="adapter" type="tns:adapter"/>
             <xs:element name="adapterResponse" type="tns:adapterResponse"/>
-            <xs:element name="request" type="tns:request"/>
-            <xs:element name="requestResponse" type="tns:requestResponse"/>
-            <xs:complexType name="request">
+            <xs:element name="internal" type="tns:internal"/>
+            <xs:element name="internalResponse" type="tns:internalResponse"/>
+            <xs:complexType name="internal">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="IntegrationMessage" type="tns:IntegrationMessage"/>
+                    <xs:element minOccurs="0" name="IntegrationMessage" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="IntegrationMessage">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="MessageData" type="tns:MessageInfo"/>
-                    <xs:element minOccurs="0" name="Message" type="tns:MessageData"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="MessageInfo">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="Sender" type="xs:string"/>
-                    <xs:element minOccurs="0" name="Recipient" type="xs:string"/>
-                    <xs:element name="Date" type="xs:dateTime"/>
-                    <xs:element minOccurs="0" name="MessageId" type="xs:string"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="MessageData">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="groupUid" type="xs:string"/>
-                    <xs:element minOccurs="0" name="Uuid" type="xs:string"/>
-                    <xs:element minOccurs="0" name="AppData" type="tns:DocumentData"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="DocumentData">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="DocName" type="xs:string"/>
-                    <xs:element minOccurs="0" name="DocFormat" type="xs:string"/>
-                    <xs:element minOccurs="0" name="DigestData" type="xs:string"/>
-                    <xs:element minOccurs="0" name="DocType" type="xs:int"/>
-                    <xs:element minOccurs="0" name="SplitDocument" type="tns:SplitDocumentModel"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="SplitDocumentModel">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="BinaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
-                    <xs:element minOccurs="0" name="TemporaryPath" type="xs:string"/>
-                    <xs:element minOccurs="0" name="Count" type="xs:int"/>
-                    <xs:element minOccurs="0" name="IsLast" type="xs:boolean"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="requestResponse">
+            <xs:complexType name="internalResponse">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="return" type="xs:boolean"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="adapter">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="IntegrationMessage" type="xs:anyType"/>
+                    <xs:element minOccurs="0" name="Message" type="xs:string"/>
                     <xs:element minOccurs="0" name="RecipientUrl" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Method" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="adapterResponse">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="return" type="xs:boolean"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:anyType"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:element name="IOException" type="tns:IOException"/>
@@ -73,18 +34,31 @@
                     <xs:element minOccurs="0" name="message" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:element name="JAXBException" type="tns:JAXBException"/>
+            <xs:complexType name="JAXBException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="errorCode" type="xs:string"/>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="Exception" type="tns:Exception"/>
+            <xs:complexType name="Exception">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
         </xs:schema>
     </wsdl:types>
-    <wsdl:message name="request">
-        <wsdl:part name="parameters" element="tns:request">
+    <wsdl:message name="internal">
+        <wsdl:part name="parameters" element="tns:internal">
         </wsdl:part>
     </wsdl:message>
     <wsdl:message name="adapter">
         <wsdl:part name="parameters" element="tns:adapter">
         </wsdl:part>
     </wsdl:message>
-    <wsdl:message name="requestResponse">
-        <wsdl:part name="parameters" element="tns:requestResponse">
+    <wsdl:message name="JAXBException">
+        <wsdl:part name="JAXBException" element="tns:JAXBException">
         </wsdl:part>
     </wsdl:message>
     <wsdl:message name="adapterResponse">
@@ -95,12 +69,22 @@
         <wsdl:part name="IOException" element="tns:IOException">
         </wsdl:part>
     </wsdl:message>
+    <wsdl:message name="Exception">
+        <wsdl:part name="Exception" element="tns:Exception">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="internalResponse">
+        <wsdl:part name="parameters" element="tns:internalResponse">
+        </wsdl:part>
+    </wsdl:message>
     <wsdl:portType name="InternalWsEndpoint">
-        <wsdl:operation name="request">
-            <wsdl:input name="request" message="tns:request">
+        <wsdl:operation name="internal">
+            <wsdl:input name="internal" message="tns:internal">
             </wsdl:input>
-            <wsdl:output name="requestResponse" message="tns:requestResponse">
+            <wsdl:output name="internalResponse" message="tns:internalResponse">
             </wsdl:output>
+            <wsdl:fault name="JAXBException" message="tns:JAXBException">
+            </wsdl:fault>
             <wsdl:fault name="IOException" message="tns:IOException">
             </wsdl:fault>
         </wsdl:operation>
@@ -109,20 +93,23 @@
             </wsdl:input>
             <wsdl:output name="adapterResponse" message="tns:adapterResponse">
             </wsdl:output>
-            <wsdl:fault name="IOException" message="tns:IOException">
+            <wsdl:fault name="Exception" message="tns:Exception">
             </wsdl:fault>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="InternalWsEndpointServiceSoapBinding" type="tns:InternalWsEndpoint">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="request">
+        <wsdl:operation name="internal">
             <soap:operation soapAction="" style="document"/>
-            <wsdl:input name="request">
+            <wsdl:input name="internal">
                 <soap:body use="literal"/>
             </wsdl:input>
-            <wsdl:output name="requestResponse">
+            <wsdl:output name="internalResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="JAXBException">
+                <soap:fault name="JAXBException" use="literal"/>
+            </wsdl:fault>
             <wsdl:fault name="IOException">
                 <soap:fault name="IOException" use="literal"/>
             </wsdl:fault>
@@ -135,8 +122,8 @@
             <wsdl:output name="adapterResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
-            <wsdl:fault name="IOException">
-                <soap:fault name="IOException" use="literal"/>
+            <wsdl:fault name="Exception">
+                <soap:fault name="Exception" use="literal"/>
             </wsdl:fault>
         </wsdl:operation>
     </wsdl:binding>

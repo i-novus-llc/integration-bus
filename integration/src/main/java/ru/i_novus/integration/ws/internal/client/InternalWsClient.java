@@ -93,6 +93,8 @@ public class InternalWsClient {
                                 request.getHeaders().get("method", String.class))[0];
                         if (result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0)) {
                             Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
+                        } else {
+                            throw new RuntimeException(result != null ? String.join(", ", result) : "result = null");
                         }
                     }
                 }
