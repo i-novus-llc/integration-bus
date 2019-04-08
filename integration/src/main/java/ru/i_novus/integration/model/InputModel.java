@@ -9,6 +9,7 @@ public class InputModel implements Serializable {
     private String recipient;
     private String method;
     private DataModel dataModel;
+    private String envCode;
 
     public String getUid() {
         return uid;
@@ -40,5 +41,13 @@ public class InputModel implements Serializable {
 
     public void setDataModel(DataModel dataModel) {
         this.dataModel = dataModel;
+    }
+
+    public String getEnvCode() {
+        return envCode;
+    }
+
+    public void setEnvCode(String envCode) {
+        this.envCode = envCode;
     }
 }

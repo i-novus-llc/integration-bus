@@ -36,7 +36,7 @@
         <int-jms:outbound-channel-adapter id="jmsSendIn" destination="senderQueue"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsSend" destination="senderQueue" channel="mqSendChannel"/>
+    <int-jms:message-driven-channel-adapter id="jmsSend" destination="senderQueue" channel="mqSendChannel" max-concurrent-consumers="2"/>
 
     <int:chain input-channel="mqSendChannel">
     <int:service-activator ref="internalWsClient" method="sendInternal"/>

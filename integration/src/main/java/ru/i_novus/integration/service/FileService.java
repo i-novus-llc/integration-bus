@@ -2,6 +2,8 @@ package ru.i_novus.integration.service;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
@@ -9,6 +11,7 @@ import ru.i_novus.integration.ws.internal.api.DocumentData;
 import ru.i_novus.integration.ws.internal.api.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.api.MessageData;
 import ru.i_novus.integration.ws.internal.api.SplitDocumentModel;
+import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -20,6 +23,8 @@ import java.time.LocalDate;
 
 @Component
 public class FileService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
+
     private static final String TEMP_PATH = "tmp";
     private static final String MERGE_FILE_PATH = "merge";
     private static final String URL_SPLIT = "\\";
@@ -48,6 +53,7 @@ public class FileService {
             try (InputStream in = new FileInputStream(concatFile);
                  FileOutputStream out = new FileOutputStream(new File(property.getTempPath() + URL_SPLIT + data.getDocName()))) {
                 IOUtils.copy(in, out);
+                LOGGER.info("file " + data.getDocName() + "put to" + property.getTempPath());
             }
             FileUtils.deleteDirectory(tmpDirectory);
             Files.deleteIfExists(Paths.get(concatFile.getPath()));
