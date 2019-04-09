@@ -6,6 +6,7 @@ RUN apk add tzdata
 ENV TZ=Europe/Moscow
 
 ENV APP_HOME=./config
+ENV CXF_PATH=/integration/ws
 ARG JAR_FILE
 RUN mkdir config
 RUN mkdir share
