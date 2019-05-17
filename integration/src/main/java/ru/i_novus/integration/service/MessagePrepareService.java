@@ -49,7 +49,12 @@ public class MessagePrepareService {
         if (participantModel.getMethod().equals("versions")) {
             sb.append(PARAM).append(IDENTIFIER_PARAM_NAME).append(messageParam.get("identifier"));
         }
-        Message result = MessageBuilder.withPayload(restTemplate.getForEntity(sb.toString(), String.class).getBody()).build();
+        Message result = null;
+        try {
+            result = MessageBuilder.withPayload(restTemplate.getForEntity(sb.toString(), String.class).getBody()).build();
+        } catch (Exception ex) {
+            throw new RuntimeException(sb.toString(),ex);
+        }
 
         if (new JsonParser().parse(result.getPayload().toString()).getAsJsonObject().get("list").toString().equals("[]")) {
             monitoringMessage(participantModel.getMethod(), message.getPayload().getMonitoringModel(), messageParam.get("identifier"),
