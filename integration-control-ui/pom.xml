@@ -6,134 +6,195 @@
     <groupId>ru.i_novus.integration.control.ui</groupId>
     <artifactId>integration-control-ui</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>integration-control-ui</name>
 
     <parent>
-        <groupId>net.n2oapp.platform</groupId>
-        <artifactId>n2o-platform-parent</artifactId>
-        <version>0.5</version>
+        <groupId>ru.i_novus.is</groupId>
+        <artifactId>base</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
-        <maven.war.plugin.version>2.6</maven.war.plugin.version>
-        <java.version>1.8</java.version>
-        <n2o.version>6.1.23</n2o.version>
-        <org.springframework.version>4.3.16.RELEASE</org.springframework.version>
-        <security.admin.version>2.6</security.admin.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+<!--        <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>-->
+<!--        <maven.war.plugin.version>2.6</maven.war.plugin.version>-->
+        <java.version>11</java.version>
+        <n2o.version>7.3.5</n2o.version>
+<!--        <org.springframework.version>4.3.16.RELEASE</org.springframework.version>-->
+        <security-admin.version>3.0</security-admin.version>
     </properties>
 
     <dependencies>
         <!--N2O Framework-->
-        <dependency>
-            <groupId>ru.i-novus.ffoms</groupId>
-            <artifactId>ffoms-n2o-theme</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-api</artifactId>
-            <version>${n2o.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-engine</artifactId>
-            <version>${n2o.version}</version>
-        </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.platform</groupId>-->
+<!--            <artifactId>n2o-platform-jaxrs-commons</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.platform</groupId>-->
+<!--            <artifactId>n2o-platform-starter-web</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-config</artifactId>
+            <artifactId>n2o-spring-boot-starter</artifactId>
             <version>${n2o.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-header</artifactId>
-            <version>${n2o.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-ui</artifactId>
-            <version>${n2o.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework.version}</version>
+            <groupId>net.n2oapp.platform</groupId>
+            <artifactId>n2o-platform-starter-ms</artifactId>
         </dependency>
 
         <dependency>
             <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-config-ehcache</artifactId>
+            <artifactId>n2o-web</artifactId>
             <version>${n2o.version}</version>
-            <scope>runtime</scope>
+        </dependency>
+
+
+
+
+        <!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework</groupId>-->
+<!--            <artifactId>n2o-api</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.mitre.dsmiley.httpproxy</groupId>-->
+<!--            <artifactId>smiley-http-proxy-servlet</artifactId>-->
+<!--            <version>1.10</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>javax.servlet</groupId>-->
+<!--            <artifactId>javax.servlet-api</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.apache.cxf</groupId>-->
+<!--            <artifactId>cxf-core</artifactId>-->
+<!--            <version>${cxf.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework</groupId>-->
+<!--            <artifactId>n2o-react</artifactId>-->
+<!--            <version>${n2o.version}</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework</groupId>-->
+<!--            <artifactId>n2o-config</artifactId>-->
+<!--            <version>${n2o.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
         <dependency>
             <groupId>net.n2oapp.framework</groupId>
-            <artifactId>n2o-access</artifactId>
+            <artifactId>n2o-engine-sql</artifactId>
             <version>${n2o.version}</version>
         </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework</groupId>-->
+<!--            <artifactId>n2o-config-ehcache</artifactId>-->
+<!--            <version>${n2o.version}</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework</groupId>-->
+<!--            <artifactId>n2o-access</artifactId>-->
+<!--            <version>${n2o.version}</version>-->
+<!--        </dependency>-->
 
         <!-- security-admin -->
-        <dependency>
-            <groupId>net.n2oapp.framework.security</groupId>
-            <artifactId>security-admin-sql</artifactId>
-            <version>${security.admin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework.security</groupId>
-            <artifactId>security-admin-web-sql</artifactId>
-            <version>${security.admin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework.security</groupId>
-            <artifactId>security-auth-simple</artifactId>
-            <version>${security.admin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.n2oapp.framework.security</groupId>
-            <artifactId>security-admin-db</artifactId>
-            <version>${security.admin.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework.security</groupId>-->
+<!--            <artifactId>security-admin-api</artifactId>-->
+<!--            <version>${security-admin.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework.security</groupId>-->
+<!--            <artifactId>security-admin-commons</artifactId>-->
+<!--            <version>${security-admin.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework.security</groupId>-->
+<!--            <artifactId>security-admin-sso-keycloak</artifactId>-->
+<!--            <version>${security-admin.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework.security</groupId>-->
+<!--            <artifactId>security-admin-rest-client</artifactId>-->
+<!--            <version>${security-admin.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework.security</groupId>-->
+<!--            <artifactId>security-auth-simple</artifactId>-->
+<!--            <version>${security-admin.version}</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.n2oapp.framework.security</groupId>-->
+<!--            <artifactId>security-admin-sql</artifactId>-->
+<!--            <version>${security-admin.version}</version>-->
+<!--        </dependency>-->
+
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                    <encoding>UTF-8</encoding>
+                    <executable>true</executable>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
         </plugins>
-        <finalName>integration-control-ui</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/n2o-build.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/n2o-build.properties</exclude>
-                </excludes>
-            </resource>
-        </resources>
     </build>
 
 </project>

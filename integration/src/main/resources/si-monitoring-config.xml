@@ -22,7 +22,7 @@
 
     <int:service-activator input-channel="errorChannel" ref="monitoringService" method="createError"/>
 
-    <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>
+<!--    <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>-->
 
     <int-jms:outbound-channel-adapter id="jmsInMonitoring" destination="monitoringQueue" channel="monitoringJmsInChannel"/>
 

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-4.0">
+
+    <unique result-mapping="[0]">
+        <sql>
+            SELECT :select
+            FROM integration.participant_method
+            WHERE id = :id
+        </sql>
+    </unique>
+
+    <fields>
+        <field id="participant_method_id" domain="integer">
+            <select mapping="['id']"/>
+            <filters>
+                <eq filter-id="id"/>
+            </filters>
+        </field>
+
+        <field id="participant.id" domain="string">
+            <select mapping="['participant_code']"/>
+        </field>
+    </fields>
+</query>
+

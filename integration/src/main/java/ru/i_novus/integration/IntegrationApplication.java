@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "ru.i_novus.integration")
 @ImportResource({"classpath*:/spring-integration-config.xml", "classpath*:/si-sync-config.xml"})
 public class IntegrationApplication {
 

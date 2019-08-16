@@ -3,7 +3,7 @@
     <!--Администрирование-->
     <guest-access>
         <page-access pages="index"/>
-        <object-access object-id="blank"/>
+<!--        <object-access object-id="blank"/>-->
     </guest-access>
 
 </access>
