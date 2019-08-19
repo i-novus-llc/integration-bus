@@ -7,9 +7,12 @@ import ru.i_novus.integration.model.CommonModel;
 
 @MessagingGateway
 public interface InboundGateway {
-    @Gateway(requestChannel = "requestChannel", replyChannel = "responseChannel")
+    @Gateway(requestChannel = "requestSyncChannel", replyChannel = "responseSyncChannel")
     Message syncRequest(CommonModel model);
 
     @Gateway(requestChannel = "requestAsyncChannel")
     void aSyncRequest(CommonModel model);
+
+    @Gateway(requestChannel = "internalRequestChannel")
+    void internalRequest(CommonModel model);
 }

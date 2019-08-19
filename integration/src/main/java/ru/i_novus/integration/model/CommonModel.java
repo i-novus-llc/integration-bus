@@ -5,10 +5,12 @@ import ru.i_novus.is.integration.common.api.ParticipantModel;
 
 import java.io.Serializable;
 
-public class CommonModel<T> implements Serializable {
+public class CommonModel implements Serializable {
+    private static final long serialVersionUID = -6482737092304911196L;
+
     private MonitoringModel monitoringModel;
     private ParticipantModel participantModel;
-    private T object;
+    private Object object;
 
     public MonitoringModel getMonitoringModel() {
         return monitoringModel;
@@ -26,11 +28,11 @@ public class CommonModel<T> implements Serializable {
         this.participantModel = participantModel;
     }
 
-    public T getObject() {
+    public Object getObject() {
         return object;
     }
 
-    public void setObject(T object) {
+    public void setObject(Object object) {
         this.object = object;
     }
 }

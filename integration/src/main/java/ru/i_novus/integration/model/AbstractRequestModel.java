@@ -1,14 +1,9 @@
 package ru.i_novus.integration.model;
 
-import java.io.Serializable;
-
-public class InputModel implements Serializable {
-    private static final long serialVersionUID = 1370434225663592290L;
-
+public abstract class AbstractRequestModel {
     private String uid;
     private String recipient;
     private String method;
-    private DataModel dataModel;
     private String envCode;
 
     public String getUid() {
@@ -33,14 +28,6 @@ public class InputModel implements Serializable {
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public DataModel getDataModel() {
-        return dataModel;
-    }
-
-    public void setDataModel(DataModel dataModel) {
-        this.dataModel = dataModel;
     }
 
     public String getEnvCode() {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.DataModel;
-import ru.i_novus.integration.model.InputModel;
+import ru.i_novus.integration.model.InternalRequestModel;
 import ru.i_novus.integration.ws.internal.api.DocumentData;
 import ru.i_novus.integration.ws.internal.api.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.api.MessageData;
@@ -46,9 +46,9 @@ public class InternalRequestPreparationService {
             messageData.setGroupUid(UUIDGenerator.getUUID());
             messageData.setUuid(UUIDGenerator.getUUID());
 
-            InputModel inputModel = (InputModel) modelMessage.getPayload().getObject();
+            InternalRequestModel internalRequestModel = (InternalRequestModel) modelMessage.getPayload().getObject();
 
-            DataModel dataModel = inputModel.getDataModel();
+            DataModel dataModel = internalRequestModel.getDataModel();
 
             DocumentData documentData = new DocumentData();
             documentData.setDocFormat(dataModel.getMime());
@@ -58,7 +58,7 @@ public class InternalRequestPreparationService {
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setMessageId(modelMessage.getPayload().getMonitoringModel().getUid());
-            messageInfo.setRecipient(inputModel.getRecipient());
+            messageInfo.setRecipient(internalRequestModel.getRecipient());
             messageInfo.setSender(modelMessage.getPayload().getMonitoringModel().getSender());
             GregorianCalendar c = new GregorianCalendar();
             c.setTime(new Date());

@@ -21,12 +21,6 @@ public class ParticipantPermissionEntity {
     @Column(name = "group_code")
     private String groupCode;
 
-    @Column(name = "callback_url")
-    private String callbackUrl;
-
-    @Column(name = "sync")
-    private boolean sync;
-
     public int getId() {
         return id;
     }
@@ -59,19 +53,4 @@ public class ParticipantPermissionEntity {
         this.groupCode = groupCode;
     }
 
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
-    }
-
-    public boolean isSync() {
-        return sync;
-    }
-
-    public void setSync(boolean sync) {
-        this.sync = sync;
-    }
 }

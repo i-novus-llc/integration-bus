@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="fill_method_integration_type" author="asamoilov" dbms="postgresql">
+        <sql>
+            INSERT INTO integration.integration_type( code, name) VALUES ('REST_GET', 'REST/GET');
+            INSERT INTO integration.integration_type( code, name) VALUES ('REST_POST', 'REST/POST');
+            INSERT INTO integration.integration_type( code, name) VALUES ('REST_PUT', 'REST/PUT');
+            INSERT INTO integration.integration_type( code, name) VALUES ('SOAP', 'SOAP');
+        </sql>
+    </changeSet>
+
+    <changeSet id="remove_column_participant_permission" author="asamoilov" dbms="postgresql">
+        <sql>
+            ALTER TABLE integration.participant_permission DROP COLUMN callback_url;
+            ALTER TABLE integration.participant_permission DROP COLUMN sync;
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_column_participant_permission" author="asamoilov" dbms="postgresql">
+        <sql>
+            ALTER TABLE integration.participant_method ADD callback_url character varying(250);
+            ALTER TABLE integration.participant_method ADD sync boolean DEFAULT true NOT NULL;
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>
