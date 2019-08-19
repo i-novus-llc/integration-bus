@@ -71,11 +71,11 @@ public class InternalWsClient {
     /**
      * Подготовка и отправка файла потребителю
      */
-    public void sendInternal(Message<CommonModel<IntegrationMessage>> request) {
+    public void sendInternal(Message<CommonModel> request) {
         if (request.getPayload().getObject() != null) {
             try {
-                IntegrationMessage message = request.getPayload().getObject();
-                SplitDocumentModel splitModel = request.getPayload().getObject().getMessage().getAppData().getSplitDocument();
+                IntegrationMessage message = (IntegrationMessage) request.getPayload().getObject();
+                SplitDocumentModel splitModel = message.getMessage().getAppData().getSplitDocument();
                 File[] files = new File(splitModel.getTemporaryPath()).listFiles();
                 IntegrationFileUtils.sortedFilesByName(files);
 
