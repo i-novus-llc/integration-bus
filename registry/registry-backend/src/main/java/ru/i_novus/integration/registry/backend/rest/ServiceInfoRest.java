@@ -44,9 +44,9 @@ public class ServiceInfoRest {
         ParticipantModel participantModel = new ParticipantModel();
         if (permission != null) {
             participantModel.setUrl(senderMethod.get().getUrl());
-            participantModel.setCallbackUrl(permission.getCallbackUrl());
-            participantModel.setSync(permission.isSync());
-            participantModel.setIntegrationType(participantModel.getIntegrationType());
+            participantModel.setCallbackUrl(senderMethod.get().getCallbackUrl());
+            participantModel.setSync(senderMethod.get().isSync());
+            participantModel.setIntegrationType(senderMethod.get().getIntegrationType());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {
             throw new RuntimeException("permission error");

@@ -16,16 +16,34 @@
 
     <import resource="si-monitoring-config.xml"/>
 
-    <int:channel id="requestChannel"/>
+    <int:channel id="responseSyncChannel"/>
+    <int:channel id="requestSyncChannel"/>
+    <int:channel id="requestAsyncChannel"/>
 
-    <int:channel id="nsiChannel"/>
-    <int:router input-channel="requestChannel" expression="payload.monitoringModel.receiver">
-        <int:mapping value="nsi" channel="nsiChannel"/>
-    </int:router>
+    <!--<int:channel id="syncChannel"/>
+    <int:router input-channel="requestSyncChannel" expression="payload.monitoringModel.receiver">
+        <int:mapping value="nsi" channel="syncChannel"/>
+    </int:router>-->
 
-    <int:channel id="responseChannel"/>
-    <int:chain input-channel="nsiChannel" output-channel="responseChannel">
-        <int:service-activator ref="messagePrepareService" method="prepareNsiRequest"/>
+    <int:chain input-channel="requestSyncChannel" output-channel="responseSyncChannel">
+        <int:service-activator ref="messagePrepareService" method="prepareSyncRequest"/>
+    </int:chain>
+
+    <int:chain input-channel="requestAsyncChannel">
+        <int:service-activator expression="@monitoringService.create(payload, 1)"/>
+        <int:header-enricher>
+            <int:header name="jms_correlationId" type="java.lang.String"
+                        expression="payload.monitoringModel.sender + ' -> '
+                        + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
+        </int:header-enricher>
+        <int-jms:outbound-channel-adapter id="jmsAsyncChenal" destination="asyncQueue"/>
+    </int:chain>
+
+    <int-jms:message-driven-channel-adapter id="jmsAsync" destination="asyncQueue" channel="asyncOutChannel"/>
+
+    <int:chain input-channel="asyncOutChannel" output-channel="responseSyncChannel">
+        <int:service-activator ref="messagePrepareService" method="prepareAsyncRequest"/>
+        <int:service-activator expression="@monitoringService.create(payload, 3)"/>
     </int:chain>
 
 </beans>
