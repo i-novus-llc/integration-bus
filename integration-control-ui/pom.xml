@@ -21,26 +21,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-<!--        <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>-->
-<!--        <maven.war.plugin.version>2.6</maven.war.plugin.version>-->
         <java.version>11</java.version>
         <n2o.version>7.3.5</n2o.version>
-<!--        <org.springframework.version>4.3.16.RELEASE</org.springframework.version>-->
         <security-admin.version>3.0</security-admin.version>
     </properties>
 
     <dependencies>
-        <!--N2O Framework-->
-
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.platform</groupId>-->
-<!--            <artifactId>n2o-platform-jaxrs-commons</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.platform</groupId>-->
-<!--            <artifactId>n2o-platform-starter-web</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>net.n2oapp.framework</groupId>
@@ -59,47 +45,6 @@
             <version>${n2o.version}</version>
         </dependency>
 
-
-
-
-        <!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework</groupId>-->
-<!--            <artifactId>n2o-api</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.mitre.dsmiley.httpproxy</groupId>-->
-<!--            <artifactId>smiley-http-proxy-servlet</artifactId>-->
-<!--            <version>1.10</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>javax.servlet</groupId>-->
-<!--            <artifactId>javax.servlet-api</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.apache.cxf</groupId>-->
-<!--            <artifactId>cxf-core</artifactId>-->
-<!--            <version>${cxf.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework</groupId>-->
-<!--            <artifactId>n2o-react</artifactId>-->
-<!--            <version>${n2o.version}</version>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework</groupId>-->
-<!--            <artifactId>n2o-config</artifactId>-->
-<!--            <version>${n2o.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -111,61 +56,11 @@
             <version>${n2o.version}</version>
         </dependency>
 
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework</groupId>-->
-<!--            <artifactId>n2o-config-ehcache</artifactId>-->
-<!--            <version>${n2o.version}</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework</groupId>-->
-<!--            <artifactId>n2o-access</artifactId>-->
-<!--            <version>${n2o.version}</version>-->
-<!--        </dependency>-->
-
-        <!-- security-admin -->
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework.security</groupId>-->
-<!--            <artifactId>security-admin-api</artifactId>-->
-<!--            <version>${security-admin.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework.security</groupId>-->
-<!--            <artifactId>security-admin-commons</artifactId>-->
-<!--            <version>${security-admin.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework.security</groupId>-->
-<!--            <artifactId>security-admin-sso-keycloak</artifactId>-->
-<!--            <version>${security-admin.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework.security</groupId>-->
-<!--            <artifactId>security-admin-rest-client</artifactId>-->
-<!--            <version>${security-admin.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework.security</groupId>-->
-<!--            <artifactId>security-auth-simple</artifactId>-->
-<!--            <version>${security-admin.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.n2oapp.framework.security</groupId>-->
-<!--            <artifactId>security-admin-sql</artifactId>-->
-<!--            <version>${security-admin.version}</version>-->
-<!--        </dependency>-->
 
     </dependencies>
 
