@@ -34,14 +34,28 @@ public class MessagePrepareService {
         this.messageSource = messageSource;
     }
 
+    /**
+     * Синхронный запрос
+     * @param messageCommonModel модель для запроса
+     * @return возвращает Message c обьектом ответа
+     */
     public Message prepareSyncRequest(Message<CommonModel> messageCommonModel) {
         return prepareRequest(messageCommonModel);
     }
 
+    /**
+     * Асинхронный запрос
+     * @param messageCommonModel модель для запроса
+     */
     public void prepareAsyncRequest(Message<CommonModel> messageCommonModel) {
         prepareRequest(messageCommonModel);
     }
 
+    /**
+     * Подготовка и передача запроса получателю
+     * @param messageCommonModel модель для запроса
+     * @return если вызов синхронный вернет Message c обьектом ответа иначе вернет SUCCESS
+     */
     private Message prepareRequest(Message<CommonModel> messageCommonModel) {
         ParticipantModel participantModel = messageCommonModel.getPayload().getParticipantModel();
 
@@ -88,10 +102,21 @@ public class MessagePrepareService {
         return message;
     }
 
+    /**
+     * Вызов сервиса для callBack
+     * @param url callBackUrl
+     * @param response Object для передачи
+     */
     private void sendCallBack(String url, Object response) {
         restTemplate.postForLocation(url, response);
     }
 
+    /**
+     * Заполнение мониторинга для NSI
+     * @param operation выполненная операция
+     * @param monitoringModel модель
+     * @param status статус передачи
+     */
     private void monitoringMessage(String operation, MonitoringModel monitoringModel, int status) {
         monitoringModel.setDateTime(new Date());
         monitoringModel.setStatus(status);

@@ -26,8 +26,17 @@ public class ServiceIntegrationRest {
         this.modelPrepareService = modelPrepareService;
     }
 
+    /**
+     * Обработка get запросов
+     * @param request http request
+     * @param service зарегистрированный код получателя
+     * @param method код зарегистрированного метода получателя
+     * @param requestParams параметры path, query
+     * @return возвращает Object если запрос синхронный
+     * @throws IOException
+     */
     @GetMapping(path = "/get/{service}/{method}/**")
-    public Object sync(HttpServletRequest request, @PathVariable("service") String service, @PathVariable("method") String method,
+    public Object get(HttpServletRequest request, @PathVariable("service") String service, @PathVariable("method") String method,
                        @RequestParam Map<String, String> requestParams) throws IOException {
 
         CommonModel commonModel = modelPrepareService.getRequestModelPrepare(requestParams, method, service);
@@ -43,6 +52,12 @@ public class ServiceIntegrationRest {
         return HttpStatus.ACCEPTED;
     }
 
+    /**
+     * Обработка POST заросов
+     * @param model модель
+     * @return возвращает Object если запрос синхронный
+     * @throws IOException
+     */
     @PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object post(@RequestBody RequestModel model) throws IOException {
         CommonModel commonModel = modelPrepareService.requestModelPreparation(model);
@@ -55,14 +70,22 @@ public class ServiceIntegrationRest {
         return HttpStatus.ACCEPTED;
     }
 
+    /**
+     * @deprecated замнен на метод get
+     */
     @GetMapping(path = "/syncRequest/{method}")
     public Object syncRequest(@RequestParam Map<String, String> requestParams, @PathVariable("method") String method) throws IOException {
 
         return inboundGateway.syncRequest(modelPrepareService.getRequestModelPrepare(requestParams, method, requestParams.get("recipient"))).getPayload();
     }
 
+    /**
+     * Передача файлов между ИШ
+     * @param model модель с описанием пердаваемого файла
+     * @throws IOException
+     */
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void aSyncRequest(@RequestBody InternalRequestModel model) throws IOException {
+    public void internalRequest(@RequestBody InternalRequestModel model) throws IOException {
 
         inboundGateway.internalRequest(modelPrepareService.requestModelPreparation(model));
     }
