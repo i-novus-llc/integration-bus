@@ -32,10 +32,14 @@ import java.util.Map;
 public class InternalRequestPreparationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
 
+    private final MonitoringGateway monitoringGateway;
+    private final FileService storageService;
+
     @Autowired
-    MonitoringGateway monitoringGateway;
-    @Autowired
-    FileService storageService;
+    public InternalRequestPreparationService(MonitoringGateway monitoringGateway, FileService storageService) {
+        this.monitoringGateway = monitoringGateway;
+        this.storageService = storageService;
+    }
 
     public Message<CommonModel> preparePackage(Message<CommonModel> modelMessage) {
         CommonModel integrationRequest = new CommonModel();

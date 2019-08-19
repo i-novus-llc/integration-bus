@@ -27,8 +27,12 @@ public class FileService {
     private static final String TEMP_PATH = "tmp";
     private static final String MERGE_FILE_PATH = "merge";
     private static final char URL_SPLIT = '/';
+    private final PlaceholdersProperty property;
+
     @Autowired
-    private PlaceholdersProperty property;
+    public FileService(PlaceholdersProperty property) {
+        this.property = property;
+    }
 
     public void saveDocumentInStorage(String message) throws IOException, JAXBException {
         MessageData messageData = stringToJaxb(message).getMessage();
