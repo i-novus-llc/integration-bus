@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 @Service
+@Getter
 @PropertySource("file:${app.home}/placeholders.properties")
 public class PlaceholdersProperty {
     @Value("${sign.soap.key.store.file.path}")
