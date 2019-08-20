@@ -1,8 +1,13 @@
 package ru.i_novus.integration.registry.backend.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(schema = "integration", name = "participant_method")
 public class ParticipantMethodEntity {
 
@@ -33,67 +38,4 @@ public class ParticipantMethodEntity {
     @Column(name = "sync")
     private boolean sync;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getParticipantCode() {
-        return participantCode;
-    }
-
-    public void setParticipantCode(String participantCode) {
-        this.participantCode = participantCode;
-    }
-
-    public String getMethodCode() {
-        return methodCode;
-    }
-
-    public void setMethodCode(String methodCode) {
-        this.methodCode = methodCode;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Boolean getDisable() {
-        return disable;
-    }
-
-    public void setDisable(Boolean disable) {
-        this.disable = disable;
-    }
-
-    public String getIntegrationType() {
-        return integrationType;
-    }
-
-    public void setIntegrationType(String integrationType) {
-        this.integrationType = integrationType;
-    }
-
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
-    }
-
-    public boolean isSync() {
-        return sync;
-    }
-
-    public void setSync(boolean sync) {
-        this.sync = sync;
-    }
 }

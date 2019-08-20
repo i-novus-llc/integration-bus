@@ -1,64 +1,48 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<query xmlns:n2o="http://n2oapp.net/framework/config/schema/n2o-query-executions-1.0"
-       xmlns="http://n2oapp.net/framework/config/schema/query-3.0">
-    <object-id>registry</object-id>
-    <name>registry</name>
-    <execution>
-        <n2o:sql>
-            <n2o:items-query>select :select
-                from integration.participant_permission r
-                where :where
-                order by :order
-            </n2o:items-query>
-            <n2o:count-query>select count(r)
-                from integration.participant_permission r
-                where :where
-            </n2o:count-query>
-            <n2o:alias>r</n2o:alias>
-        </n2o:sql>
-    </execution>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
+       object-id="registry" name="registry">
+    <list>
+        <sql>
+            SELECT :select
+            FROM integration.participant_permission
+            WHERE :filters
+            ORDER BY :sorting
+            LIMIT :limit OFFSET :offset
+        </sql>
+    </list>
+    <count count-mapping="[0]['cnt']">
+        <sql>
+            SELECT count(*) as cnt
+            FROM integration.participant_permission
+            WHERE :filters
+        </sql>
+    </count>
 
     <fields>
-        <field>
-            <id>id</id>
-            <domain>integer</domain>
-            <display/>
+        <field id="id" domain="integer">
+            <select/>
             <filters>
-                <filter type="eq" filter-field="id">id=:id</filter>
+                <eq filter-id="id">id=:id</eq>
             </filters>
         </field>
 
-        <field>
-            <id>participant_method_id</id>
-            <domain>integer</domain>
-            <display/>
-            <filters auto-generate="true"/>
+        <field id="participant_method_id" domain="integer">
+            <select/>
+            <filters>
+                <eq filter-id="participant_method_id">participant_method_id=:participant_method_id</eq>
+            </filters>
         </field>
 
-        <field>
-            <id>participant.id</id>
-            <domain>string</domain>
-            <display/>
-            <expression>participant_code</expression>
+        <field id="participant.id" domain="string">
+            <select mapping="['participant_code']"/>
         </field>
 
-        <!--<field>
-            <id>group.id</id>
-            <domain>string</domain>
-            <display/>
-            <expression>group_code</expression>
-        </field>-->
-
-        <field>
-            <id>callback_url</id>
-            <domain>string</domain>
-            <display/>
+        <field id="callback_url" domain="string">
+            <select/>
         </field>
 
-        <field>
-            <id>sync</id>
-            <domain>boolean</domain>
-            <display/>
+        <field id="sync" domain="boolean">
+            <select/>
         </field>
 
     </fields>
