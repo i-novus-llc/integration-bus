@@ -9,8 +9,10 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class CommonModel<T> implements Serializable {
+public class CommonModel implements Serializable {
+    private static final long serialVersionUID = -6482737092304911196L;
+
     private MonitoringModel monitoringModel;
     private ParticipantModel participantModel;
-    private T object;
+    private Object object;
 }

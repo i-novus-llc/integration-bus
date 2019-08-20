@@ -16,6 +16,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>ru.i_novus.is</groupId>
             <artifactId>integration-common-api</artifactId>
             <version>${project.version}</version>

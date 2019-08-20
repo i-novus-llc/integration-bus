@@ -6,8 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 @Service
-@PropertySource("placeholders.properties")
-@Getter
+@PropertySource("file:${app.home}/placeholders.properties")
 public class PlaceholdersProperty {
 
     @Value("${file.storage.temp.path}")

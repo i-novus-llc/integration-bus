@@ -24,6 +24,7 @@
         <java.version>11</java.version>
         <n2o.version>7.3.5</n2o.version>
         <security-admin.version>3.0</security-admin.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <dependencies>
@@ -37,6 +38,12 @@
         <dependency>
             <groupId>net.n2oapp.platform</groupId>
             <artifactId>n2o-platform-starter-ms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.n2oapp.framework</groupId>
+            <artifactId>n2o-access</artifactId>
+            <version>${n2o.version}</version>
         </dependency>
 
         <dependency>
@@ -80,15 +87,6 @@
                     <executable>true</executable>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 
