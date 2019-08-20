@@ -6,6 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 @Service
+@Getter
 @PropertySource("file:${app.home}/placeholders.properties")
 public class PlaceholdersProperty {
 
