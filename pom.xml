@@ -16,6 +16,7 @@
         <module>integration</module>
         <module>registry</module>
         <module>monitoring</module>
+        <module>integration-example</module>
     </modules>
 
     <parent>
