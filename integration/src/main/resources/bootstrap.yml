@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: integration-bus-service
+  cloud:
+    consul:
+      config:
+        enabled: ${config.server.enable}
