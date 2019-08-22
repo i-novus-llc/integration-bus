@@ -27,6 +27,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ru.i-novus.ms.audit</groupId>
+            <artifactId>audit-client</artifactId>
+            <version>${audit.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
