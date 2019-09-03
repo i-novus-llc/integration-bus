@@ -8,6 +8,10 @@
 
     <name>integration-example</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <parent>
         <groupId>ru.i_novus.is</groupId>
         <artifactId>base</artifactId>
