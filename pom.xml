@@ -26,11 +26,13 @@
     </parent>
 
     <properties>
+        <config.server.enable>false</config.server.enable>
         <n2o.version>7.3.17</n2o.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
+        <audit.version>1.0</audit.version>
     </properties>
 
     <dependencies>
@@ -57,5 +59,17 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <config.server.enable>true</config.server.enable>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
