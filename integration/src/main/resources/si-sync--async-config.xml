@@ -14,7 +14,7 @@
        http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
        http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <import resource="si-monitoring-config.xml"/>
+<!--    <import resource="si-monitoring-config.xml"/>-->
 
     <int:channel id="responseSyncChannel"/>
     <int:channel id="requestSyncChannel"/>

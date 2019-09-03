@@ -1,9 +1,11 @@
 package ru.i_novus.integration.gateway;
 
 import org.springframework.integration.annotation.Gateway;
+import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.messaging.Message;
 import ru.i_novus.integration.model.CommonModel;
 
+@MessagingGateway
 public interface InboundGateway {
     @Gateway(requestChannel = "requestSyncChannel", replyChannel = "responseSyncChannel")
     Message syncRequest(CommonModel model);
