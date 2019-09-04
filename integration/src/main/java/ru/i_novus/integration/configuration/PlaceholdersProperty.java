@@ -4,69 +4,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-
 @Service
-@PropertySource("file:${app.home}/placeholders.properties")
+@PropertySource(value = "file:${app.home}/placeholders.properties", ignoreResourceNotFound=true)
 public class PlaceholdersProperty {
-    @Value("${sign.soap.key.store.file.path}")
-    String keyStorePath;
-    @Value("${sign.soap.key.store.password}")
-    String keyStorePassword;
-    @Value("${sign.soap.key.store.region.alias.name}")
-    String keyStoreAlias;
-    @Value("${sign.soap.key.store.region.alias.password}")
-    String keyStoreAliasPassword;
-    @Value("${file.storage.temp.path}")
+
+    @Value("${file.storage.temp.path:/home/}")
     String tempPath;
-    @Value("${registry.address}")
+    @Value("${registry.address:http://localhost:8090/registry}")
     String registryAddress;
-    @Value("${monitoring.address}")
+    @Value("${monitoring.address:http://localhost:8099/monitoring}")
     String monitoringAddress;
-    @Value("${amq.broker.url}")
+    @Value("${amq.broker.url:vm://embedded?broker.persistent=false,useShutdownHook=false}")
     String amqBrokerUrl;
-    @Value("${env.code}")
+    @Value("${env.code:default}")
     String envCode;
-    @Value("${central.adapter.url}")
+    @Value("${central.adapter.url:http://localhost:8080/ws/internal}")
     String adapterUrl;
     @Value("${internal.ws.timeout:300000}")
     String internalWsTimeOut;
 
-    private KeyStore keyStore;
-
-    public KeyStore getKeyStore() {
-        if (keyStore == null) {
-            try (InputStream is = new FileInputStream(keyStorePath)) {
-                keyStore = KeyStore.getInstance("JKS");
-                keyStore.load(is, getKeyStorePassword().toCharArray());
-            } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return keyStore;
-    }
-
-    public String getKeyStorePath() {
-        return keyStorePath;
-    }
-
-    public String getKeyStorePassword() {
-        return keyStorePassword;
-    }
-
-    public String getKeyStoreAlias() {
-        return keyStoreAlias;
-    }
-
-    public String getKeyStoreAliasPassword() {
-        return keyStoreAliasPassword;
-    }
 
     public String getTempPath() {
         return tempPath;
