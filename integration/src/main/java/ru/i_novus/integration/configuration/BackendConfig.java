@@ -37,7 +37,7 @@ public class BackendConfig {
     @Configuration
     @EnableJaxRsProxyClient(
             classes = {AuditRest.class},
-            address = "${audit.rest.url}")
+            address = "${integration.audit.rest.url}")
     static class AuditClientConfiguration {
         @Bean
         public AuditClient simpleAuditClient(@Qualifier("auditRestJaxRsProxyClient") AuditRest auditRest) {
