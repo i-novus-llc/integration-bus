@@ -7,20 +7,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Getter
-@PropertySource("file:${app.home}/placeholders.properties")
+@PropertySource(value = "file:${app.home}/placeholders.properties", ignoreResourceNotFound=true)
 public class PlaceholdersProperty {
 
-    @Value("${file.storage.temp.path}")
+    @Value("${file.storage.temp.path:/home/}")
     String tempPath;
-    @Value("${registry.address}")
+    @Value("${registry.address:http://localhost:8090/registry}")
     String registryAddress;
-    @Value("${monitoring.address}")
+    @Value("${monitoring.address:http://localhost:8099/monitoring}")
     String monitoringAddress;
-    @Value("${amq.broker.url}")
+    @Value("${amq.broker.url:vm://embedded?broker.persistent=false,useShutdownHook=false}")
     String amqBrokerUrl;
-    @Value("${env.code}")
+    @Value("${env.code:default}")
     String envCode;
-    @Value("${central.adapter.url}")
+    @Value("${central.adapter.url:http://localhost:8080/ws/internal}")
     String adapterUrl;
     @Value("${internal.ws.timeout:300000}")
     String internalWsTimeOut;

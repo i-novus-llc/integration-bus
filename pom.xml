@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>base</name>
+    <name>integration-bus</name>
 
     <modules>
         <module>integration-common-api</module>
@@ -16,7 +16,7 @@
         <module>integration</module>
         <module>registry</module>
         <module>monitoring</module>
-<!--        <module>integration-example</module>-->
+        <module>integration-example</module>
     </modules>
 
     <parent>
@@ -26,11 +26,13 @@
     </parent>
 
     <properties>
+        <config.server.enable>false</config.server.enable>
         <n2o.version>7.3.17</n2o.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
+        <audit.version>1.0</audit.version>
     </properties>
 
     <dependencies>
@@ -40,8 +42,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.8.0</version>
         </dependency>
 
         <dependency>
@@ -49,6 +58,24 @@
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <config.server.enable>true</config.server.enable>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
