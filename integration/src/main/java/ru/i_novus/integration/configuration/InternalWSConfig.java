@@ -21,7 +21,7 @@ public class InternalWSConfig {
     private Bus bus;
 
     @Autowired
-    private PlaceholdersProperty property;
+    private IntegrationProperties property;
 
     @Bean
     public Endpoint endpoint() {

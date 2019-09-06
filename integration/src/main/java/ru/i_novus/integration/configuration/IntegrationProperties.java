@@ -6,21 +6,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @PropertySource(value = {"application.properties","file:${app.home}/placeholders.properties"}, ignoreResourceNotFound=true)
-public class PlaceholdersProperty {
+public class IntegrationProperties {
 
-    @Value("${integration.fileStoragePath}")
+    @Value("${integration.file-storage-path}")
     String tempPath;
     @Value("${integration.registry.url}")
     String registryAddress;
     @Value("${integration.monitoring.url}")
     String monitoringAddress;
-    @Value("${integration.amqBroker.url}")
+    @Value("${integration.activemq.broker-url}")
     String amqBrokerUrl;
-    @Value("${integration.envCode}")
+
+    @Value("${integration.env-code}")
     String envCode;
-    @Value("${integration.centralAdapter.url}")
+    @Value("${integration.central-adapter-url}")
     String adapterUrl;
-    @Value("${integration.internalWsTimeout}")
+    @Value("${integration.internal-ws-timeout}")
     String internalWsTimeOut;
 
 

@@ -14,13 +14,13 @@ link:++https://ci.i-novus.ru/view/platform/job/integration-bus.master.build/++[i
 [source,java]
 ----
 integration.registry.url='http://localhost:8099/registry'
-integration.fileStoragePath='путь для папки входящих файлов'
-integration.amqBroker.url='failover://tcp://localhost:61617'
+integration.file-storage-path='путь для папки входящих файлов'
+integration.activemq.broker-url='failover://tcp://localhost:61617'
 integration.monitoring.url='http://localhost:8099/monitoring'
-integration.audit.rest.url='http://docker.one:8816/api'
-integration.envCode='код окружения'
-integration.centralAdapter.url='url центрального сегмента (http://localhost:8080/ws/internal)'
-integration.internalWsTimeout='таймаут отправки файлов (300000L)'
+audit.rest.url='http://docker.one:8816/api'
+integration.env-code='код окружения'
+integration.central-adapter-url='url центрального сегмента (http://localhost:8080/ws/internal)'
+integration.internal-ws-timeout='таймаут отправки файлов (300000L)'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
 classpath приложения
