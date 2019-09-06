@@ -3,43 +3,33 @@
     <operations>
         <operation id="createParticipant">
             <invocation>
-                <sql>
-                    INSERT INTO integration.participant(
-                    code, name, disable)
-                    VALUES (:id, :name, :disable);
-                </sql>
+                <rest method="POST">/participants</rest>
             </invocation>
             <in-parameters>
-                <param id="id" mapping="['id']" domain="string"/>
-                <param id="name" mapping="['name']" domain="string"/>
-                <param id="disable" mapping="['disable']" domain="boolean"/>
+                <param id="id" mapping="['code']" domain="string" required="true"/>
+                <param id="name" mapping="['name']" domain="string" required="true"/>
+                <param id="disable" mapping="['disable']" domain="boolean" default-value="false"/>
             </in-parameters>
         </operation>
 
         <operation id="updateParticipant">
             <invocation>
-                <sql>
-                    UPDATE integration.participant
-                    SET name=:name, disable=:disable
-                    WHERE code=:id;
-                </sql>
+                <rest method="PUT">/participants</rest>
             </invocation>
             <in-parameters>
-                <param id="id" mapping="['id']" domain="string"/>
-                <param id="name" mapping="['name']" domain="string"/>
-                <param id="disable" mapping="['disable']" domain="boolean"/>
+                <param id="id" mapping="['code']" domain="string" required="true"/>
+                <param id="name" mapping="['name']" domain="string" required="true"/>
+                <param id="disable" mapping="['disable']" domain="boolean" default-value="false"/>
             </in-parameters>
         </operation>
 
-        <operation id="deleteParticipant" confirm="true">
+        <operation id="deleteParticipant" confirm="true" confirm-text="Вы уверены, что хотите удалить участника?"
+                   success-text="Участник удален">
             <invocation>
-                <sql>
-                    DELETE FROM integration.participant
-                    WHERE code=:id;
-                </sql>
+                <rest method="DELETE">/participants/{code}</rest>
             </invocation>
             <in-parameters>
-                <param id="id" mapping="['id']" domain="string"/>
+                <param id="id" mapping="['code']" domain="string"/>
             </in-parameters>
         </operation>
 
