@@ -125,10 +125,6 @@ public class InternalWsClient {
         policy.setReceiveTimeout(Long.valueOf(property.getInternalWsTimeOut()));
         conduit.setClient(policy);
 
-        /*KeyStore store = property.getKeyStore();
-        bindingSOAPHandler(port,
-                new SignatureSOAPHandler(store, property.getKeyStoreAlias(), property.getKeyStoreAliasPassword()));*/
-
         return client;
     }
 

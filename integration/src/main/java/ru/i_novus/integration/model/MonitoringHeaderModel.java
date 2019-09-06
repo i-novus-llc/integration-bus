@@ -1,11 +1,15 @@
 package ru.i_novus.integration.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.messaging.MessageHeaders;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class MonitoringHeaderModel extends MessageHeaders {
 
     private String uid;
@@ -31,62 +35,6 @@ public class MonitoringHeaderModel extends MessageHeaders {
 
     protected MonitoringHeaderModel(Map<String, Object> headers, UUID id, Long timestamp) {
         super(headers, id, timestamp);
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 
 }

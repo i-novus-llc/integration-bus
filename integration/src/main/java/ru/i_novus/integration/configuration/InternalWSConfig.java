@@ -20,16 +20,11 @@ public class InternalWSConfig {
     @Autowired
     private Bus bus;
 
-    @Autowired
-    private IntegrationProperties property;
-
     @Bean
     public Endpoint endpoint() {
         EndpointImpl endpoint = new EndpointImpl(bus, new InternalWsEndpointImpl());
         endpoint.publish("/internal");
-        //endpoint.setHandlers(Collections.singletonList(new SignatureSOAPHandler(property.getKeyStore(), property.getKeyStoreAlias(), property.getKeyStoreAliasPassword())));
         Map<String, Object> props = new HashMap<>();
-        //props.put("mtom-enabled", Boolean.TRUE);
         endpoint.setProperties(props);
         return endpoint;
     }

@@ -1,8 +1,13 @@
 package ru.i_novus.integration.registry.backend.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(schema = "integration", name = "participant_permission")
 public class ParticipantPermissionEntity {
 
@@ -20,37 +25,5 @@ public class ParticipantPermissionEntity {
 
     @Column(name = "group_code")
     private String groupCode;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Integer getParticipantMethodId() {
-        return participantMethodId;
-    }
-
-    public void setParticipantMethodId(Integer participantMethodId) {
-        this.participantMethodId = participantMethodId;
-    }
-
-    public String getParticipantCode() {
-        return participantCode;
-    }
-
-    public void setParticipantCode(String participantCode) {
-        this.participantCode = participantCode;
-    }
-
-    public String getGroupCode() {
-        return groupCode;
-    }
-
-    public void setGroupCode(String groupCode) {
-        this.groupCode = groupCode;
-    }
 
 }
