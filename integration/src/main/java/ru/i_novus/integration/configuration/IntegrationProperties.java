@@ -8,21 +8,22 @@ import org.springframework.stereotype.Service;
 @Service
 @Getter
 @PropertySource(value = {"application.properties","file:${app.home}/placeholders.properties"}, ignoreResourceNotFound=true)
-public class PlaceholdersProperty {
+public class IntegrationProperties {
 
-    @Value("${file.storage.temp.path:/home/}")
+    @Value("${integration.file-storage-path}")
     String tempPath;
-    @Value("${registry.address:http://localhost:8090/registry}")
+    @Value("${integration.registry.url}")
     String registryAddress;
-    @Value("${monitoring.address:http://localhost:8099/monitoring}")
+    @Value("${integration.monitoring.url}")
     String monitoringAddress;
-    @Value("${amq.broker.url:vm://embedded?broker.persistent=false,useShutdownHook=false}")
+    @Value("${integration.activemq.broker-url}")
     String amqBrokerUrl;
-    @Value("${env.code:default}")
+
+    @Value("${integration.env-code}")
     String envCode;
-    @Value("${central.adapter.url:http://localhost:8080/ws/internal}")
+    @Value("${integration.central-adapter-url}")
     String adapterUrl;
-    @Value("${internal.ws.timeout:300000}")
+    @Value("${integration.internal-ws-timeout}")
     String internalWsTimeOut;
 
 }

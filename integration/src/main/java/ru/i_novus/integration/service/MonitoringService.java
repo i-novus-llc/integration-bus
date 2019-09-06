@@ -10,7 +10,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.InternalRequestModel;
@@ -31,7 +31,7 @@ public class MonitoringService {
     MonitoringGateway monitoringGateway;
 
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
 
     @Autowired
     MessageSource messageSource;

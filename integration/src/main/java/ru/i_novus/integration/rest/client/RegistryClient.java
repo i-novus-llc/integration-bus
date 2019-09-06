@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.is.integration.common.api.ParticipantModel;
 import ru.i_novus.is.integration.common.api.RegistryInfoModel;
@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class RegistryClient {
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
     @Autowired
     MessageSource messageSource;
 

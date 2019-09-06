@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.is.integration.common.api.MonitoringModel;
 
 import javax.ws.rs.core.MediaType;
@@ -21,7 +21,7 @@ import java.util.Locale;
 @Component
 public class MonitoringClient {
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
     @Autowired
     MessageSource messageSource;
 
