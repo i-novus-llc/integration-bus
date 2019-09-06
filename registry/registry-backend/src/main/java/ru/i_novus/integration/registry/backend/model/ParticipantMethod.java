@@ -1,42 +1,42 @@
-package ru.i_novus.integration.registry.backend.entity;
+package ru.i_novus.integration.registry.backend.model;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 
-@Entity
-@Table(schema = "integration", name = "participant_method")
-public class ParticipantMethodEntity {
+@ApiModel("Сервисы систем участников")
+public class ParticipantMethod {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(name = "id_gen", sequenceName = "integration.participant_method_id_seq", allocationSize = 1)
-    private int id;
+    @ApiModelProperty(value = "Идентификатор сервиса")
+    private Integer id;
 
-    @Column(name = "participant_code")
+    @ApiModelProperty(value = "Код системы участницы")
     private String participantCode;
 
-    @Column(name = "method_code")
+    @ApiModelProperty(value = "Метод сервиса")
     private String methodCode;
 
-    @Column(name = "url")
+    @ApiModelProperty(value = "URL сервиса")
     private String url;
 
-    @Column(name = "disable")
+    @ApiModelProperty(value = "Приостановлен")
     private Boolean disable;
 
-    @Column(name = "integration_type")
+    @ApiModelProperty(value = "Тип взаимодействия")
     private String integrationType;
 
-    @Column(name = "callback_url")
+    @ApiModelProperty(value = "URL возврата")
     private String callbackUrl;
 
-    @Column(name = "sync")
+    @ApiModelProperty(value = "Синхронно")
     private boolean sync;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

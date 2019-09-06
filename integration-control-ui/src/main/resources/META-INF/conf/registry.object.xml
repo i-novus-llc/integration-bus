@@ -33,45 +33,34 @@
             </in-parameters>
         </operation>
 
-        <operation id="createMethod">
+        <operation id="createMethod" success-text="Сервис создан">
             <invocation>
-                <sql>
-                    INSERT INTO integration.participant_method(
-                    id, participant_code, method_code, url, disable)
-                    VALUES (nextval('integration.participant_method_id_seq'), :participant_code, :method_code, :url,
-                    :disable);
-                </sql>
+                <rest method="POST">/participantMethods</rest>
             </invocation>
             <in-parameters>
-                <param id="participant_code" mapping="['participant_code']" domain="string"/>
-                <param id="method_code" mapping="['method_code']" domain="string"/>
-                <param id="url" mapping="['url']" domain="string"/>
+                <param id="participant_code" mapping="['participantCode']" domain="string" required="true"/>
+                <param id="method_code" mapping="['methodCode']" domain="string" required="true"/>
+                <param id="url" mapping="['url']" domain="string" required="true"/>
                 <param id="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
         </operation>
 
-        <operation id="updateMethod">
+        <operation id="updateMethod" success-text="Сервис обновлен">
             <invocation>
-                <sql>
-                    UPDATE integration.participant_method
-                    SET method_code=:method_code, url=:url, disable=:disable
-                    WHERE id=:id;
-                </sql>
+                <rest method="PUT">/participantMethods</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>
-                <param id="method_code" mapping="['method_code']" domain="string"/>
-                <param id="url" mapping="['url']" domain="string"/>
+                <param id="participant_code" mapping="['participantCode']" domain="string"/>
+                <param id="method_code" mapping="['methodCode']" domain="string" required="true"/>
+                <param id="url" mapping="['url']" domain="string" required="true"/>
                 <param id="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
         </operation>
 
-        <operation id="deleteMethod" confirm="true">
+        <operation id="deleteMethod" confirm="true" confirm-text="Вы уверены, что хотите удалить сервис?" success-text="Сервис удален">
             <invocation>
-                <sql>
-                    DELETE FROM integration.participant_method
-                    WHERE id=:id;
-                </sql>
+                <rest method="DELETE">/participantMethods/{id}</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>

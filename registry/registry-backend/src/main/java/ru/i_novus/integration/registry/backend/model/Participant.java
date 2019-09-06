@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
-@ApiModel("Участники")
+@ApiModel("Системы - участницы")
 public class Participant implements Serializable {
 
     @ApiModelProperty(value = "Код участника")
