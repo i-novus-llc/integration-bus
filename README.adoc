@@ -13,19 +13,17 @@ link:++https://ci.i-novus.ru/view/platform/job/integration-bus.master.build/++[i
 
 [source,java]
 ----
-registry.address='http://localhost:8099/registry'
-sign.soap.key.store.password='пароль для keystore'
-sign.soap.key.store.region.alias.name='alias ключа ситемы'
-sign.soap.key.store.region.alias.password='пароль для alias'
-file.storage.temp.path='путь для папки входящих файлов'
-amq.broker.url='failover://tcp://localhost:61617'
-monitoring.address='http://localhost:8099/monitoring'
-env.code='код окружения'
-central.adapter.url='url центрального сегмента (http://localhost:8080/ws/internal)'
-internal.ws.timeout='таймаут отправки файлов (300000L)'
+integration.registry.url='http://localhost:8099/registry'
+integration.file-storage-path='путь для папки входящих файлов'
+integration.activemq.broker-url='failover://tcp://localhost:61617'
+integration.monitoring.url='http://localhost:8099/monitoring'
+audit.rest.url='http://docker.one:8816/api'
+integration.env-code='код окружения'
+integration.central-adapter-url='url центрального сегмента (http://localhost:8080/ws/internal)'
+integration.internal-ws-timeout='таймаут отправки файлов (300000L)'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
-classpath приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
+classpath приложения
 
 *registry-backend:*
 

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.service.FileService;
@@ -46,7 +46,7 @@ public class InternalWsClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
 
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
     @Autowired
     MonitoringService monitoringService;
     @Autowired
@@ -124,10 +124,6 @@ public class InternalWsClient {
         policy.setAutoRedirect(true);
         policy.setReceiveTimeout(Long.valueOf(property.getInternalWsTimeOut()));
         conduit.setClient(policy);
-
-        /*KeyStore store = property.getKeyStore();
-        bindingSOAPHandler(port,
-                new SignatureSOAPHandler(store, property.getKeyStoreAlias(), property.getKeyStoreAliasPassword()));*/
 
         return client;
     }
