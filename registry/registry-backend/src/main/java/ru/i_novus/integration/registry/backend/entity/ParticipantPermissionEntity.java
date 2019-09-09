@@ -26,4 +26,10 @@ public class ParticipantPermissionEntity {
     @Column(name = "group_code")
     private String groupCode;
 
+    @Column(name = "callback_url")
+    private String callBackUrl;
+
+    @Column(name = "sync")
+    private boolean sync;
+
 }
