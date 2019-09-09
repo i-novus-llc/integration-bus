@@ -44,8 +44,8 @@ public class ServiceInfoRest {
         ParticipantModel participantModel = new ParticipantModel();
         if (permission != null) {
             participantModel.setUrl(senderMethod.get().getUrl());
-            participantModel.setCallbackUrl(senderMethod.get().getCallbackUrl());
-            participantModel.setSync(senderMethod.get().isSync());
+            participantModel.setCallbackUrl(permission.getCallBackUrl());
+            participantModel.setSync(permission.isSync());
             participantModel.setIntegrationType(senderMethod.get().getIntegrationType());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {

@@ -21,36 +21,10 @@ public class ParticipantPermissionEntity {
     @Column(name = "group_code")
     private String groupCode;
 
-    public int getId() {
-        return id;
-    }
+    @Column(name = "callback_url")
+    private String callBackUrl;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Integer getParticipantMethodId() {
-        return participantMethodId;
-    }
-
-    public void setParticipantMethodId(Integer participantMethodId) {
-        this.participantMethodId = participantMethodId;
-    }
-
-    public String getParticipantCode() {
-        return participantCode;
-    }
-
-    public void setParticipantCode(String participantCode) {
-        this.participantCode = participantCode;
-    }
-
-    public String getGroupCode() {
-        return groupCode;
-    }
-
-    public void setGroupCode(String groupCode) {
-        this.groupCode = groupCode;
-    }
+    @Column(name = "sync")
+    private boolean sync;
 
 }
