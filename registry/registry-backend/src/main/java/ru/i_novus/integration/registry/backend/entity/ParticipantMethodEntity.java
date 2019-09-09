@@ -31,11 +31,4 @@ public class ParticipantMethodEntity {
 
     @Column(name = "integration_type")
     private String integrationType;
-
-    @Column(name = "callback_url")
-    private String callbackUrl;
-
-    @Column(name = "sync")
-    private boolean sync;
-
 }
