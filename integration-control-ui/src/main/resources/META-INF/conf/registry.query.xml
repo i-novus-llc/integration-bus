@@ -6,7 +6,7 @@
     </list>
 
     <unique>
-        <rest method="GET" filters-separator="&amp;">/participants/{code}</rest>
+        <rest method="GET" filters-separator="&amp;">/participants/{id}</rest>
     </unique>
 
     <fields>

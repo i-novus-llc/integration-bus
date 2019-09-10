@@ -69,47 +69,35 @@
 
         <operation id="permissionCreate">
             <invocation>
-                <sql>
-                    INSERT INTO integration.participant_permission(
-                    id, participant_method_id, participant_code, group_code, callback_url,
-                    sync)
-                    VALUES (nextval('integration.participant_permission_id_seq'),
-                    :participant_method_id, :participant, :group_code, :callback_url, :sync);
-                </sql>
+                <rest method="POST">/participantPermissions</rest>
             </invocation>
             <in-parameters>
-                <param id="participant_method_id" mapping="['participant_method_id']" domain="integer"/>
-                <param id="participant" mapping="['participant']" normalize="['id']" domain="string"/>
-                <param id="group_code" mapping="['group_code']" domain="string"/>
-                <param id="callback_url" mapping="['callback_url']" domain="string"/>
+                <param id="participant_method_id" mapping="['participantMethodId']" domain="integer"/>
+                <param id="participant.id" mapping="['participantCode']" domain="string"/>
+                <param id="group_code" mapping="['groupCode']" domain="string"/>
+                <param id="callback_url" mapping="['callbackUrl']" domain="string"/>
                 <param id="sync" mapping="['sync']" domain="boolean"/>
             </in-parameters>
         </operation>
 
         <operation id="permissionUpdate">
             <invocation>
-                <sql>
-                    UPDATE integration.participant_permission
-                    SET participant_code=:participant, group_code=:group_code,
-                    callback_url=:callback_url, sync=:sync
-                    WHERE id=:id;
-                </sql>
+                <rest method="PUT">/participantPermissions</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>
-                <param id="participant" mapping="['participant']" normalize="['id']" domain="string"/>
-                <param id="group_code" mapping="['group_code']" domain="string"/>
-                <param id="callback_url" mapping="['callback_url']" domain="string"/>
+                <param id="participant_method_id" mapping="['participantMethodId']" domain="integer"/>
+                <param id="participant.id" mapping="['participantCode']" domain="string"/>
+                <param id="group_code" mapping="['groupCode']" domain="string"/>
+                <param id="callback_url" mapping="['callbackUrl']" domain="string"/>
                 <param id="sync" mapping="['sync']" domain="boolean"/>
             </in-parameters>
         </operation>
 
-        <operation id="permissionDelete" confirm="true">
+        <operation id="permissionDelete" confirm="true" confirm-text="Вы действительно хотите удалить правдо доступа?"
+                   success-text="Право доступа удалено">
             <invocation>
-                <sql>
-                    DELETE FROM integration.participant_permission
-                    WHERE id=:id;
-                </sql>
+                <rest method="DELETE">/participantPermissions/{id}</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>

@@ -2,48 +2,28 @@
 <query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
        object-id="registry" name="group_code">
 
-    <list>
-        <sql>
-            SELECT :select
-            FROM integration.participant
-            WHERE (disable = false or disable is null) and :filters
-            ORDER BY :sorting
-            LIMIT :limit OFFSET :offset
-        </sql>
+    <list result-mapping="['content']" count-mapping="['totalElements']">
+        <rest method="GET" filters-separator="&amp;">/participants?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
     </list>
-    <count count-mapping="[0]['cnt']">
-        <sql>
-            SELECT count(*) AS cnt
-            FROM integration.participant
-            WHERE (disable = false or disable is null) AND :filters
-        </sql>
-    </count>
 
     <fields>
         <field id="id" domain="string">
             <select mapping="['code']"/>
             <filters>
-                <eq filter-id="id">code = :id</eq>
+                <eq filter-id="id" domain="string">code={id}</eq>
             </filters>
         </field>
 
         <field id="name" domain="string">
             <select/>
-<!--            <expression>code || ' ' || name</expression>-->
             <filters>
-                <eq filter-id="name">(upper(:expression) like '%'||upper(:name)||'%')</eq>
+                <eq filter-id="name">name={name}</eq>
             </filters>
         </field>
 
         <field id="participant_method_id" domain="integer">
-            <select/>
             <filters>
-                <eq filter-id="participant_method_id">
-                    ((select id from integration.participant_permission pp
-                    where pp.participant_code = code and pp.participant_method_id = :participant_method_id) is null
-                    and (select participant_code from integration.participant_method where id = :participant_method_id)
-                    != code)
-                </eq>
+                <eq filter-id="participant_method_id">excludeParticipantMethodId={participant_method_id}</eq>
             </filters>
         </field>
 

@@ -50,10 +50,8 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
             throw new IllegalArgumentException("Can't find participantMethod by id " + participantMethod.getId());
         }
         entity.setDisable(participantMethod.getDisable());
-        entity.setCallbackUrl(participantMethod.getCallbackUrl());
         entity.setIntegrationType(participantMethod.getIntegrationType());
         entity.setMethodCode(participantMethod.getMethodCode());
-        entity.setSync(participantMethod.isSync());
         entity.setUrl(participantMethod.getUrl());
         return map(repository.save(entity));
     }
@@ -67,13 +65,11 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         if (source == null)
             return null;
         ParticipantMethod target = new ParticipantMethod();
-        target.setCallbackUrl(source.getCallbackUrl());
         target.setDisable(source.getDisable());
         target.setId(source.getId());
         target.setIntegrationType(source.getIntegrationType());
         target.setMethodCode(source.getMethodCode());
         target.setParticipantCode(source.getParticipantCode());
-        target.setSync(source.isSync());
         target.setUrl(source.getUrl());
         return target;
     }
@@ -82,14 +78,12 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         if (source == null)
             return null;
         ParticipantMethodEntity target = new ParticipantMethodEntity();
-        target.setCallbackUrl(source.getCallbackUrl());
         target.setDisable(source.getDisable());
         if (source.getId() != null)
             target.setId(source.getId());
         target.setIntegrationType(source.getIntegrationType());
         target.setMethodCode(source.getMethodCode());
         target.setParticipantCode(source.getParticipantCode());
-        target.setSync(source.isSync());
         target.setUrl(source.getUrl());
         return target;
     }

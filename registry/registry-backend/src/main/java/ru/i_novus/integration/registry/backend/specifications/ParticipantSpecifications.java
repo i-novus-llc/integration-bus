@@ -2,13 +2,10 @@ package ru.i_novus.integration.registry.backend.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantCriteria;
-import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
-import ru.i_novus.integration.registry.backend.entity.ParticipantEntity_;
+import ru.i_novus.integration.registry.backend.entity.*;
+import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class ParticipantSpecifications implements Specification<ParticipantEntity> {
     private ParticipantCriteria criteria;
@@ -30,6 +27,14 @@ public class ParticipantSpecifications implements Specification<ParticipantEntit
             } else {
                 predicate = builder.and(predicate, builder.equal(root.get(ParticipantEntity_.disable), false));
             }
+        }
+        if (criteria.getExcludeParticipantMethodId() != null) {
+            Subquery<String> sq = criteriaQuery.subquery(String.class);
+            Root<ParticipantMethodEntity> participantEntityRoot  = sq.from(ParticipantMethodEntity.class);
+            sq.select(participantEntityRoot.get(ParticipantMethodEntity_.participantCode)).where(
+                    builder.equal(participantEntityRoot.get(ParticipantMethodEntity_.ID),
+                            criteria.getExcludeParticipantMethodId()));
+            predicate = builder.and(predicate, builder.notEqual(root.get(ParticipantEntity_.code), sq));
         }
         return predicate;
     }

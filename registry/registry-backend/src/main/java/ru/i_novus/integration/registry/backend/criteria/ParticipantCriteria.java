@@ -1,10 +1,14 @@
 package ru.i_novus.integration.registry.backend.criteria;
 
 import io.swagger.annotations.ApiParam;
+import lombok.Getter;
+import lombok.Setter;
 import net.n2oapp.platform.jaxrs.RestCriteria;
 
 import javax.ws.rs.QueryParam;
 
+@Getter
+@Setter
 public class ParticipantCriteria extends RestCriteria {
 
     @QueryParam("code")
@@ -19,27 +23,7 @@ public class ParticipantCriteria extends RestCriteria {
     @ApiParam(value = "Приостановить")
     private Integer disableSelectId;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getDisableSelectId() {
-        return disableSelectId;
-    }
-
-    public void setDisableSelectId(Integer disableSelectId) {
-        this.disableSelectId = disableSelectId;
-    }
+    @QueryParam("excludeParticipantMethodId")
+    @ApiParam(value = "Код сервиса системы участницы, которую надо не включать в выборку")
+    private Integer excludeParticipantMethodId;
 }
