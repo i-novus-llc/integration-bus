@@ -1,40 +1,32 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
        object-id="registry" name="registry">
-    <list>
-        <sql>
-            SELECT :select
-            FROM integration.participant_method
-            WHERE :filters
-            ORDER BY :sorting
-            LIMIT :limit OFFSET :offset
-        </sql>
+    <list result-mapping="['content']" count-mapping="['totalElements']">
+        <rest method="GET" filters-separator="&amp;">/participantMethods?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
     </list>
-    <count count-mapping="[0]['cnt']">
-        <sql>
-            SELECT count(*) AS cnt
-            FROM integration.participant_method
-            WHERE :filters
-        </sql>
-    </count>
+
+    <unique>
+        <rest method="GET" filters-separator="&amp;">/participantMethods/{id}</rest>
+    </unique>
+
 
     <fields>
         <field id="id" domain="integer">
             <select/>
             <filters>
-                <eq filter-id="id">id=:id</eq>
+                <eq filter-id="id">id={id}</eq>
             </filters>
         </field>
 
         <field id="participant_code" domain="string">
             <select/>
             <filters>
-                <eq filter-id="participant_code">participant_code=:participant_code</eq>
+                <eq filter-id="participant_code">participantCode={participant_code}</eq>
             </filters>
         </field>
 
         <field id="method_code" domain="string">
-            <select/>
+            <select mapping="['methodCode']"/>
         </field>
 
         <field id="url" domain="string">

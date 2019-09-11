@@ -7,7 +7,8 @@
         <toolbar>
             <button id="add" color="primary" icon="fa fa-plus" model="filter">
                 <show-modal page-id="permission_form" submit-operation-id="permissionCreate"
-                            master-field-id="id" detail-field-id="participant_method_id" master-param="participant_method_id"
+                            master-field-id="id" detail-field-id="participant_method_id"
+                            master-param="participant_method_id"
                             refresh-after-submit="true" upload="defaults"/>
             </button>
             <button id="update" icon="fa fa-pencil">

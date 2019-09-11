@@ -1,35 +1,26 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
        object-id="registry" name="registry">
-    <list>
-        <sql>
-            SELECT :select
-            FROM integration.participant
-            WHERE :filters
-            ORDER BY :sorting
-            LIMIT :limit OFFSET :offset
-        </sql>
+    <list result-mapping="['content']" count-mapping="['totalElements']">
+        <rest method="GET" filters-separator="&amp;">/participants?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
     </list>
-    <count count-mapping="[0]['cnt']">
-        <sql>
-            SELECT count(*) as cnt
-            FROM integration.participant
-            WHERE :filters
-        </sql>
-    </count>
+
+    <unique>
+        <rest method="GET" filters-separator="&amp;">/participants/{id}</rest>
+    </unique>
 
     <fields>
         <field id="id" domain="string">
             <select mapping="['code']"/>
             <filters>
-                <eq filter-id="id">(upper(code) like '%'||upper(:id)||'%')</eq>
+                <eq filter-id="id" domain="string">code={id}</eq>
             </filters>
         </field>
 
         <field id="name" domain="string">
             <select/>
             <filters>
-                <eq filter-id="name">(upper(:expression) like '%'||upper(:name)||'%')</eq>
+                <eq filter-id="name">name={name}</eq>
             </filters>
         </field>
 
@@ -39,10 +30,7 @@
 
         <field id="disable_select.id" domain="integer">
             <filters>
-                <eq filter-id="disable_select.id">
-                    (case when :disable_select.id = 2 then (disable is false or disable is null)
-                    when :disable_select.id = 1 then disable is true end)
-                </eq>
+                <eq filter-id="disable_select.id">disableSelectId={disable_select.id}</eq>
             </filters>
         </field>
 

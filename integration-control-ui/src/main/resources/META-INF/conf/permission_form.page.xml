@@ -3,20 +3,14 @@
 
     <form id="main" object-id="registry" query-id="sys_permission" default-values-query-id="permission_default">
         <fields>
-            <hidden id="participant_method_id"/>
             <select id="participant" label="Идентификатор участника" required="true"
-                    query-id="participant" label-field-id="name" search-field-id="id" cleanable="false">
-<!--                <pre-filters>-->
-<!--                    <eq field-id="participant_method_id" value="participant_method_id"/>-->
-<!--                </pre-filters>-->
+                    query-id="participant" label-field-id="id" search-field-id="id" cleanable="false">
+                <pre-filters>
+                    <eq field-id="participant_method_id" value="{participant_method_id}"/>
+                </pre-filters>
             </select>
-
             <input-text id="callback_url" label="URL Ответа"/>
-            <checkbox id="sync" label="Асинхронный" default-value="false">
-                <dependencies>
-                    <set-value>false</set-value>
-                </dependencies>
-            </checkbox>
+            <checkbox id="sync" label="Асинхронный" default-value="false"/>
         </fields>
     </form>
 
