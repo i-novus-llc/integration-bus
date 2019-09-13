@@ -3,7 +3,7 @@
     <operations>
         <operation id="createParticipant">
             <invocation>
-                <rest method="POST">/participants</rest>
+                <rest method="POST">${integration.registry.url}/participants</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['code']" domain="string" required="true"/>
@@ -14,7 +14,7 @@
 
         <operation id="updateParticipant">
             <invocation>
-                <rest method="PUT">/participants</rest>
+                <rest method="PUT">${integration.registry.url}/participants</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['code']" domain="string" required="true"/>
@@ -26,7 +26,7 @@
         <operation id="deleteParticipant" confirm="true" confirm-text="Вы уверены, что хотите удалить участника?"
                    success-text="Участник удален">
             <invocation>
-                <rest method="DELETE">/participants/{code}</rest>
+                <rest method="DELETE">${integration.registry.url}/participants/{code}</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['code']" domain="string"/>
@@ -35,7 +35,7 @@
 
         <operation id="createMethod" success-text="Сервис создан">
             <invocation>
-                <rest method="POST">/participantMethods</rest>
+                <rest method="POST">${integration.registry.url}/participantMethods</rest>
             </invocation>
             <in-parameters>
                 <param id="participant_code" mapping="['participantCode']" domain="string" required="true"/>
@@ -47,7 +47,7 @@
 
         <operation id="updateMethod" success-text="Сервис обновлен">
             <invocation>
-                <rest method="PUT">/participantMethods</rest>
+                <rest method="PUT">${integration.registry.url}/participantMethods</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>
@@ -60,7 +60,7 @@
 
         <operation id="deleteMethod" confirm="true" confirm-text="Вы уверены, что хотите удалить сервис?" success-text="Сервис удален">
             <invocation>
-                <rest method="DELETE">/participantMethods/{id}</rest>
+                <rest method="DELETE">${integration.registry.url}/participantMethods/{id}</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>
@@ -69,7 +69,7 @@
 
         <operation id="permissionCreate">
             <invocation>
-                <rest method="POST">/participantPermissions</rest>
+                <rest method="POST">${integration.registry.url}/participantPermissions</rest>
             </invocation>
             <in-parameters>
                 <param id="participant_method_id" mapping="['participantMethodId']" domain="integer"/>
@@ -82,7 +82,7 @@
 
         <operation id="permissionUpdate">
             <invocation>
-                <rest method="PUT">/participantPermissions</rest>
+                <rest method="PUT">${integration.registry.url}/participantPermissions</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>
@@ -97,7 +97,7 @@
         <operation id="permissionDelete" confirm="true" confirm-text="Вы действительно хотите удалить правдо доступа?"
                    success-text="Право доступа удалено">
             <invocation>
-                <rest method="DELETE">/participantPermissions/{id}</rest>
+                <rest method="DELETE">${integration.registry.url}/participantPermissions/{id}</rest>
             </invocation>
             <in-parameters>
                 <param id="id" mapping="['id']" domain="integer"/>

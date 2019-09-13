@@ -3,7 +3,7 @@
        object-id="registry" name="group_code">
 
     <list result-mapping="['content']" count-mapping="['totalElements']">
-        <rest method="GET" filters-separator="&amp;">/participants?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
+        <rest method="GET" filters-separator="&amp;">${integration.registry.url}/participants?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
     </list>
 
     <fields>

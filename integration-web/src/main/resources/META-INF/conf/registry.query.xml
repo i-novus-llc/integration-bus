@@ -2,11 +2,11 @@
 <query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
        object-id="registry" name="registry">
     <list result-mapping="['content']" count-mapping="['totalElements']">
-        <rest method="GET" filters-separator="&amp;">/participants?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
+        <rest method="GET" filters-separator="&amp;">${integration.registry.url}/participants?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
     </list>
 
     <unique>
-        <rest method="GET" filters-separator="&amp;">/participants/{id}</rest>
+        <rest method="GET" filters-separator="&amp;">${integration.registry.url}/participants/{id}</rest>
     </unique>
 
     <fields>
