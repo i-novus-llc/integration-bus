@@ -1,4 +1,4 @@
-package ru.i_novus.is.example;
+package ru.i_novus.integration.example;
 
 public class RequestModel {
     private Integer id;

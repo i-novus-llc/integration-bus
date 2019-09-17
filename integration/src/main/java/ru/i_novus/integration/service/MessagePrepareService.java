@@ -11,8 +11,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.is.integration.common.api.MonitoringModel;
-import ru.i_novus.is.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.ParticipantModel;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -20,7 +20,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 @Component
 public class MessagePrepareService {

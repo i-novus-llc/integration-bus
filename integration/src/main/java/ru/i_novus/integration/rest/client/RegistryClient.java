@@ -10,8 +10,8 @@ import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.model.CommonModel;
-import ru.i_novus.is.integration.common.api.ParticipantModel;
-import ru.i_novus.is.integration.common.api.RegistryInfoModel;
+import ru.i_novus.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.RegistryInfoModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

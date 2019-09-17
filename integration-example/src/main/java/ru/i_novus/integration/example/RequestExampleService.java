@@ -1,4 +1,4 @@
-package ru.i_novus.is.example;
+package ru.i_novus.integration.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

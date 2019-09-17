@@ -8,8 +8,8 @@ import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntit
 import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
-import ru.i_novus.is.integration.common.api.ParticipantModel;
-import ru.i_novus.is.integration.common.api.RegistryInfoModel;
+import ru.i_novus.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.RegistryInfoModel;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package ru.i_novus.is.example;
+package ru.i_novus.integration.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;

@@ -6,7 +6,7 @@ import ru.i_novus.integration.model.AbstractRequestModel;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.RequestModel;
 import ru.i_novus.integration.rest.client.RegistryClient;
-import ru.i_novus.is.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.ParticipantModel;
 
 import java.io.IOException;
 import java.util.Map;

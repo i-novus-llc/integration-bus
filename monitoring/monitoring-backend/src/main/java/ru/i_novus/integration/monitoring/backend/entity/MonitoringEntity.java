@@ -1,7 +1,7 @@
 package ru.i_novus.integration.monitoring.backend.entity;
 
 
-import ru.i_novus.is.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.MonitoringModel;
 
 import javax.persistence.*;
 import java.util.Date;

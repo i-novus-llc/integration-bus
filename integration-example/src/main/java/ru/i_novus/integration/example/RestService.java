@@ -1,4 +1,4 @@
-package ru.i_novus.is.example;
+package ru.i_novus.integration.example;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

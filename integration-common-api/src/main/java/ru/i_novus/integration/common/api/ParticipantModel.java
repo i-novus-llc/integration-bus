@@ -1,4 +1,4 @@
-package ru.i_novus.is.integration.common.api;
+package ru.i_novus.integration.common.api;
 
 import java.io.Serializable;
 

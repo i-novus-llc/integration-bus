@@ -16,7 +16,7 @@ import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.InternalRequestModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
 import ru.i_novus.integration.model.RequestModel;
-import ru.i_novus.is.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.MonitoringModel;
 
 import java.util.Date;
 import java.util.Locale;

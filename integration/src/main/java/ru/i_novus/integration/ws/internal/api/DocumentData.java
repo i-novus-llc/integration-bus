@@ -31,7 +31,7 @@ public class DocumentData implements Serializable {
      * Gets the value of the docName property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link String }
      *
      */
@@ -43,7 +43,7 @@ public class DocumentData implements Serializable {
      * Sets the value of the docName property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link String }
      *
      */
@@ -55,7 +55,7 @@ public class DocumentData implements Serializable {
      * Gets the value of the docFormat property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link String }
      *
      */
@@ -67,7 +67,7 @@ public class DocumentData implements Serializable {
      * Sets the value of the docFormat property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link String }
      *
      */
@@ -79,7 +79,7 @@ public class DocumentData implements Serializable {
      * Gets the value of the digestData property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link String }
      *
      */
@@ -91,7 +91,7 @@ public class DocumentData implements Serializable {
      * Sets the value of the digestData property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link String }
      *
      */
@@ -103,7 +103,7 @@ public class DocumentData implements Serializable {
      * Gets the value of the docType property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link Integer }
      *
      */
@@ -115,7 +115,7 @@ public class DocumentData implements Serializable {
      * Sets the value of the docType property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link Integer }
      *
      */
@@ -127,7 +127,7 @@ public class DocumentData implements Serializable {
      * Gets the value of the splitDocument property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link SplitDocumentModel }
      *
      */
@@ -139,7 +139,7 @@ public class DocumentData implements Serializable {
      * Sets the value of the splitDocument property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link SplitDocumentModel }
      *
      */

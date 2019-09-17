@@ -19,7 +19,7 @@ public class IntegrationMessage implements Serializable {
     /**
      * Gets the value of the messageData property.
      *
-     * @return possible object is
+     * @return possible object integration
      * {@link MessageInfo }
      */
     public MessageInfo getMessageData() {
@@ -29,7 +29,7 @@ public class IntegrationMessage implements Serializable {
     /**
      * Sets the value of the messageData property.
      *
-     * @param value allowed object is
+     * @param value allowed object integration
      *              {@link MessageInfo }
      */
     public void setMessageData(MessageInfo value) {
@@ -39,7 +39,7 @@ public class IntegrationMessage implements Serializable {
     /**
      * Gets the value of the message property.
      *
-     * @return possible object is
+     * @return possible object integration
      * {@link MessageData }
      */
     public MessageData getMessage() {
@@ -49,7 +49,7 @@ public class IntegrationMessage implements Serializable {
     /**
      * Sets the value of the message property.
      *
-     * @param value allowed object is
+     * @param value allowed object integration
      *              {@link MessageData }
      */
     public void setMessage(MessageData value) {

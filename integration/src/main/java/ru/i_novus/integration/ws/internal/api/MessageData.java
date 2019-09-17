@@ -24,7 +24,7 @@ public class MessageData implements Serializable {
      * Gets the value of the groupUid property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link String }
      *
      */
@@ -36,7 +36,7 @@ public class MessageData implements Serializable {
      * Sets the value of the groupUid property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link String }
      *
      */
@@ -48,7 +48,7 @@ public class MessageData implements Serializable {
      * Gets the value of the uuid property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link String }
      *
      */
@@ -60,7 +60,7 @@ public class MessageData implements Serializable {
      * Sets the value of the uuid property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link String }
      *
      */
@@ -72,7 +72,7 @@ public class MessageData implements Serializable {
      * Gets the value of the appData property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link DocumentData }
      *
      */
@@ -84,7 +84,7 @@ public class MessageData implements Serializable {
      * Sets the value of the appData property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link DocumentData }
      *
      */
