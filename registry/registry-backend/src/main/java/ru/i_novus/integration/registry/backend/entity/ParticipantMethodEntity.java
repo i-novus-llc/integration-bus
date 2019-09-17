@@ -27,12 +27,6 @@ public class ParticipantMethodEntity {
     @Column(name = "integration_type")
     private String integrationType;
 
-    @Column(name = "callback_url")
-    private String callbackUrl;
-
-    @Column(name = "sync")
-    private boolean sync;
-
     public int getId() {
         return id;
     }
@@ -79,21 +73,5 @@ public class ParticipantMethodEntity {
 
     public void setIntegrationType(String integrationType) {
         this.integrationType = integrationType;
-    }
-
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
-    }
-
-    public boolean isSync() {
-        return sync;
-    }
-
-    public void setSync(boolean sync) {
-        this.sync = sync;
     }
 }

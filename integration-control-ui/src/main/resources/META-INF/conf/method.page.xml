@@ -15,9 +15,9 @@
                     <fs:field-set>
                         <ctrl:hidden id="participant_code"/>
                         <ctrl:input-text id="method_code" label="Идентификатор метода" required="true"/>
-                        <!--<ctrl:classifier id="integration_type" label="">
+                        <ctrl:classifier id="integration_type" label="Тип взаимодействия">
                             <ctrl:query query-id="integration_type" label-field-id="name" value-field-id="id"/>
-                        </ctrl:classifier>-->
+                        </ctrl:classifier>
                         <ctrl:input-text id="url" label="URL" domain="string" required="true"/>
                         <ctrl:checkbox id="disable" label="Приостановлена" default-value="false"/>
                     </fs:field-set>

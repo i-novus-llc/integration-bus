@@ -27,4 +27,51 @@ public class ParticipantPermissionEntity {
     @Column(name = "sync")
     private boolean sync;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Integer getParticipantMethodId() {
+        return participantMethodId;
+    }
+
+    public void setParticipantMethodId(Integer participantMethodId) {
+        this.participantMethodId = participantMethodId;
+    }
+
+    public String getParticipantCode() {
+        return participantCode;
+    }
+
+    public void setParticipantCode(String participantCode) {
+        this.participantCode = participantCode;
+    }
+
+    public String getGroupCode() {
+        return groupCode;
+    }
+
+    public void setGroupCode(String groupCode) {
+        this.groupCode = groupCode;
+    }
+
+    public String getCallBackUrl() {
+        return callBackUrl;
+    }
+
+    public void setCallBackUrl(String callBackUrl) {
+        this.callBackUrl = callBackUrl;
+    }
+
+    public boolean isSync() {
+        return sync;
+    }
+
+    public void setSync(boolean sync) {
+        this.sync = sync;
+    }
 }
