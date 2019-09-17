@@ -25,7 +25,7 @@ public class ParticipantMethodEntity {
     private Boolean disable;
 
     @Column(name = "integration_type")
-    private String integration_type;
+    private String integrationType;
 
     public int getId() {
         return id;
@@ -67,11 +67,11 @@ public class ParticipantMethodEntity {
         this.disable = disable;
     }
 
-    public String getIntegration_type() {
-        return integration_type;
+    public String getIntegrationType() {
+        return integrationType;
     }
 
-    public void setIntegration_type(String integration_type) {
-        this.integration_type = integration_type;
+    public void setIntegrationType(String integrationType) {
+        this.integrationType = integrationType;
     }
 }

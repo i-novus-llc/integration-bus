@@ -22,7 +22,7 @@ public class ParticipantPermissionEntity {
     private String groupCode;
 
     @Column(name = "callback_url")
-    private String callbackUrl;
+    private String callBackUrl;
 
     @Column(name = "sync")
     private boolean sync;
@@ -59,12 +59,12 @@ public class ParticipantPermissionEntity {
         this.groupCode = groupCode;
     }
 
-    public String getCallbackUrl() {
-        return callbackUrl;
+    public String getCallBackUrl() {
+        return callBackUrl;
     }
 
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public void setCallBackUrl(String callBackUrl) {
+        this.callBackUrl = callBackUrl;
     }
 
     public boolean isSync() {

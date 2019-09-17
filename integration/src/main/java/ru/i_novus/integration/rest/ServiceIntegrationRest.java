@@ -1,11 +1,15 @@
 package ru.i_novus.integration.rest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.i_novus.integration.gateway.InboundGateway;
-import ru.i_novus.integration.model.InputModel;
+import ru.i_novus.integration.model.CommonModel;
+import ru.i_novus.integration.model.InternalRequestModel;
+import ru.i_novus.integration.model.RequestModel;
 import ru.i_novus.integration.service.CommonModelPrepareService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
@@ -22,15 +26,67 @@ public class ServiceIntegrationRest {
         this.modelPrepareService = modelPrepareService;
     }
 
+    /**
+     * Обработка get запросов
+     * @param request http request
+     * @param service зарегистрированный код получателя
+     * @param method код зарегистрированного метода получателя
+     * @param requestParams параметры path, query
+     * @return возвращает Object если запрос синхронный
+     * @throws IOException
+     */
+    @GetMapping(path = "/get/{service}/{method}/**")
+    public Object get(HttpServletRequest request, @PathVariable("service") String service, @PathVariable("method") String method,
+                       @RequestParam Map<String, String> requestParams) throws IOException {
+
+        CommonModel commonModel = modelPrepareService.getRequestModelPrepare(requestParams, method, service);
+        String url = commonModel.getParticipantModel().getUrl() + request.getRequestURI()
+                .replace("/integration/get/" + service + "/" + method, "") + "?" +request.getQueryString();
+        commonModel.getParticipantModel().setUrl(url);
+        if (commonModel.getParticipantModel().isSync()) {
+            return inboundGateway.syncRequest(commonModel).getPayload();
+        } else {
+            inboundGateway.aSyncRequest(commonModel);
+        }
+
+        return HttpStatus.ACCEPTED;
+    }
+
+    /**
+     * Обработка POST заросов
+     * @param model модель
+     * @return возвращает Object если запрос синхронный
+     * @throws IOException
+     */
+    @PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object post(@RequestBody RequestModel model) throws IOException {
+        CommonModel commonModel = modelPrepareService.requestModelPreparation(model);
+        if (commonModel.getParticipantModel().isSync()) {
+            return inboundGateway.syncRequest(commonModel).getPayload();
+        } else {
+            inboundGateway.aSyncRequest(commonModel);
+        }
+
+        return HttpStatus.ACCEPTED;
+    }
+
+    /**
+     * @deprecated замнен на метод get
+     */
     @GetMapping(path = "/syncRequest/{method}")
     public Object syncRequest(@RequestParam Map<String, String> requestParams, @PathVariable("method") String method) throws IOException {
 
-        return inboundGateway.syncRequest(modelPrepareService.syncRequestModelPrepare(requestParams, method)).getPayload();
+        return inboundGateway.syncRequest(modelPrepareService.getRequestModelPrepare(requestParams, method, requestParams.get("recipient"))).getPayload();
     }
 
+    /**
+     * Передача файлов между ИШ
+     * @param model модель с описанием пердаваемого файла
+     * @throws IOException
+     */
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void aSyncRequest(@RequestBody InputModel model) throws IOException {
+    public void internalRequest(@RequestBody InternalRequestModel model) throws IOException {
 
-        inboundGateway.aSyncRequest(modelPrepareService.aSyncRequestModelPreparation(model));
+        inboundGateway.internalRequest(modelPrepareService.requestModelPreparation(model));
     }
 }
