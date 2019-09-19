@@ -58,7 +58,7 @@
             <in-parameters>
                 <param name="participant_code" mapping="['participant_code']" domain="string"/>
                 <param name="method_code" mapping="['method_code']" domain="string"/>
-                <!--<param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>-->
+                <param name="integration_type.id" mapping="['integration_type.id']" domain="string"/>
                 <param name="url" mapping="['url']" domain="string"/>
                 <param name="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
@@ -75,7 +75,7 @@
             <in-parameters>
                 <param name="id" mapping="['id']" domain="integer"/>
                 <param name="method_code" mapping="['method_code']" domain="string"/>
-                <!--<param name="integration_type.id" mapping="['integration_type_id']" domain="string"/>-->
+                <param name="integration_type.id" mapping="['integration_type_id']" domain="string"/>
                 <param name="url" mapping="['url']" domain="string"/>
                 <param name="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
