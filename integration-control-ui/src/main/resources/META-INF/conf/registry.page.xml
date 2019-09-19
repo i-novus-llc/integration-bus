@@ -84,6 +84,7 @@
                         <wgt:column column-field-id="disable" name="Приостановлен">
                             <wgt:checkbox/>
                         </wgt:column>
+                        <wgt:column column-field-id="integration_type.id" name="Тип взаимодействия"/>
                     </wgt:columns>
                 </wgt:table>
             </container>

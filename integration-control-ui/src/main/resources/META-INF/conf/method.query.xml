@@ -42,6 +42,13 @@
         </field>
 
         <field>
+            <id>integration_type.id</id>
+            <domain>string</domain>
+            <display/>
+            <expression>r.integration_type</expression>
+        </field>
+
+        <field>
             <id>url</id>
             <domain>string</domain>
             <display/>
