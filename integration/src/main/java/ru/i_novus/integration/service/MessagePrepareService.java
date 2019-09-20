@@ -79,7 +79,7 @@ public class MessagePrepareService {
                 }
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
-                responseEntity = (ResponseEntity<Object>) restTemplate.postForObject(participantModel.getUrl(),
+                responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
                         messageCommonModel.getPayload().getObject(), Object.class);
 
                 checkError(responseEntity, messageCommonModel);
