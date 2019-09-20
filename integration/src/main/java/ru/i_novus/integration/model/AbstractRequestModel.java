@@ -1,8 +1,10 @@
 package ru.i_novus.integration.model;
 
+import java.util.List;
+
 public abstract class AbstractRequestModel {
     private String uid;
-    private String recipient;
+    private List<String> recipient;
     private String method;
     private String envCode;
 
@@ -14,11 +16,11 @@ public abstract class AbstractRequestModel {
         this.uid = uid;
     }
 
-    public String getRecipient() {
+    public List<String> getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(String recipient) {
+    public void setRecipient(List<String> recipient) {
         this.recipient = recipient;
     }
 

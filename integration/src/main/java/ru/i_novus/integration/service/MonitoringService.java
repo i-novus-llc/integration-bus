@@ -72,7 +72,7 @@ public class MonitoringService {
         monitoringGateway.putToQueue(MessageBuilder.withPayload(model).build());
     }
 
-    public MonitoringModel prepareModel(Object values) {
+    public MonitoringModel prepareModel(Object values, String recipient) {
         MonitoringModel monitoringModel = null;
         if (values instanceof Map) {
             Map<String, String> map = (Map<String, String>) values;
@@ -83,7 +83,7 @@ public class MonitoringService {
             InternalRequestModel model = (InternalRequestModel) values;
 
             monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
-                    new Date(), property.getEnvCode(), model.getRecipient(), model.getMethod(), MessageStatusEnum.CREATE.getId());
+                    new Date(), property.getEnvCode(), recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
 
             monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
                     model.getDataModel().getName());
@@ -92,7 +92,7 @@ public class MonitoringService {
             RequestModel model = (RequestModel) values;
 
             monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
-                    new Date(), property.getEnvCode(), model.getRecipient(), model.getMethod(), MessageStatusEnum.CREATE.getId());
+                    new Date(), property.getEnvCode(), recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
         }
         return monitoringModel;
     }

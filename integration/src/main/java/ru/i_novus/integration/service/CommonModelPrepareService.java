@@ -4,11 +4,14 @@ import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.PlaceholdersProperty;
 import ru.i_novus.integration.model.AbstractRequestModel;
 import ru.i_novus.integration.model.CommonModel;
+import ru.i_novus.integration.model.InternalRequestModel;
 import ru.i_novus.integration.model.RequestModel;
 import ru.i_novus.integration.rest.client.RegistryClient;
 import ru.i_novus.integration.common.api.ParticipantModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -29,26 +32,43 @@ public class CommonModelPrepareService {
         String envCode = requestParams.containsKey("envCode") ? requestParams.get("envCode") : property.getEnvCode();
         ParticipantModel participantModel = registryClient.getServiceParticipant(service, envCode, method);
 
-        return prepareCommonModel(participantModel, requestParams);
+        return prepareCommonModel(participantModel, requestParams, service);
     }
 
-    public CommonModel requestModelPreparation(AbstractRequestModel requestModel) throws IOException {
+    public List<CommonModel> requestModelPreparation(AbstractRequestModel requestModel) {
+        List<CommonModel> commonModels = new ArrayList<>();
+        String envCode = requestModel.getEnvCode() != null ? requestModel.getEnvCode() : property.getEnvCode();
+
+        requestModel.getRecipient().forEach(recipient -> {
+            ParticipantModel participantModel = null;
+            try {
+                participantModel = registryClient.getServiceParticipant(recipient, envCode, requestModel.getMethod());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            CommonModel commonModel = prepareCommonModel(participantModel, requestModel, recipient);
+
+            if (requestModel instanceof RequestModel) {
+                commonModel.setObject(((RequestModel) requestModel).getMessage());
+            }
+
+            commonModels.add(commonModel);
+        });
+
+        return commonModels;
+    }
+
+    public CommonModel requestModelPreparation(InternalRequestModel requestModel) throws IOException {
         String envCode = requestModel.getEnvCode() != null ? requestModel.getEnvCode() : property.getEnvCode();
         ParticipantModel participantModel = registryClient.getServiceParticipant(requestModel.getRecipient(), envCode, requestModel.getMethod());
-
-        CommonModel commonModel =  prepareCommonModel(participantModel, requestModel);
-
-        if (requestModel instanceof RequestModel) {
-            commonModel.setObject(((RequestModel) requestModel).getMessage());
-        }
-
-        return commonModel;
+        return prepareCommonModel(participantModel, requestModel, requestModel.getRecipient());
     }
 
-    private CommonModel prepareCommonModel(ParticipantModel participantModel, Object model) {
+    private CommonModel prepareCommonModel(ParticipantModel participantModel, Object model, String recipient) {
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
-        commonModel.setMonitoringModel(monitoringService.prepareModel(model));
+        commonModel.setMonitoringModel(monitoringService.prepareModel(model, recipient));
 
         return commonModel;
     }
