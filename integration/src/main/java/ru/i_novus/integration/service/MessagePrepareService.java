@@ -99,6 +99,7 @@ public class MessagePrepareService {
         } catch (Exception ex) {
             throw new RuntimeException(participantModel.getUrl(), ex);
         }
+        monitoringMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
 
         return message;
     }
@@ -119,11 +120,21 @@ public class MessagePrepareService {
      * @param status статус передачи
      */
     private void monitoringMessage(String operation, MonitoringModel monitoringModel, int status) {
-        monitoringModel.setDateTime(new Date());
-        monitoringModel.setStatus(status);
-        monitoringModel.setOperation(operation);
+        monitoringRequestMessage(operation, monitoringModel, status);
         monitoringModel.setComment(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) +
                 messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH));
         monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
+    }
+
+    /**
+     * Заполнение мониторинга для отправки
+     * @param operation выполненная операция
+     * @param monitoringModel модель
+     * @param status статус передачи
+     */
+    private void monitoringRequestMessage(String operation, MonitoringModel monitoringModel, int status) {
+        monitoringModel.setDateTime(new Date());
+        monitoringModel.setStatus(status);
+        monitoringModel.setOperation(operation);
     }
 }
