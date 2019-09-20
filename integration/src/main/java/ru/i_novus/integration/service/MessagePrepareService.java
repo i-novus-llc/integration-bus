@@ -71,12 +71,11 @@ public class MessagePrepareService {
                 }
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
-                if (participantModel.isSync()) {
-                    message = MessageBuilder.withPayload(restTemplate.postForObject(participantModel.getUrl(),
-                            messageCommonModel.getPayload().getObject(), Object.class)).build();
+                result = restTemplate.postForObject(participantModel.getUrl(),
+                        messageCommonModel.getPayload().getObject(), Object.class);
+                if (participantModel.isSync() || result != null) {
+                    message = MessageBuilder.withPayload(result).build();
                 } else {
-                    result = restTemplate.postForLocation(participantModel.getUrl(),
-                            messageCommonModel.getPayload().getObject(), Object.class);
                     message = MessageBuilder.withPayload("SUCCESS").build();
                 }
             }
