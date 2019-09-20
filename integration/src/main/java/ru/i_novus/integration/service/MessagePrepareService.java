@@ -66,14 +66,16 @@ public class MessagePrepareService {
                 result = restTemplate.getForEntity(participantModel.getUrl(), String.class).getBody();
                 message = MessageBuilder.withPayload(result).build();
 
-                if (participantModel.getMethod().equals("nsi") && new JsonParser().parse(message.getPayload().toString()).getAsJsonObject().get("list").toString().equals("[]")) {
+                if (participantModel.getMethod().equals("nsi") && new JsonParser().parse(message.getPayload()
+                        .toString()).getAsJsonObject().get("list").toString().equals("[]")) {
                     monitoringMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
                 }
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
                 result = restTemplate.postForObject(participantModel.getUrl(),
                         messageCommonModel.getPayload().getObject(), Object.class);
-                if (participantModel.isSync() || result != null) {
+
+                if (participantModel.isSync() && result != null) {
                     message = MessageBuilder.withPayload(result).build();
                 } else {
                     message = MessageBuilder.withPayload("SUCCESS").build();
