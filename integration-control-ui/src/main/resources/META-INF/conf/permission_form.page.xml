@@ -25,7 +25,7 @@
                             <ctrl:query query-id="group" label-field-id="name" value-field-id="id"/>
                         </ctrl:classifier>-->
                         <ctrl:input-text id="callback_url" label="URL Ответа" css-class="n2o-label-6"/>
-                        <ctrl:checkbox id="sync" label="Асинхронный" default-value="false" css-class="n2o-label-6"/>
+                        <ctrl:checkbox id="sync" label="Синхронный" default-value="false" css-class="n2o-label-6"/>
                     </fs:field-set>
                 </wgt:form>
             </container>
