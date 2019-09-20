@@ -3,6 +3,8 @@ package ru.i_novus.integration.service;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -61,20 +63,26 @@ public class MessagePrepareService {
 
         Message message = null;
         Object result = null;
+        ResponseEntity<Object> responseEntity = null;
         try {
             if (participantModel.getIntegrationType().equals("REST_GET")) {
-                result = restTemplate.getForEntity(participantModel.getUrl(), String.class).getBody();
-                message = MessageBuilder.withPayload(result).build();
+                responseEntity = restTemplate.getForEntity(participantModel.getUrl(), Object.class);
+                message = MessageBuilder.withPayload(responseEntity.getBody()).build();
 
-                if (participantModel.getMethod().equals("nsi") && new JsonParser().parse(message.getPayload()
-                        .toString()).getAsJsonObject().get("list").toString().equals("[]")) {
-                    monitoringNsiMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
+                checkError(responseEntity, messageCommonModel);
+                result = responseEntity.getBody();
+
+                if (participantModel.getMethod().equals("nsi") &&
+                        new JsonParser().parse(result.toString()).getAsJsonObject().get("list").toString().equals("[]")) {
+                    monitoringNsiMessage(participantModel.getMethod(),
+                            messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
                 }
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
-                result = restTemplate.postForObject(participantModel.getUrl(),
+                responseEntity = (ResponseEntity<Object>) restTemplate.postForObject(participantModel.getUrl(),
                         messageCommonModel.getPayload().getObject(), Object.class);
 
+                checkError(responseEntity, messageCommonModel);
                 if (participantModel.isSync() && result != null) {
                     message = MessageBuilder.withPayload(result).build();
                 } else {
@@ -102,6 +110,14 @@ public class MessagePrepareService {
         monitoringRequestMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
 
         return message;
+    }
+
+    private void checkError(ResponseEntity responseEntity, Message<CommonModel> modelMessage) {
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
+
+            throw new RuntimeException(responseEntity.getBody().toString());
+        }
     }
 
     /**
