@@ -93,8 +93,6 @@ public class MonitoringService {
 
             monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
                     new Date(), property.getEnvCode(), model.getRecipient(), model.getMethod(), MessageStatusEnum.CREATE.getId());
-
-            monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH));
         }
         return monitoringModel;
     }
