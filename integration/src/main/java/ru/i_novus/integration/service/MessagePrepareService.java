@@ -83,6 +83,7 @@ public class MessagePrepareService {
                         messageCommonModel.getPayload().getObject(), Object.class);
 
                 checkError(responseEntity, messageCommonModel);
+                result = responseEntity.getBody();
                 if (participantModel.isSync() && result != null) {
                     message = MessageBuilder.withPayload(result).build();
                 } else {
