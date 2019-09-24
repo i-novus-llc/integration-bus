@@ -74,25 +74,27 @@ public class MonitoringService {
 
     public MonitoringModel prepareModel(Object values, String recipient) {
         MonitoringModel monitoringModel = null;
+        String envCode;
         if (values instanceof Map) {
             Map<String, String> map = (Map<String, String>) values;
-            monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), property.getEnvCode(),
+            envCode = map.get("envCode") != null ? map.get("envCode") : property.getEnvCode();
+            monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), envCode,
                     map.get("recipient"), map.get("method"), MessageStatusEnum.CREATE.getId());
         }
         if (values instanceof InternalRequestModel) {
             InternalRequestModel model = (InternalRequestModel) values;
-
+            envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
             monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
-                    new Date(), property.getEnvCode(), recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
+                    new Date(), envCode, recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
 
             monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
                     model.getDataModel().getName());
         }
         if (values instanceof RequestModel) {
             RequestModel model = (RequestModel) values;
-
+            envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
             monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
-                    new Date(), property.getEnvCode(), recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
+                    new Date(), envCode, recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
         }
         return monitoringModel;
     }
