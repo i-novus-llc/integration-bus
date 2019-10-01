@@ -84,7 +84,7 @@ public class MonitoringService {
         if (values instanceof InternalRequestModel) {
             InternalRequestModel model = (InternalRequestModel) values;
             envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
-            monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
+            monitoringModel = new MonitoringModel(model.getUid(),
                     new Date(), envCode, recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
 
             monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
@@ -93,7 +93,7 @@ public class MonitoringService {
         if (values instanceof RequestModel) {
             RequestModel model = (RequestModel) values;
             envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
-            monitoringModel = new MonitoringModel(UUID.randomUUID().toString(),
+            monitoringModel = new MonitoringModel(model.getUid(),
                     new Date(), envCode, recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
         }
         return monitoringModel;
