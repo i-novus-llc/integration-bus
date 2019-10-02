@@ -72,14 +72,14 @@ public class MonitoringService {
         monitoringGateway.putToQueue(MessageBuilder.withPayload(model).build());
     }
 
-    public MonitoringModel prepareModel(Object values, String recipient) {
+    public MonitoringModel prepareModel(Object values, String recipient, String method) {
         MonitoringModel monitoringModel = null;
         String envCode;
         if (values instanceof Map) {
             Map<String, String> map = (Map<String, String>) values;
             envCode = map.get("envCode") != null ? map.get("envCode") : property.getEnvCode();
             monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), new Date(), envCode,
-                    map.get("recipient"), map.get("method"), MessageStatusEnum.CREATE.getId());
+                    recipient, method, MessageStatusEnum.CREATE.getId());
         }
         if (values instanceof InternalRequestModel) {
             InternalRequestModel model = (InternalRequestModel) values;

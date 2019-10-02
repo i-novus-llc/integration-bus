@@ -68,7 +68,7 @@ public class CommonModelPrepareService {
     private CommonModel prepareCommonModel(ParticipantModel participantModel, Object model, String recipient) {
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
-        commonModel.setMonitoringModel(monitoringService.prepareModel(model, recipient));
+        commonModel.setMonitoringModel(monitoringService.prepareModel(model, recipient, participantModel.getMethod()));
 
         return commonModel;
     }
