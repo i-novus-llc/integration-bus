@@ -85,7 +85,7 @@ public class MonitoringService {
             InternalRequestModel model = (InternalRequestModel) values;
             envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
             monitoringModel = new MonitoringModel(model.getUid(),
-                    new Date(), envCode, recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
+                    new Date(), envCode, recipient, method, MessageStatusEnum.CREATE.getId());
 
             monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
                     model.getDataModel().getName());
@@ -94,7 +94,7 @@ public class MonitoringService {
             RequestModel model = (RequestModel) values;
             envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
             monitoringModel = new MonitoringModel(model.getUid(),
-                    new Date(), envCode, recipient, model.getMethod(), MessageStatusEnum.CREATE.getId());
+                    new Date(), envCode, recipient, method, MessageStatusEnum.CREATE.getId());
         }
         return monitoringModel;
     }
