@@ -62,7 +62,9 @@ public class CommonModelPrepareService {
     public CommonModel requestModelPreparation(InternalRequestModel requestModel) throws IOException {
         String envCode = requestModel.getEnvCode() != null ? requestModel.getEnvCode() : property.getEnvCode();
         ParticipantModel participantModel = registryClient.getServiceParticipant(requestModel.getRecipient(), envCode, requestModel.getMethod());
-        return prepareCommonModel(participantModel, requestModel, requestModel.getRecipient());
+        CommonModel commonModel = prepareCommonModel(participantModel, requestModel, requestModel.getRecipient());
+        commonModel.setObject(requestModel);
+        return commonModel;
     }
 
     private CommonModel prepareCommonModel(ParticipantModel participantModel, Object model, String recipient) {
