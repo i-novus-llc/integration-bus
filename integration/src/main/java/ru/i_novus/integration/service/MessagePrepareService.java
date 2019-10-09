@@ -24,8 +24,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class MessagePrepareService {
@@ -57,6 +55,10 @@ public class MessagePrepareService {
         prepareRequest(messageCommonModel);
     }
 
+    public static void main(String[] args) {
+        String result = "{\"result\":\"OK\",\"resultText\":null,\"resultCode\":null,\"total\":11,\"list\":[]}";
+        result.contains("\"list\":[]");
+    }
     /**
      * Подготовка и передача запроса получателю
      * @param messageCommonModel модель для запроса
@@ -80,8 +82,7 @@ public class MessagePrepareService {
                 if (messageCommonModel.getPayload().getMonitoringModel().getReceiver().equals("nsi")) {
                     List<String> list = Arrays.asList(url.split("&"));
                     String dataComment = list.stream().filter(l-> l.contains("identifier")).findFirst().get();
-                    if (participantModel.getMethod().equals("data") &&
-                            new JsonParser().parse(result.toString()).getAsJsonObject().get("list").toString().equals("[]")) {
+                    if (participantModel.getMethod().equals("data") && result.toString().contains("\"list\":[]")) {
 
                         String versionComment = list.stream().filter(l-> l.contains("version")).findFirst().get();
                         monitoringNsiMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
