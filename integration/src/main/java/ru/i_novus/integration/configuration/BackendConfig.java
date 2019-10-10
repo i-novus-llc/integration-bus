@@ -1,19 +1,19 @@
 package ru.i_novus.integration.configuration;
 
-import net.n2oapp.platform.jaxrs.autoconfigure.EnableJaxRsProxyClient;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.i_novus.ms.audit.client.AuditClient;
-import ru.i_novus.ms.audit.client.impl.SimpleAuditClientImpl;
-import ru.i_novus.ms.audit.client.impl.converter.RequestConverter;
-import ru.i_novus.ms.audit.client.model.User;
-import ru.i_novus.ms.audit.service.api.AuditRest;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.core.JmsTemplate;
+import ru.i_novus.ms.audit.client.UserAccessor;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.jms.ConnectionFactory;
 
 @Configuration
 @EnableSwagger2
@@ -26,25 +26,24 @@ public class BackendConfig {
     }
 
     @Bean
-    public RequestConverter requestConverter(){
-        return new RequestConverter(
-                () -> new User("UNKNOWN", "UNKNOWN"),
-                () -> "SOURCE_APPLICATION",
-                () -> "SOURCE_WORKSTATION"
-        );
+    @ConditionalOnMissingBean
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+        return new JmsTemplate(connectionFactory);
     }
 
-    @Configuration
-    @EnableJaxRsProxyClient(
-            classes = {AuditRest.class},
-            address = "${audit.rest.url}")
-    static class AuditClientConfiguration {
-        @Bean
-        public AuditClient simpleAuditClient(@Qualifier("auditRestJaxRsProxyClient") AuditRest auditRest) {
-            SimpleAuditClientImpl simpleAuditClient = new SimpleAuditClientImpl();
-            simpleAuditClient.setAuditRest(auditRest);
-            return simpleAuditClient;
-        }
+    @Bean
+    @ConditionalOnMissingBean
+    public JmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory listenerContainerFactory = new DefaultJmsListenerContainerFactory();
+        listenerContainerFactory.setConnectionFactory(connectionFactory);
+        return listenerContainerFactory;
+    }
+
+    @Bean
+    public UserAccessor userAccessor() {
+        return () -> {
+            return new ru.i_novus.ms.audit.client.model.User("UNKNOWN", "UNKNOWN");
+        };
     }
 
 }
