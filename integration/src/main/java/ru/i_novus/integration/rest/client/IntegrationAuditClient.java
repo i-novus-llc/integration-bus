@@ -20,7 +20,7 @@ public class IntegrationAuditClient {
         request.setObjectType(model.getClass().getSimpleName());
         request.setObjectId(model.getUid());
         request.setAuditType((short) 2);
-        request.setSourceApplication("Integration");
+        request.setSourceApplication("integration");
         request.setSender(model.getSender());
         request.setReceiver(model.getReceiver());
         request.setEventType(model.getError() == null ? model.getOperation() : "error");
