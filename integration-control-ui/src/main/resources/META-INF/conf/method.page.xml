@@ -5,7 +5,7 @@
       xmlns:ctrl="http://n2oapp.net/framework/config/schema/n2o-control-1.0">
     <object-id>registry</object-id>
     <layout>n2o/layout/single</layout>
-    <name>Сервисы (опреации)</name>
+    <name>Сервисы (операции)</name>
 
     <regions>
         <region place="single" type="none">

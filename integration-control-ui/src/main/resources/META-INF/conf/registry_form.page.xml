@@ -13,7 +13,7 @@
                 <wgt:form>
                     <wgt:query-id>registry</wgt:query-id>
                     <fs:field-set>
-                        <ctrl:input-text id="id" label="Код системы" domain="string" required="true"/>
+                        <ctrl:input-text id="id" label="Код системы (региона)" domain="string" required="true"/>
                         <ctrl:input-text id="name" label="Наименование системы" required="true"/>
                         <ctrl:checkbox id="disable" label="Приостановлена" default-value="false">
                             <ctrl:set-value-expression on-load="true">
