@@ -2,7 +2,6 @@ package ru.i_novus.integration.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.i_novus.ms.audit.client.UserAccessor;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -17,13 +16,6 @@ public class BackendConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/**")).build();
-    }
-
-    @Bean
-    public UserAccessor userAccessor() {
-        return () -> {
-            return new ru.i_novus.ms.audit.client.model.User("UNKNOWN", "UNKNOWN");
-        };
     }
 
 }
