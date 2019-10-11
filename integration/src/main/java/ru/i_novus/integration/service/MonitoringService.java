@@ -38,10 +38,11 @@ public class MonitoringService {
 
     public Message<CommonModel> create(@Payload CommonModel commonModel, int status) {
         MonitoringModel monitoringModel = commonModel.getMonitoringModel();
-        monitoringModel.setStatus(status);
-        monitoringModel.setDateTime(new Date());
-        monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
-
+        if (!monitoringModel.getReceiver().equals("nsi")) {
+            monitoringModel.setStatus(status);
+            monitoringModel.setDateTime(new Date());
+            monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
+        }
         return MessageBuilder.withPayload(commonModel).build();
     }
 
