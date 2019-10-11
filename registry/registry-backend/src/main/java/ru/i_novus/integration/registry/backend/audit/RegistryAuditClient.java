@@ -27,9 +27,6 @@ public class RegistryAuditClient {
         request.setObjectName(objectName);
         request.setAuditType((short) 1);
 
-        request.setUserId("UNKNOWN");
-        request.setUsername("UNKNOWN");
-
         auditClient.add(request);
     }
 

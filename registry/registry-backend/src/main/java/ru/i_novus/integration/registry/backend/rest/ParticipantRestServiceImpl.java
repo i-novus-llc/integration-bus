@@ -89,7 +89,7 @@ public class ParticipantRestServiceImpl implements ParticipantRestService {
 
     private Participant audit(String action, ParticipantEntity entity) {
         if (entity != null) {
-            auditClient.audit(action, entity, "" + entity.getCode(), entity.getName());
+            auditClient.audit(action, entity, entity.getCode(), entity.getName());
         }
         return map(entity);
     }
