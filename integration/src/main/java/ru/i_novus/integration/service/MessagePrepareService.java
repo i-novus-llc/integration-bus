@@ -55,10 +55,6 @@ public class MessagePrepareService {
         prepareRequest(messageCommonModel);
     }
 
-    public static void main(String[] args) {
-        String result = "{\"result\":\"OK\",\"resultText\":null,\"resultCode\":null,\"total\":11,\"list\":[]}";
-        result.contains("\"list\":[]");
-    }
     /**
      * Подготовка и передача запроса получателю
      * @param messageCommonModel модель для запроса
@@ -95,8 +91,9 @@ public class MessagePrepareService {
                                 MessageStatusEnum.SEND.getId(),
                                 messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH) + dataComment);
                     }
-                    return message;
                 }
+
+                return message;
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
                 responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
