@@ -53,6 +53,12 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>ru.i-novus.ms.audit</groupId>
+            <artifactId>audit-client-spring-boot-starter</artifactId>
+            <version>${audit.version}</version>
+        </dependency>
+
         <!-- platform -->
         <dependency>
             <groupId>net.n2oapp.platform</groupId>

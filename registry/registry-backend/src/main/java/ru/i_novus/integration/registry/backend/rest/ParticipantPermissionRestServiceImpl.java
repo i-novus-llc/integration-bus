@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantPermissionRestService;
+import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantPermissionCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
 import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
@@ -19,6 +20,9 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
 
     @Autowired
     private ParticipantPermissionRepository repository;
+
+    @Autowired
+    private RegistryAuditClient auditClient;
 
     @Override
     public Page<ParticipantPermission> findAll(ParticipantPermissionCriteria criteria) {
@@ -39,8 +43,8 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
 
     @Override
     public ParticipantPermission create(ParticipantPermission participant) {
-        ParticipantPermission result = map(repository.save(map(participant)));
-        return result;
+        ParticipantPermissionEntity result = repository.save(map(participant));
+        return audit("audit.participantPermission.create", result);
     }
 
     @Override
@@ -54,11 +58,12 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
         entity.setParticipantCode(participantPermission.getParticipantCode());
         entity.setParticipantMethodId(participantPermission.getParticipantMethodId());
         entity.setSync(participantPermission.isSync());
-        return map(repository.save(entity));
+        return audit("audit.participantPermission.update", repository.save(entity));
     }
 
     @Override
     public void delete(Integer code) {
+        audit("audit.participantPermission.delete", repository.getOne(code));
         repository.deleteById(code);
     }
 
@@ -88,6 +93,13 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
         target.setParticipantMethodId(source.getParticipantMethodId());
         target.setSync(source.isSync());
         return target;
+    }
+
+    private ParticipantPermission audit(String action, ParticipantPermissionEntity entity) {
+        if (entity != null) {
+            auditClient.audit(action, entity, "" + entity.getId(), entity.getParticipantCode());
+        }
+        return map(entity);
     }
 
     public void setRepository(ParticipantPermissionRepository repository) {
