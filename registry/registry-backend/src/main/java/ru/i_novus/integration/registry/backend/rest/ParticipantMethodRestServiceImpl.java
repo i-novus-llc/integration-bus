@@ -44,7 +44,7 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
     @Override
     public ParticipantMethod create(ParticipantMethod participant) {
         ParticipantMethodEntity result = repository.save(map(participant));
-        return audit("audit.participantMethod.create", result);
+        return audit("audit.eventType.create", result);
     }
 
     @Override
@@ -57,12 +57,12 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         entity.setIntegrationType(participantMethod.getIntegrationType());
         entity.setMethodCode(participantMethod.getMethodCode());
         entity.setUrl(participantMethod.getUrl());
-        return audit("audit.participantMethod.update", repository.save(entity));
+        return audit("audit.eventType.update", repository.save(entity));
     }
 
     @Override
     public void delete(Integer code) {
-        audit("audit.participantMethod.delete", repository.getOne(code));
+        audit("audit.eventType.delete", repository.getOne(code));
         repository.deleteById(code);
     }
 
@@ -95,7 +95,7 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
 
     private ParticipantMethod audit(String action, ParticipantMethodEntity entity) {
         if (entity != null) {
-            auditClient.audit(action, entity, "" + entity.getId(), entity.getParticipantCode());
+            auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantMethod");
         }
         return map(entity);
     }

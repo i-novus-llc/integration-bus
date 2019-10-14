@@ -44,7 +44,7 @@ public class ParticipantRestServiceImpl implements ParticipantRestService {
     @Override
     public Participant create(Participant participant) {
         ParticipantEntity result = repository.save(map(participant));
-        return audit("audit.participant.create" ,result);
+        return audit("audit.eventType.create" ,result);
     }
 
     @Override
@@ -56,12 +56,12 @@ public class ParticipantRestServiceImpl implements ParticipantRestService {
         entity.setName(participant.getName());
         entity.setDisable(participant.getDisable());
         entity.setGroupCode(participant.getGroupCode());
-        return audit("audit.participant.update", repository.save(entity));
+        return audit("audit.eventType.update", repository.save(entity));
     }
 
     @Override
     public void delete(String code) {
-        audit("audit.participant.delete", repository.findById(code).orElse(null));
+        audit("audit.eventType.delete", repository.findById(code).orElse(null));
         repository.deleteById(code);
     }
 
@@ -89,7 +89,7 @@ public class ParticipantRestServiceImpl implements ParticipantRestService {
 
     private Participant audit(String action, ParticipantEntity entity) {
         if (entity != null) {
-            auditClient.audit(action, entity, entity.getCode(), entity.getName());
+            auditClient.audit(action, entity, entity.getCode(), "audit.objectName.participant");
         }
         return map(entity);
     }

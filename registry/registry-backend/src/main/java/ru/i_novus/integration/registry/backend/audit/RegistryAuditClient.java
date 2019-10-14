@@ -30,7 +30,7 @@ public class RegistryAuditClient {
         } catch (JsonProcessingException e) {
             request.setContext("" + object);
         }
-        request.setObjectName(objectName);
+        request.setObjectName(messageSourceAccessor.getMessage(objectName));
         request.setAuditType((short) 1);
 
         User user = getUser();

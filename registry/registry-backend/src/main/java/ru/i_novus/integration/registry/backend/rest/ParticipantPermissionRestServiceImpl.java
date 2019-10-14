@@ -44,7 +44,7 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
     @Override
     public ParticipantPermission create(ParticipantPermission participant) {
         ParticipantPermissionEntity result = repository.save(map(participant));
-        return audit("audit.participantPermission.create", result);
+        return audit("audit.eventType.create", result);
     }
 
     @Override
@@ -58,12 +58,12 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
         entity.setParticipantCode(participantPermission.getParticipantCode());
         entity.setParticipantMethodId(participantPermission.getParticipantMethodId());
         entity.setSync(participantPermission.isSync());
-        return audit("audit.participantPermission.update", repository.save(entity));
+        return audit("audit.eventType.update", repository.save(entity));
     }
 
     @Override
     public void delete(Integer code) {
-        audit("audit.participantPermission.delete", repository.getOne(code));
+        audit("audit.eventType.delete", repository.getOne(code));
         repository.deleteById(code);
     }
 
@@ -97,7 +97,7 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
 
     private ParticipantPermission audit(String action, ParticipantPermissionEntity entity) {
         if (entity != null) {
-            auditClient.audit(action, entity, "" + entity.getId(), entity.getParticipantCode());
+            auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantPermission");
         }
         return map(entity);
     }
