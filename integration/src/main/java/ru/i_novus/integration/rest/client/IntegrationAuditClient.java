@@ -17,14 +17,12 @@ public class IntegrationAuditClient {
 
     public void sendMonitoringMessage(MonitoringModel model) throws JsonProcessingException {
         AuditClientRequest request = new AuditClientRequest();
-        request.setObjectName("MonitoringModel");
-        request.setObjectType("integration");
+        request.setObjectType(model.getClass().getSimpleName());
         request.setObjectId(model.getUid());
-        if (model.getError() == null) {
-            request.setContext(model.toString());
-        } else {
-            request.setEventType("error");
-        }
+        request.setAuditType((short) 2);
+        request.setSender(model.getSender());
+        request.setReceiver(model.getReceiver());
+        request.setEventType(model.getError() == null ? model.getOperation() : "error");
         request.setContext(mapper.writeValueAsString(model));
         auditClient.add(request);
     }
