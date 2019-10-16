@@ -1,8 +1,8 @@
 package ru.i_novus.integration.service;
-
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -61,22 +63,44 @@ public class MessagePrepareService {
 
         Message message = null;
         Object result = null;
+        ResponseEntity<Object> responseEntity = null;
         try {
             if (participantModel.getIntegrationType().equals("REST_GET")) {
-                result = restTemplate.getForEntity(participantModel.getUrl(), String.class).getBody();
-                message = MessageBuilder.withPayload(result).build();
+                String url = participantModel.getUrl();
+                responseEntity = restTemplate.getForEntity(url, Object.class);
+                message = MessageBuilder.withPayload(responseEntity.getBody()).build();
 
-                if (participantModel.getMethod().equals("nsi") && new JsonParser().parse(message.getPayload().toString()).getAsJsonObject().get("list").toString().equals("[]")) {
-                    monitoringMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
+                checkError(responseEntity, messageCommonModel);
+                result = responseEntity.getBody();
+
+                if (messageCommonModel.getPayload().getMonitoringModel().getReceiver().equals("nsi")) {
+                    List<String> list = Arrays.asList(url.split("&"));
+                    String dataComment = list.stream().filter(l-> l.contains("identifier")).findFirst().get();
+                    if (participantModel.getMethod().equals("data") && result.toString().contains("\"list\":[]")) {
+
+                        String versionComment = list.stream().filter(l-> l.contains("version")).findFirst().get();
+                        monitoringNsiMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
+                                MessageStatusEnum.SEND.getId(),
+                                messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) + dataComment + "-" + versionComment);
+                    }
+                    if (participantModel.getMethod().equals("versions")) {
+
+                        monitoringNsiMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
+                                MessageStatusEnum.SEND.getId(),
+                                messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH) + dataComment);
+                    }
+                    return message;
                 }
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
-                if (participantModel.isSync()) {
-                    message = MessageBuilder.withPayload(restTemplate.postForObject(participantModel.getUrl(),
-                            messageCommonModel.getPayload().getObject(), Object.class)).build();
+                responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
+                        messageCommonModel.getPayload().getObject(), Object.class);
+
+                checkError(responseEntity, messageCommonModel);
+                result = responseEntity.getBody();
+                if (participantModel.isSync() && result != null) {
+                    message = MessageBuilder.withPayload(result).build();
                 } else {
-                    result = restTemplate.postForLocation(participantModel.getUrl(),
-                            messageCommonModel.getPayload().getObject(), Object.class);
                     message = MessageBuilder.withPayload("SUCCESS").build();
                 }
             }
@@ -98,8 +122,17 @@ public class MessagePrepareService {
         } catch (Exception ex) {
             throw new RuntimeException(participantModel.getUrl(), ex);
         }
+        monitoringRequestMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
 
         return message;
+    }
+
+    private void checkError(ResponseEntity responseEntity, Message<CommonModel> modelMessage) {
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
+
+            throw new RuntimeException(responseEntity.getBody().toString());
+        }
     }
 
     /**
@@ -117,12 +150,21 @@ public class MessagePrepareService {
      * @param monitoringModel модель
      * @param status статус передачи
      */
-    private void monitoringMessage(String operation, MonitoringModel monitoringModel, int status) {
+    private void monitoringNsiMessage(String operation, MonitoringModel monitoringModel, int status, String comment) {
+        monitoringRequestMessage(operation, monitoringModel, status);
+        monitoringModel.setComment(comment);
+        monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
+    }
+
+    /**
+     * Заполнение мониторинга для отправки
+     * @param operation выполненная операция
+     * @param monitoringModel модель
+     * @param status статус передачи
+     */
+    private void monitoringRequestMessage(String operation, MonitoringModel monitoringModel, int status) {
         monitoringModel.setDateTime(new Date());
         monitoringModel.setStatus(status);
         monitoringModel.setOperation(operation);
-        monitoringModel.setComment(messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) +
-                messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH));
-        monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
     }
 }
