@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantMethodRestService;
+import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
@@ -19,6 +20,9 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
 
     @Autowired
     private ParticipantMethodRepository repository;
+
+    @Autowired
+    private RegistryAuditClient auditClient;
 
     @Override
     public Page<ParticipantMethod> findAll(ParticipantMethodCriteria criteria) {
@@ -39,8 +43,8 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
 
     @Override
     public ParticipantMethod create(ParticipantMethod participant) {
-        ParticipantMethod result = map(repository.save(map(participant)));
-        return result;
+        ParticipantMethodEntity result = repository.save(map(participant));
+        return audit("audit.eventType.create", result);
     }
 
     @Override
@@ -53,11 +57,12 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         entity.setIntegrationType(participantMethod.getIntegrationType());
         entity.setMethodCode(participantMethod.getMethodCode());
         entity.setUrl(participantMethod.getUrl());
-        return map(repository.save(entity));
+        return audit("audit.eventType.update", repository.save(entity));
     }
 
     @Override
     public void delete(Integer code) {
+        audit("audit.eventType.delete", repository.getOne(code));
         repository.deleteById(code);
     }
 
@@ -86,6 +91,13 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         target.setParticipantCode(source.getParticipantCode());
         target.setUrl(source.getUrl());
         return target;
+    }
+
+    private ParticipantMethod audit(String action, ParticipantMethodEntity entity) {
+        if (entity != null) {
+            auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantMethod");
+        }
+        return map(entity);
     }
 
     public void setRepository(ParticipantMethodRepository repository) {
