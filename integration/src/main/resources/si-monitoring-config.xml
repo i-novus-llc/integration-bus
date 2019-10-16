@@ -31,9 +31,6 @@
 
     <int:service-activator input-channel="monitoringJmsOutChannel" ref="integrationAuditClient" method="sendMonitoringMessage"/>
 
-    <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
-                 default-reply-timeout="3000" error-channel="errorChannel"/>
-
     <int:gateway id="monitoringGateway" service-interface="ru.i_novus.integration.gateway.MonitoringGateway"
                  default-reply-timeout="3000"/>
 
