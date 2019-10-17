@@ -10,7 +10,7 @@
                 </pre-filters>
             </select>
             <input-text id="callback_url" label="URL Ответа"/>
-            <checkbox id="sync" label="Асинхронный" default-value="false"/>
+            <checkbox id="sync" label="Синхронный" default-value="false"/>
         </fields>
     </form>
 

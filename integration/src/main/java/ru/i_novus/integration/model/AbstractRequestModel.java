@@ -2,14 +2,13 @@ package ru.i_novus.integration.model;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
-public abstract class AbstractRequestModel{
+public abstract class AbstractRequestModel {
     private String uid;
-    private String recipient;
+    private List<String> recipient;
     private String method;
     private String envCode;
 

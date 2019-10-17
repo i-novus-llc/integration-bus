@@ -30,7 +30,7 @@ public class MessageInfo implements Serializable {
     /**
      * Gets the value of the sender property.
      *
-     * @return possible object is
+     * @return possible object integration
      * {@link String }
      */
     public String getSender() {
@@ -40,7 +40,7 @@ public class MessageInfo implements Serializable {
     /**
      * Sets the value of the sender property.
      *
-     * @param value allowed object is
+     * @param value allowed object integration
      *              {@link String }
      */
     public void setSender(String value) {
@@ -50,7 +50,7 @@ public class MessageInfo implements Serializable {
     /**
      * Gets the value of the recipient property.
      *
-     * @return possible object is
+     * @return possible object integration
      * {@link String }
      */
     public String getRecipient() {
@@ -60,7 +60,7 @@ public class MessageInfo implements Serializable {
     /**
      * Sets the value of the recipient property.
      *
-     * @param value allowed object is
+     * @param value allowed object integration
      *              {@link String }
      */
     public void setRecipient(String value) {
@@ -70,7 +70,7 @@ public class MessageInfo implements Serializable {
     /**
      * Gets the value of the date property.
      *
-     * @return possible object is
+     * @return possible object integration
      * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getDate() {
@@ -80,7 +80,7 @@ public class MessageInfo implements Serializable {
     /**
      * Sets the value of the date property.
      *
-     * @param value allowed object is
+     * @param value allowed object integration
      *              {@link XMLGregorianCalendar }
      */
     public void setDate(XMLGregorianCalendar value) {
@@ -90,7 +90,7 @@ public class MessageInfo implements Serializable {
     /**
      * Gets the value of the messageId property.
      *
-     * @return possible object is
+     * @return possible object integration
      * {@link String }
      */
     public String getMessageId() {
@@ -100,7 +100,7 @@ public class MessageInfo implements Serializable {
     /**
      * Sets the value of the messageId property.
      *
-     * @param value allowed object is
+     * @param value allowed object integration
      *              {@link String }
      */
     public void setMessageId(String value) {

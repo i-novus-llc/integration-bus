@@ -26,6 +26,7 @@
     </int:router>-->
 
     <int:chain input-channel="requestSyncChannel" output-channel="responseSyncChannel">
+        <int:service-activator expression="@monitoringService.create(payload, 1)"/>
         <int:service-activator ref="messagePrepareService" method="prepareSyncRequest"/>
     </int:chain>
 
@@ -48,6 +49,5 @@
 
     <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
                  default-reply-timeout="3000" error-channel="errorChannel"/>
-
 
 </beans>

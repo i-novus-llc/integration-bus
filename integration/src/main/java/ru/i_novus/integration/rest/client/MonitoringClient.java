@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.IntegrationProperties;
-import ru.i_novus.is.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.MonitoringModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
