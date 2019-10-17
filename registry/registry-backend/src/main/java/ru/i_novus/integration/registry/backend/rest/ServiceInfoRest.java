@@ -51,7 +51,7 @@ public class ServiceInfoRest {
         if (permission.isPresent()) {
             participantModel.setUrl(senderMethod.get().getUrl());
             participantModel.setCallbackUrl(permission.get().getCallBackUrl());
-            participantModel.setSync(permission.get().isSync());
+            participantModel.setSync(permission.get().getSync());
             participantModel.setIntegrationType(senderMethod.get().getIntegrationType());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {

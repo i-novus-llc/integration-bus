@@ -5,7 +5,6 @@ import ru.i_novus.integration.common.api.MonitoringModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.i_novus.is.integration.common.api.MonitoringModel;
 
 import javax.persistence.*;
 import java.util.Date;

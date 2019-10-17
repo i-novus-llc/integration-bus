@@ -1,7 +1,7 @@
 package ru.i_novus.integration.service;
 
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.model.AbstractRequestModel;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.InternalRequestModel;
@@ -18,10 +18,10 @@ import java.util.Map;
 public class CommonModelPrepareService {
 
     private final RegistryClient registryClient;
-    private final PlaceholdersProperty property;
+    private final IntegrationProperties property;
     private final MonitoringService monitoringService;
 
-    public CommonModelPrepareService(RegistryClient registryClient, PlaceholdersProperty property, MonitoringService monitoringService) {
+    public CommonModelPrepareService(RegistryClient registryClient, IntegrationProperties property, MonitoringService monitoringService) {
         this.registryClient = registryClient;
         this.property = property;
         this.monitoringService = monitoringService;
