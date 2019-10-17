@@ -3,7 +3,7 @@
 
     <form id="main" query-id="registry" object-id="registry">
         <fields>
-            <input-text id="id" label="Код системы" domain="string" enabled="false"/>
+            <input-text id="id" label="Код системы (региона)" domain="string" enabled="false"/>
             <input-text id="name" label="Наименование системы" required="true"/>
             <checkbox id="disable" label="Приостановлена" default-value="false">
                 <dependencies>
