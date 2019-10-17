@@ -29,9 +29,8 @@
             <select mapping="['methodCode']"/>
         </field>
 
-        <field id="integration_type.id" domain="string">
-            <select/>
-<!--            <expression>r.integration_type</expression>-->
+        <field id="integration_type" domain="string">
+            <select mapping="['integrationType']"/>
         </field>
 
         <field id="url" domain="string">

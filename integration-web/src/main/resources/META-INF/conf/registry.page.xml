@@ -69,7 +69,7 @@
                     <column text-field-id="disable" label="Приостановлен">
                         <checkbox/>
                     </column>
-                    <column text-field-id="integration_type.id" label="Тип взаимодействия"/>
+                    <column text-field-id="integration_type" label="Тип взаимодействия"/>
                 </columns>
             </table>
         </region>

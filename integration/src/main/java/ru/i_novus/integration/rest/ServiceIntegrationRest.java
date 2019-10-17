@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/integration")
+@RequestMapping("/")
 public class ServiceIntegrationRest {
 
     private final InboundGateway inboundGateway;
