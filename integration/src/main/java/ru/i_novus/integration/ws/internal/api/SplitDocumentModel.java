@@ -27,7 +27,7 @@ public class SplitDocumentModel implements Serializable {
      * Gets the value of the binaryData property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link DataHandler }
      *
      */
@@ -39,7 +39,7 @@ public class SplitDocumentModel implements Serializable {
      * Sets the value of the binaryData property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link DataHandler }
      *
      */
@@ -51,7 +51,7 @@ public class SplitDocumentModel implements Serializable {
      * Gets the value of the temporaryPath property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link String }
      *
      */
@@ -63,7 +63,7 @@ public class SplitDocumentModel implements Serializable {
      * Sets the value of the temporaryPath property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link String }
      *
      */
@@ -75,7 +75,7 @@ public class SplitDocumentModel implements Serializable {
      * Gets the value of the count property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link Integer }
      *
      */
@@ -87,7 +87,7 @@ public class SplitDocumentModel implements Serializable {
      * Sets the value of the count property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link Integer }
      *
      */
@@ -99,7 +99,7 @@ public class SplitDocumentModel implements Serializable {
      * Gets the value of the isLast property.
      *
      * @return
-     *     possible object is
+     *     possible object integration
      *     {@link Boolean }
      *
      */
@@ -111,7 +111,7 @@ public class SplitDocumentModel implements Serializable {
      * Sets the value of the isLast property.
      *
      * @param value
-     *     allowed object is
+     *     allowed object integration
      *     {@link Boolean }
      *
      */

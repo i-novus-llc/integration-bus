@@ -1,6 +1,7 @@
 package ru.i_novus.integration.monitoring.backend.entity;
 
 
+import ru.i_novus.integration.common.api.MonitoringModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -8,8 +8,8 @@ import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntit
 import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
-import ru.i_novus.is.integration.common.api.ParticipantModel;
-import ru.i_novus.is.integration.common.api.RegistryInfoModel;
+import ru.i_novus.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.RegistryInfoModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,17 +35,23 @@ public class ServiceInfoRest {
 
         Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.find(model.getReceiver(), model.getMethod());
 
-        List<ParticipantPermissionEntity> permissions = participantPermissionRepository.find(senderMethod.get().getId(),
-                sender.get().getCode(), sender.get().getGroupCode());
+        List<ParticipantPermissionEntity> permissions;
+        if (senderMethod.isPresent()) {
+            permissions = participantPermissionRepository.find(senderMethod.get().getId(),
+                    sender.get().getCode(), sender.get().getGroupCode());
+        } else {
+            throw new RuntimeException("method :" + model.getMethod() + "is not present to : " + model.getReceiver());
+        }
 
-        ParticipantPermissionEntity permission = permissions.isEmpty() ? null : permissions.stream()
-                .filter(p-> p.getParticipantCode() != null).findFirst().get();
+        Optional<ParticipantPermissionEntity> permission = permissions.isEmpty() ? Optional.empty() : permissions.stream()
+                .filter(p -> p.getParticipantCode() != null).findFirst();
+
 
         ParticipantModel participantModel = new ParticipantModel();
-        if (permission != null) {
+        if (permission.isPresent()) {
             participantModel.setUrl(senderMethod.get().getUrl());
-            participantModel.setCallbackUrl(permission.getCallBackUrl());
-            participantModel.setSync(permission.getSync());
+            participantModel.setCallbackUrl(permission.get().getCallBackUrl());
+            participantModel.setSync(permission.get().isSync());
             participantModel.setIntegrationType(senderMethod.get().getIntegrationType());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {

@@ -1,4 +1,6 @@
 package ru.i_novus.integration.service;
+
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -11,8 +13,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.is.integration.common.api.MonitoringModel;
-import ru.i_novus.is.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.ParticipantModel;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -89,8 +91,9 @@ public class MessagePrepareService {
                                 MessageStatusEnum.SEND.getId(),
                                 messageSource.getMessage("nsi.update.operation.version", null, Locale.ENGLISH) + dataComment);
                     }
-                    return message;
                 }
+
+                return message;
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
                 responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
