@@ -50,19 +50,13 @@
         <dependency>
             <groupId>net.n2oapp.framework.security</groupId>
             <artifactId>security-admin-db</artifactId>
-            <version>${access.version}</version>
+            <version>2.6</version>
         </dependency>
 
         <dependency>
             <groupId>ru.i-novus.ms.audit</groupId>
             <artifactId>audit-client-spring-boot-starter</artifactId>
             <version>${audit.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.n2oapp.framework.security</groupId>
-            <artifactId>security-auth-common</artifactId>
-            <version>${access.version}</version>
         </dependency>
 
         <!-- platform -->
