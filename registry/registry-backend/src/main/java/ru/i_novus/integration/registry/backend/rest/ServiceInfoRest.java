@@ -27,13 +27,13 @@ public class ServiceInfoRest {
 
     @PostMapping("/prepareRequest")
     public ParticipantModel getServiceInfo(@RequestBody RegistryInfoModel model) {
-        Optional<ParticipantEntity> sender = participantRepository.findById(model.getSender());
-        Optional<ParticipantEntity> receiver = participantRepository.findById(model.getReceiver());
+        Optional<ParticipantEntity> sender = participantRepository.findEnabledById(model.getSender());
+        Optional<ParticipantEntity> receiver = participantRepository.findEnabledById(model.getReceiver());
 
         if (!sender.isPresent()) throw new RuntimeException("service :" + model.getSender() + " disable");
         if (!receiver.isPresent()) throw new RuntimeException("service :" + model.getReceiver() + " disable");
 
-        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.find(model.getReceiver(), model.getMethod());
+        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.findEnabled(model.getReceiver(), model.getMethod());
 
         List<ParticipantPermissionEntity> permissions;
         if (senderMethod.isPresent()) {

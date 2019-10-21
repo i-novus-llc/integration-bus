@@ -5,11 +5,7 @@
         <fields>
             <input-text id="id" label="Код системы (региона)" domain="string" enabled="false"/>
             <input-text id="name" label="Наименование системы" required="true"/>
-            <checkbox id="disable" label="Приостановлена" default-value="false">
-                <dependencies>
-                    <set-value>disable?true:false</set-value>
-                </dependencies>
-            </checkbox>
+            <checkbox id="disable" label="Приостановлена" default-value="false"/>
         </fields>
     </form>
 

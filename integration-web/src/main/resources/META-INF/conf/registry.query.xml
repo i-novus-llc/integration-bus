@@ -24,7 +24,7 @@
             </filters>
         </field>
 
-        <field id="disable" domain="string">
+        <field id="disable" domain="boolean">
             <select/>
         </field>
 
