@@ -13,9 +13,9 @@ public class ParticipantMethodEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(name = "id_gen", sequenceName = "integration.participant_group_id_seq",
+    @SequenceGenerator(name = "id_gen", sequenceName = "integration.participant_method_id_seq",
             allocationSize = 1)
-    private int id;
+    private Integer id;
 
     @Column(name = "participant_code")
     private String participantCode;

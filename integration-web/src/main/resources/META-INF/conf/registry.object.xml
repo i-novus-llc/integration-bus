@@ -41,6 +41,7 @@
                 <param id="participant_code" mapping="['participantCode']" domain="string" required="true"/>
                 <param id="method_code" mapping="['methodCode']" domain="string" required="true"/>
                 <param id="url" mapping="['url']" domain="string" required="true"/>
+                <param id="integration_type" mapping="['integrationType']" domain="string" required="true"/>
                 <param id="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
         </operation>
@@ -54,6 +55,7 @@
                 <param id="participant_code" mapping="['participantCode']" domain="string"/>
                 <param id="method_code" mapping="['methodCode']" domain="string" required="true"/>
                 <param id="url" mapping="['url']" domain="string" required="true"/>
+                <param id="integration_type" mapping="['integrationType']" domain="string" required="true"/>
                 <param id="disable" mapping="['disable']" domain="boolean"/>
             </in-parameters>
         </operation>

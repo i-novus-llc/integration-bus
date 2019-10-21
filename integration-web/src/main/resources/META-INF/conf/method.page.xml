@@ -6,6 +6,7 @@
             <hidden id="participant_code"/>
             <input-text id="method_code" label="Идентификатор метода" required="true"/>
             <input-text id="url" label="URL" domain="string" required="true"/>
+            <input-text id="integration_type" label="Тип взаимодействия" domain="string" required="true"/>
             <checkbox id="disable" label="Приостановлена" default-value="false"/>
         </fields>
     </form>
