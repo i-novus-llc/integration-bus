@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-4.0" name="integrationType">
+
+    <list>
+        <rest method="GET">${integration.registry.url}/participantMethods/integrationTypes</rest>
+    </list>
+
+    <fields>
+        <field id="id" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="id"/>
+            </filters>
+        </field>
+
+        <field id="name" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="name"/>
+            </filters>
+        </field>
+    </fields>
+</query>

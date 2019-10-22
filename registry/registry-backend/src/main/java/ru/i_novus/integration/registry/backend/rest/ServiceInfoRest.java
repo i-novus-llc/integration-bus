@@ -52,7 +52,7 @@ public class ServiceInfoRest {
             participantModel.setUrl(senderMethod.get().getUrl());
             participantModel.setCallbackUrl(permission.get().getCallBackUrl());
             participantModel.setSync(permission.get().getSync());
-            participantModel.setIntegrationType(senderMethod.get().getIntegrationType());
+            participantModel.setIntegrationType(senderMethod.get().getIntegrationType().getCode());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {
             throw new RuntimeException("permission error");

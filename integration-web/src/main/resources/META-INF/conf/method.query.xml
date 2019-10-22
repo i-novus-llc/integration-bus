@@ -29,7 +29,7 @@
             <select mapping="['methodCode']"/>
         </field>
 
-        <field id="integration_type" domain="string">
+        <field id="integration_type">
             <select mapping="['integrationType']"/>
         </field>
 

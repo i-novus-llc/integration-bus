@@ -63,7 +63,7 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
 
     @Override
     public void delete(Integer code) {
-        audit("audit.eventType.delete", repository.getOne(code));
+        repository.findById(code).ifPresent(ent -> audit("audit.eventType.delete", ent));
         repository.deleteById(code);
     }
 
