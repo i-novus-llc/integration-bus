@@ -8,12 +8,17 @@ import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantMethodRestService;
 import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
+import ru.i_novus.integration.registry.backend.entity.IntegrationTypeEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
+import ru.i_novus.integration.registry.backend.model.IntegrationType;
 import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
+import ru.i_novus.integration.registry.backend.repository.IntegrationTypeRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
 import ru.i_novus.integration.registry.backend.specifications.ParticipantMethodSpecifications;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestService {
@@ -23,6 +28,9 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
 
     @Autowired
     private RegistryAuditClient auditClient;
+
+    @Autowired
+    private IntegrationTypeRepository integrationTypeRepository;
 
     @Override
     public Page<ParticipantMethod> findAll(ParticipantMethodCriteria criteria) {
@@ -54,7 +62,7 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
             throw new IllegalArgumentException("Can't find participantMethod by id " + participantMethod.getId());
         }
         entity.setDisable(participantMethod.getDisable());
-        entity.setIntegrationType(participantMethod.getIntegrationType());
+        entity.setIntegrationType(map(participantMethod.getIntegrationType()));
         entity.setMethodCode(participantMethod.getMethodCode());
         entity.setUrl(participantMethod.getUrl());
         return audit("audit.eventType.update", repository.save(entity));
@@ -62,8 +70,13 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
 
     @Override
     public void delete(Integer code) {
-        audit("audit.eventType.delete", repository.getOne(code));
+        repository.findById(code).ifPresent(ent -> audit("audit.eventType.delete", ent));
         repository.deleteById(code);
+    }
+
+    @Override
+    public List<IntegrationType> getAllIntegrationTypes() {
+        return integrationTypeRepository.findAll().stream().map(this::map).collect(Collectors.toList());
     }
 
     private ParticipantMethod map(ParticipantMethodEntity source) {
@@ -72,7 +85,7 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         ParticipantMethod target = new ParticipantMethod();
         target.setDisable(source.getDisable());
         target.setId(source.getId());
-        target.setIntegrationType(source.getIntegrationType());
+        target.setIntegrationType(map(source.getIntegrationType()));
         target.setMethodCode(source.getMethodCode());
         target.setParticipantCode(source.getParticipantCode());
         target.setUrl(source.getUrl());
@@ -86,11 +99,19 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         target.setDisable(source.getDisable());
         if (source.getId() != null)
             target.setId(source.getId());
-        target.setIntegrationType(source.getIntegrationType());
+        target.setIntegrationType(map(source.getIntegrationType()));
         target.setMethodCode(source.getMethodCode());
         target.setParticipantCode(source.getParticipantCode());
         target.setUrl(source.getUrl());
         return target;
+    }
+
+    private IntegrationTypeEntity map(IntegrationType source) {
+        return source == null ? null : new IntegrationTypeEntity(source.getId(), source.getName());
+    }
+
+    private IntegrationType map(IntegrationTypeEntity source) {
+        return source == null ? null : new IntegrationType(source.getCode(), source.getName());
     }
 
     private ParticipantMethod audit(String action, ParticipantMethodEntity entity) {

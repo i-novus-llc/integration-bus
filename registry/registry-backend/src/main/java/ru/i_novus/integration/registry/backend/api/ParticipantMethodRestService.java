@@ -5,12 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.data.domain.Page;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantCriteria;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
+import ru.i_novus.integration.registry.backend.model.IntegrationType;
 import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * REST сервис управления участниками
@@ -20,18 +21,18 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Api("Сервисы систем участниц")
 public interface ParticipantMethodRestService {
+
     @GET
     @Path("/")
     @ApiOperation("Найти все сервисы системы")
-    @ApiResponse(code = 200, message = "Страница серисов")
+    @ApiResponse(code = 200, message = "Страница сервисов")
     Page<ParticipantMethod> findAll(@BeanParam ParticipantMethodCriteria criteria);
 
     @GET
     @Path("/{id}")
     @ApiOperation("Получить сервис по идентификатору")
-    @ApiResponse(code = 200, message = "Серсис системы")
+    @ApiResponse(code = 200, message = "Сервис системы")
     ParticipantMethod getById(@ApiParam(value = "Идентификатор") @PathParam("id") Integer id);
-
 
     @POST
     @Path("/")
@@ -50,5 +51,11 @@ public interface ParticipantMethodRestService {
     @ApiOperation("Удалить сервис")
     @ApiResponse(code = 200, message = "Сервис удален")
     void delete(@ApiParam(value = "Идентификатор") @PathParam("id") Integer id);
+
+    @GET
+    @Path("/integrationTypes")
+    @ApiOperation("Получить все типы взаимодействия")
+    @ApiResponse(code = 200, message = "Тип взаимодействия")
+    List<IntegrationType> getAllIntegrationTypes();
 
 }

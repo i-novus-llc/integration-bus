@@ -29,6 +29,7 @@ public class ParticipantMethodEntity {
     @Column(name = "disable")
     private Boolean disable;
 
-    @Column(name = "integration_type")
-    private String integrationType;
+    @ManyToOne
+    @JoinColumn(name = "integration_type")
+    private IntegrationTypeEntity integrationType;
 }
