@@ -8,11 +8,11 @@
                 <toolbar>
                     <button id="createParticipant" label="Создать" model="filter">
                         <show-modal page-id="registry_create" submit-operation-id="createParticipant"
-                                    refresh-after-submit="true" upload="defaults"/>
+                                    refresh-after-submit="true" upload="defaults" object-id="registry"/>
                     </button>
                     <button id="updateParticipant" label="Изменить">
                         <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
-                                    refresh-after-submit="true" detail-field-id="id"/>
+                                    refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
                     </button>
                     <button id="deleteParticipant" label="Удалить">
                         <invoke operation-id="deleteParticipant" refresh-on-success="true"/>
