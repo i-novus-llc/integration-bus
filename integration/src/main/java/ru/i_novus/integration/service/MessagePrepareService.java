@@ -1,6 +1,5 @@
 package ru.i_novus.integration.service;
 
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;

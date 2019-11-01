@@ -76,7 +76,7 @@ public class InternalRequestPreparationService {
             integrationRequest.setMonitoringModel(modelMessage.getPayload().getMonitoringModel());
             integrationRequest.setParticipantModel(modelMessage.getPayload().getParticipantModel());
 
-            Files.deleteIfExists(Paths.get(dataModel.getPath() + ".zip"));
+            Files.deleteIfExists(Paths.get(dataModel.getPath()));
         } catch (Exception e) {
             LOGGER.info(ExceptionUtils.getStackTrace(e));
             modelMessage.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
