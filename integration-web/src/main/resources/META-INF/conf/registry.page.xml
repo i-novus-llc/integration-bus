@@ -6,16 +6,9 @@
         <region place="top">
             <table name="Системы" query-id="registry" id="main" route="/">
                 <toolbar>
-                    <button id="createParticipant" label="Создать" model="filter">
+                    <button id="createParticipant" label="Создать" model="filter" color="primary">
                         <show-modal page-id="registry_create" submit-operation-id="createParticipant"
                                     refresh-after-submit="true" upload="defaults" object-id="registry"/>
-                    </button>
-                    <button id="updateParticipant" label="Изменить">
-                        <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
-                                    refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
-                    </button>
-                    <button id="deleteParticipant" label="Удалить">
-                        <invoke operation-id="deleteParticipant" refresh-on-success="true"/>
                     </button>
                 </toolbar>
                 <columns>
@@ -23,6 +16,14 @@
                     <column text-field-id="name" label="Наименование системы"/>
                     <column text-field-id="disable" label="Приостановлена">
                         <checkbox/>
+                    </column>
+                    <column text-field-id="actions" label=" ">
+                        <toolbar>
+                            <button id="deleteParticipant" label="Удалить" confirm="true" icon="fa fa-trash"
+                                    confirm-text="Вы действительно хотите удалить систему?">
+                                <invoke operation-id="deleteParticipant"/>
+                            </button>
+                        </toolbar>
                     </column>
                 </columns>
                 <filters>
@@ -37,29 +38,22 @@
                         </select>
                     </row>
                 </filters>
-
+                <rows>
+                    <click>
+                        <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
+                                    refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
+                    </click>
+                </rows>
             </table>
         </region>
         <region place="bottom">
             <table id="service" master-field-id="id" detail-field-id="participant_code" depends-on="main"
                    name="Код сервиса (операции)" query-id="method">
                 <toolbar>
-                    <button id="createMethod" label="Создать" model="resolve" widget-id="main">
+                    <button id="createMethod" label="Создать" model="resolve" widget-id="main" color="primary">
                         <show-modal page-id="method" submit-operation-id="createMethod"
                                     master-field-id="id" detail-field-id="participant_code"
                                     refresh-after-submit="true" upload="defaults"/>
-                    </button>
-                    <button id="updateMethod" label="Изменить">
-                        <show-modal page-id="method" submit-operation-id="updateMethod"
-                                    detail-field-id="id" refresh-after-submit="true"/>
-                    </button>
-                    <button id="deleteMethod" label="Удалить">
-                        <invoke operation-id="deleteMethod"/>
-                    </button>
-                    <button id="permission" label="Доступы">
-                        <open-page page-id="permission" master-field-id="id" route="/:participant_method_id/permission"
-                                   detail-field-id="participant_method_id" master-param="participant_method_id"
-                                   refresh-after-submit="true"/>
                     </button>
                 </toolbar>
                 <columns>
@@ -69,7 +63,26 @@
                         <checkbox/>
                     </column>
                     <column text-field-id="integration_type.name" label="Тип взаимодействия"/>
+                    <column text-field-id="actions">
+                        <toolbar>
+                            <button id="deleteMethod" label="Удалить" confirm="true" icon="fa fa-trash" type="icon"
+                                    confirm-text="Вы действительно хотите удалить сервис?">
+                                <invoke operation-id="deleteMethod"/>
+                            </button>
+                            <button id="permission" label="Доступы" icon="fas fa-network-wired" type="icon">
+                                <open-page page-id="reg_permission" master-field-id="id" route="/:participant_method_id/permission"
+                                           detail-field-id="participant_method_id" master-param="participant_method_id"
+                                           refresh-after-submit="true"/>
+                            </button>
+                        </toolbar>
+                    </column>
                 </columns>
+                <rows>
+                    <click>
+                        <show-modal page-id="method" submit-operation-id="updateMethod"
+                                    detail-field-id="id" refresh-after-submit="true"/>
+                    </click>
+                </rows>
             </table>
         </region>
     </regions>

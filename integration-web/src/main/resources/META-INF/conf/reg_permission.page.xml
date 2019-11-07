@@ -11,17 +11,24 @@
                             master-param="participant_method_id"
                             refresh-after-submit="true" upload="defaults"/>
             </button>
-            <button id="update" icon="fa fa-pencil">
-                <show-modal page-id="permission_form" submit-operation-id="permissionUpdate"
-                            refresh-after-submit="true" detail-field-id="id"/>
-            </button>
-            <button id="delete" icon="fa fa-trash">
-                <invoke operation-id="permissionDelete"/>
-            </button>
         </toolbar>
         <columns>
             <column text-field-id="participant.id" label="Код системы"/>
+            <column text-field-id="actions" label=" ">
+                <toolbar>
+                    <button id="delete" icon="fa fa-trash" label="Удалить" confirm="true"
+                            confirm-text="Вы действительно хотите удалить доступ?">
+                        <invoke operation-id="permissionDelete"/>
+                    </button>
+                </toolbar>
+            </column>
         </columns>
+        <rows>
+            <click>
+                <show-modal page-id="permission_form" submit-operation-id="permissionUpdate"
+                            refresh-after-submit="true" detail-field-id="id"/>
+            </click>
+        </rows>
     </table>
 
 </simple-page>
