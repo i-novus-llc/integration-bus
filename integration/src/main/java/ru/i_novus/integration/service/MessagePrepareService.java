@@ -1,5 +1,6 @@
 package ru.i_novus.integration.service;
 
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -68,7 +70,7 @@ public class MessagePrepareService {
         try {
             if (participantModel.getIntegrationType().equals("REST_GET")) {
                 String url = participantModel.getUrl();
-                responseEntity = restTemplate.getForEntity(url, Object.class);
+                responseEntity = restTemplate.getForEntity(new URI(url), Object.class);
                 message = MessageBuilder.withPayload(responseEntity.getBody()).build();
 
                 checkError(responseEntity, messageCommonModel);
