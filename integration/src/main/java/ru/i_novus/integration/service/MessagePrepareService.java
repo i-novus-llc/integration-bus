@@ -79,7 +79,7 @@ public class MessagePrepareService {
                 if (messageCommonModel.getPayload().getMonitoringModel().getReceiver().equals("nsi")) {
                     List<String> list = Arrays.asList(url.split("&"));
                     String dataComment = list.stream().filter(l-> l.contains("identifier")).findFirst().get();
-                    if (participantModel.getMethod().equals("data") && result.toString().contains("\"list\":[]")) {
+                    if (participantModel.getMethod().equals("data") && result.toString().contains("list=[]")) {
 
                         String versionComment = list.stream().filter(l-> l.contains("version")).findFirst().get();
                         monitoringNsiMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
