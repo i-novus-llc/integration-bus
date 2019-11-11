@@ -19,7 +19,11 @@
                     </column>
                     <column text-field-id="actions" label=" ">
                         <toolbar>
-                            <button id="deleteParticipant" label="Удалить" confirm="true" icon="fa fa-trash"
+                            <button id="updateParticipant" label="Изменить" icon="fa fa-pencil" type="icon" >
+                                <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
+                                            refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
+                            </button>
+                            <button id="deleteParticipant" label="Удалить" confirm="true" icon="fa fa-trash" type="icon"
                                     confirm-text="Вы действительно хотите удалить систему?">
                                 <invoke operation-id="deleteParticipant"/>
                             </button>
@@ -38,12 +42,6 @@
                         </select>
                     </row>
                 </filters>
-                <rows>
-                    <click>
-                        <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
-                                    refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
-                    </click>
-                </rows>
             </table>
         </region>
         <region place="bottom">
