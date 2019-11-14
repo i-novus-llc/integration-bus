@@ -38,8 +38,8 @@ public class ParticipantMethodLoader implements ServerLoader<ParticipantMethodIn
         deleteOldMethods(list, participantCode);
         for (ParticipantMethodInfo method : list) {
             ParticipantMethodEntity methodEntity = participantMethodRepository.save(map(method));
-            if (method.getPermissions()!= null) {
-                for(ParticipantPermission permission : method.getPermissions()) {
+            if (method.getPermissions() != null) {
+                for (ParticipantPermission permission : method.getPermissions()) {
                     ParticipantPermissionEntity permissionEntity = map(permission);
                     permissionEntity.setParticipantMethodId(methodEntity.getId());
                     participantPermissionRepository.save(permissionEntity);
@@ -77,6 +77,8 @@ public class ParticipantMethodLoader implements ServerLoader<ParticipantMethodIn
         ParticipantPermissionCriteria criteria = new ParticipantPermissionCriteria();
         criteria.setParticipantMethodId(methodId);
         List<ParticipantPermissionEntity> forDelete = participantPermissionRepository.findAll(new ParticipantPermissionSpecifications(criteria));
-        participantPermissionRepository.deleteAll(forDelete);
+        if (!forDelete.isEmpty()) {
+            participantPermissionRepository.deleteAll(forDelete);
+        }
     }
 }

@@ -192,6 +192,9 @@ public class LoaderServerTest {
         part = participantRepository.findById("defaultNew").get();
         assertThat(part.getDisable(), is(true));
         assertThat(part.getName(), is("defNew"));
+
+        participantLoader.load(new ArrayList<>(), "");
+        assertThat(participantRepository.findAll().size(), is(3));
     }
 
 
