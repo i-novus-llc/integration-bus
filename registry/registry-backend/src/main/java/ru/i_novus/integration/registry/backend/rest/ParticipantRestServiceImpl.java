@@ -16,7 +16,7 @@ import ru.i_novus.integration.registry.backend.specifications.ParticipantSpecifi
 import java.util.Arrays;
 
 @Controller
-public class ParticipantRestServiceImpl implements ParticipantRestService {
+public class ParticipantRestServiceImpl implements ParticipantRestService, Mappers {
 
     @Autowired
     private ParticipantRepository repository;
@@ -63,28 +63,6 @@ public class ParticipantRestServiceImpl implements ParticipantRestService {
     public void delete(String code) {
         audit("audit.eventType.delete", repository.findById(code).orElse(null));
         repository.deleteById(code);
-    }
-
-    private Participant map(ParticipantEntity source) {
-        if (source == null)
-            return null;
-        Participant target = new Participant();
-        target.setCode(source.getCode());
-        target.setDisable(source.getDisable());
-        target.setGroupCode(source.getGroupCode());
-        target.setName(source.getName());
-        return target;
-    }
-
-    private ParticipantEntity map(Participant source) {
-        if (source == null)
-            return null;
-        ParticipantEntity target = new ParticipantEntity();
-        target.setCode(source.getCode());
-        target.setDisable(source.getDisable());
-        target.setGroupCode(source.getGroupCode());
-        target.setName(source.getName());
-        return target;
     }
 
     private Participant audit(String action, ParticipantEntity entity) {

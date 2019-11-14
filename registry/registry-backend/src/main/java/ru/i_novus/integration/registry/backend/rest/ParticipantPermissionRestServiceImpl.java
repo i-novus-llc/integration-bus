@@ -16,7 +16,7 @@ import ru.i_novus.integration.registry.backend.specifications.ParticipantPermiss
 import java.util.Arrays;
 
 @Controller
-public class ParticipantPermissionRestServiceImpl implements ParticipantPermissionRestService {
+public class ParticipantPermissionRestServiceImpl implements ParticipantPermissionRestService, Mappers {
 
     @Autowired
     private ParticipantPermissionRepository repository;
@@ -65,34 +65,6 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
     public void delete(Integer code) {
         repository.findById(code).ifPresent(ent -> audit("audit.eventType.delete", ent));
         repository.deleteById(code);
-    }
-
-    private ParticipantPermission map(ParticipantPermissionEntity source) {
-        if (source == null)
-            return null;
-        ParticipantPermission target = new ParticipantPermission();
-        target.setId(source.getId());
-        target.setGroupCode(source.getGroupCode());
-        target.setCallbackUrl(source.getCallBackUrl());
-        target.setParticipantCode(source.getParticipantCode());
-        target.setParticipantMethodId(source.getParticipantMethodId());
-        target.setSync(source.getSync());
-        return target;
-    }
-
-    private ParticipantPermissionEntity map(ParticipantPermission source) {
-        if (source == null)
-            return null;
-        ParticipantPermissionEntity target = new ParticipantPermissionEntity();
-        if (source.getId() != null)
-            target.setId(source.getId());
-        target.setId(source.getId());
-        target.setGroupCode(source.getGroupCode());
-        target.setCallBackUrl(source.getCallbackUrl());
-        target.setParticipantCode(source.getParticipantCode());
-        target.setParticipantMethodId(source.getParticipantMethodId());
-        target.setSync(source.isSync());
-        return target;
     }
 
     private ParticipantPermission audit(String action, ParticipantPermissionEntity entity) {
