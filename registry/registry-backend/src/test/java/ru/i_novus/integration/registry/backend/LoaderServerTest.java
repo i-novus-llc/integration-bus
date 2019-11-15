@@ -69,22 +69,7 @@ public class LoaderServerTest {
 
 
         List<ParticipantMethodInfo> data = new ArrayList<>();
-        ParticipantMethodInfo method = new ParticipantMethodInfo();
-        data.add(method);
-        method.setPermissions(new ArrayList<>());
-        method.setParticipantCode("rdm");
-        method.setMethodCode("read");
-        method.setUrl("test_url");
-        method.setDisable(false);
-        method.setIntegrationType(new IntegrationType());
-        method.getIntegrationType().setId("REST_GET");
-        method.getIntegrationType().setName("REST/GET");
-
-        ParticipantPermission permission = new ParticipantPermission();
-        method.getPermissions().add(permission);
-        permission.setParticipantCode("default");
-        permission.setSync(true);
-
+        data.add(generateParticipantMethod());
         participantMethodLoader.load(data, "rdm");  //Загрузка метода
 
         List<ParticipantMethodEntity> methods = participantMethodRepository.findAll();
@@ -93,9 +78,12 @@ public class LoaderServerTest {
         assertThat(methods.size(), is(1));
         assertThat(permissions.size(), is(1));
         Integer methodId = methods.get(0).getId();
+        Integer permissionId = permissions.get(0).getId();
 
         assertThat(methodId, is(permissions.get(0).getParticipantMethodId()));
 
+        data = new ArrayList<>();
+        data.add(generateParticipantMethod());
         participantMethodLoader.load(data, "rdm"); //Повторная загрузка тех же данных.
 
         methods = participantMethodRepository.findAll();
@@ -105,8 +93,12 @@ public class LoaderServerTest {
         assertThat(permissions.size(), is(1));
         assertThat(methodId, is(permissions.get(0).getParticipantMethodId()));
         assertThat(methodId, is(methods.get(0).getId()));
+        assertThat(permissionId, is(permissions.get(0).getId()));
         assertThat(methods.get(0).getUrl(), is("test_url"));
 
+        data = new ArrayList<>();
+        ParticipantMethodInfo method = generateParticipantMethod();
+        data.add(method);
         method.setUrl("newUrl");
         method.getPermissions().get(0).setCallbackUrl("newCallbackUrl");
         ParticipantPermission permissionTwo = new ParticipantPermission();
@@ -126,6 +118,9 @@ public class LoaderServerTest {
         assertThat(methodId, is(methods.get(0).getId()));
         assertThat(methods.get(0).getUrl(), is("newUrl"));
 
+        data = new ArrayList<>();
+        method = generateParticipantMethod();
+        data.add(method);
         method.setPermissions(null);
         participantMethodLoader.load(data, "rdm"); //Загрузка измененных данных (нет пермишенов)
 
@@ -144,6 +139,24 @@ public class LoaderServerTest {
         assertThat(permissions.size(), is(0));
     }
 
+    private ParticipantMethodInfo generateParticipantMethod() {
+        ParticipantMethodInfo method = new ParticipantMethodInfo();
+        method.setPermissions(new ArrayList<>());
+        method.setParticipantCode("rdm");
+        method.setMethodCode("read");
+        method.setUrl("test_url");
+        method.setDisable(false);
+        method.setIntegrationType(new IntegrationType());
+        method.getIntegrationType().setId("REST_GET");
+        method.getIntegrationType().setName("REST/GET");
+
+        ParticipantPermission permission = new ParticipantPermission();
+        method.getPermissions().add(permission);
+        permission.setParticipantCode("default");
+        permission.setSync(true);
+
+        return method;
+    }
 
     @Test
     public void participantLoaderTest() {

@@ -16,7 +16,10 @@ import ru.i_novus.integration.registry.backend.rest.Mappers;
 import ru.i_novus.integration.registry.backend.specifications.ParticipantMethodSpecifications;
 import ru.i_novus.integration.registry.backend.specifications.ParticipantPermissionSpecifications;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -38,12 +41,10 @@ public class ParticipantMethodLoader implements ServerLoader<ParticipantMethodIn
         deleteOldMethods(list, participantCode);
         for (ParticipantMethodInfo method : list) {
             ParticipantMethodEntity methodEntity = participantMethodRepository.save(map(method));
-            if (method.getPermissions() != null) {
-                for (ParticipantPermission permission : method.getPermissions()) {
-                    ParticipantPermissionEntity permissionEntity = map(permission);
-                    permissionEntity.setParticipantMethodId(methodEntity.getId());
-                    participantPermissionRepository.save(permissionEntity);
-                }
+            if (method.getPermissions() != null && !method.getPermissions().isEmpty()) {
+                mergePermissions(methodEntity.getId(), method.getPermissions());
+            } else {
+                deletePermissions(methodEntity.getId());
             }
         }
     }
@@ -63,14 +64,53 @@ public class ParticipantMethodLoader implements ServerLoader<ParticipantMethodIn
         criteria.setParticipantCode(participantCode);
         List<ParticipantMethodEntity> exists = participantMethodRepository.findAll(new ParticipantMethodSpecifications(criteria));
         for (ParticipantMethodEntity entity : exists) {
-            deletePermissions(entity.getId());
             ParticipantMethodInfo method = list.stream().filter(m -> entity.getMethodCode().equals(m.getMethodCode())).findFirst().orElse(null);
             if (method == null) {
+                deletePermissions(entity.getId());
                 participantMethodRepository.delete(entity);
             } else {
                 method.setId(entity.getId());
             }
         }
+    }
+
+    private void mergePermissions(Integer methodId, List<ParticipantPermission> permissions) {
+        ParticipantPermissionCriteria criteria = new ParticipantPermissionCriteria();
+        criteria.setParticipantMethodId(methodId);
+        List<ParticipantPermissionEntity> exists = participantPermissionRepository.findAll(new ParticipantPermissionSpecifications(criteria));
+        Iterator<ParticipantPermissionEntity> iterEntity = exists.iterator();
+        while (iterEntity.hasNext()) {
+            ParticipantPermissionEntity entity = iterEntity.next();
+            Iterator<ParticipantPermission> iterModel = permissions.iterator();
+            while (iterModel.hasNext()) {
+                ParticipantPermission permission = iterModel.next();
+                if (isEqual(permission, entity)) {
+                    iterEntity.remove();
+                    iterModel.remove();
+                    break;
+                }
+            }
+        }
+
+        if (!exists.isEmpty()) {
+            participantPermissionRepository.deleteAll(exists);
+        }
+
+        if (!permissions.isEmpty()) {
+            List<ParticipantPermissionEntity> toSave = permissions.stream().map(p -> {
+                p.setParticipantMethodId(methodId);
+                return map(p);
+            }).collect(Collectors.toList());
+            participantPermissionRepository.saveAll(toSave);
+        }
+    }
+
+    //Игнорятся ParticipantMethodId и ID
+    private boolean isEqual(ParticipantPermission p, ParticipantPermissionEntity e) {
+        return Objects.equals(p.getParticipantCode(), e.getParticipantCode()) &&
+                Objects.equals(p.getGroupCode(), e.getGroupCode()) &&
+                Objects.equals(p.getCallbackUrl(), e.getCallBackUrl()) &&
+                Objects.equals(p.isSync(), e.getSync());
     }
 
     private void deletePermissions(Integer methodId) {
