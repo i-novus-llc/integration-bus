@@ -15,6 +15,7 @@ import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
 import ru.i_novus.integration.common.api.MonitoringModel;
 import ru.i_novus.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.model.PostResultModel;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -103,7 +104,11 @@ public class MessagePrepareService {
                 checkError(responseEntity, messageCommonModel);
                 result = responseEntity.getBody();
                 if (participantModel.isSync() && result != null) {
-                    message = MessageBuilder.withPayload(result).build();
+                    PostResultModel postResultModel = new PostResultModel();
+                    postResultModel.setRegion(participantModel.getReceiver());
+                    postResultModel.setStatus(responseEntity.getStatusCode().toString());
+                    postResultModel.setPayload(result);
+                    message = MessageBuilder.withPayload(postResultModel).build();
                 } else {
                     message = MessageBuilder.withPayload("SUCCESS").build();
                 }

@@ -43,6 +43,7 @@ public class CommonModelPrepareService {
             ParticipantModel participantModel = null;
             try {
                 participantModel = registryClient.getServiceParticipant(recipient, envCode, requestModel.getMethod());
+                participantModel.setReceiver(recipient);
             } catch (IOException e) {
                 e.printStackTrace();
             }

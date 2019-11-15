@@ -8,6 +8,7 @@ public class ParticipantModel implements Serializable {
     private boolean sync;
     private String integrationType;
     private String method;
+    private String receiver;
 
     public String getUrl() {
         return url;
@@ -47,5 +48,13 @@ public class ParticipantModel implements Serializable {
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 }
