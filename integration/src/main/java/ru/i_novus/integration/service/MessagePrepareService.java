@@ -129,6 +129,8 @@ public class MessagePrepareService {
                 sendCallBack(participantModel.getCallbackUrl(), result);
             }
         } catch (Exception ex) {
+            monitoringRequestErrorMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
+                    MessageStatusEnum.ERROR.getId(), ex.getMessage());
             throw new RuntimeException(participantModel.getUrl(), ex);
         }
         monitoringRequestMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
@@ -175,5 +177,10 @@ public class MessagePrepareService {
         monitoringModel.setDateTime(new Date());
         monitoringModel.setStatus(status);
         monitoringModel.setOperation(operation);
+    }
+
+    private void monitoringRequestErrorMessage(String operation, MonitoringModel monitoringModel, int status, String error) {
+        monitoringModel.setError(error);
+        monitoringRequestMessage(operation, monitoringModel, status);
     }
 }
