@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class MonitoringModel implements Serializable {
 
+    private static final long serialVersionUID = -850072681692085709L;
     private String uid;
     private Date dateTime;
     private String sender;

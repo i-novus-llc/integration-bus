@@ -3,6 +3,8 @@ package ru.i_novus.integration.common.api;
 import java.io.Serializable;
 
 public class ParticipantModel implements Serializable {
+
+    private static final long serialVersionUID = -3981184676777114798L;
     private String url;
     private String callbackUrl;
     private boolean sync;
