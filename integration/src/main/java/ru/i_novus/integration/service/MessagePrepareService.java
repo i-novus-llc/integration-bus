@@ -132,10 +132,23 @@ public class MessagePrepareService {
             monitoringRequestErrorMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
                     MessageStatusEnum.ERROR.getId(), ex.getMessage(), String.valueOf(messageCommonModel.getPayload().getObject()));
             monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
-            throw new RuntimeException(participantModel.getUrl(), ex);
+            if (participantModel.getIntegrationType().equals("REST_POST")) {
+                if (participantModel.isSync()) {
+                    PostResultModel postResultModel = new PostResultModel();
+                    postResultModel.setRegion(participantModel.getReceiver());
+                    postResultModel.setStatus("500");
+                    postResultModel.setPayload(ex);
+                    message = MessageBuilder.withPayload(postResultModel).build();
+                } else {
+                    message = MessageBuilder.withPayload(ex).build();
+                }
+                return message;
+            } else {
+                throw new RuntimeException(participantModel.getUrl(), ex);
+            }
         }
         monitoringRequestMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
-
+        monitoringGateway.putToQueue(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
         return message;
     }
 
