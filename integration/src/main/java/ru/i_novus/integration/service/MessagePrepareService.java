@@ -130,7 +130,8 @@ public class MessagePrepareService {
             }
         } catch (Exception ex) {
             monitoringRequestErrorMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
-                    MessageStatusEnum.ERROR.getId(), ex.getMessage());
+                    MessageStatusEnum.ERROR.getId(), ex.getMessage(), String.valueOf(messageCommonModel.getPayload().getObject()));
+            monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
             throw new RuntimeException(participantModel.getUrl(), ex);
         }
         monitoringRequestMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
@@ -179,8 +180,9 @@ public class MessagePrepareService {
         monitoringModel.setOperation(operation);
     }
 
-    private void monitoringRequestErrorMessage(String operation, MonitoringModel monitoringModel, int status, String error) {
+    private void monitoringRequestErrorMessage(String operation, MonitoringModel monitoringModel, int status, String error, String comment) {
         monitoringModel.setError(error);
         monitoringRequestMessage(operation, monitoringModel, status);
+        monitoringModel.setComment(comment);
     }
 }

@@ -37,6 +37,7 @@
                         expression="payload.monitoringModel.sender + ' -> '
                         + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
         </int:header-enricher>
+        <int:service-activator expression="@monitoringService.create(payload, 3)"/>
         <int-jms:outbound-channel-adapter id="jmsAsyncChenal" destination="asyncQueue"/>
     </int:chain>
 
@@ -44,7 +45,6 @@
 
     <int:chain input-channel="asyncOutChannel" output-channel="responseSyncChannel">
         <int:service-activator ref="messagePrepareService" method="prepareAsyncRequest"/>
-        <int:service-activator expression="@monitoringService.create(payload, 3)"/>
     </int:chain>
 
 </beans>
