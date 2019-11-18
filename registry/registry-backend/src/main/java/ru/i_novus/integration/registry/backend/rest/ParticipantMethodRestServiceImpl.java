@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantMethodRestService;
 import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
-import ru.i_novus.integration.registry.backend.entity.IntegrationTypeEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.model.IntegrationType;
 import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestService {
+public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestService, Mappers {
 
     @Autowired
     private ParticipantMethodRepository repository;
@@ -77,41 +76,6 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
     @Override
     public List<IntegrationType> getAllIntegrationTypes() {
         return integrationTypeRepository.findAll().stream().map(this::map).collect(Collectors.toList());
-    }
-
-    private ParticipantMethod map(ParticipantMethodEntity source) {
-        if (source == null)
-            return null;
-        ParticipantMethod target = new ParticipantMethod();
-        target.setDisable(source.getDisable());
-        target.setId(source.getId());
-        target.setIntegrationType(map(source.getIntegrationType()));
-        target.setMethodCode(source.getMethodCode());
-        target.setParticipantCode(source.getParticipantCode());
-        target.setUrl(source.getUrl());
-        return target;
-    }
-
-    private ParticipantMethodEntity map(ParticipantMethod source) {
-        if (source == null)
-            return null;
-        ParticipantMethodEntity target = new ParticipantMethodEntity();
-        target.setDisable(source.getDisable());
-        if (source.getId() != null)
-            target.setId(source.getId());
-        target.setIntegrationType(map(source.getIntegrationType()));
-        target.setMethodCode(source.getMethodCode());
-        target.setParticipantCode(source.getParticipantCode());
-        target.setUrl(source.getUrl());
-        return target;
-    }
-
-    private IntegrationTypeEntity map(IntegrationType source) {
-        return source == null ? null : new IntegrationTypeEntity(source.getId(), source.getName());
-    }
-
-    private IntegrationType map(IntegrationTypeEntity source) {
-        return source == null ? null : new IntegrationType(source.getCode(), source.getName());
     }
 
     private ParticipantMethod audit(String action, ParticipantMethodEntity entity) {

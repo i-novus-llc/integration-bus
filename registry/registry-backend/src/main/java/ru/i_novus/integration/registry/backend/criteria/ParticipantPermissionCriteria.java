@@ -15,4 +15,8 @@ public class ParticipantPermissionCriteria extends RestCriteria {
     @ApiParam(value = "Код сервиса системы участницы")
     private Integer participantMethodId;
 
+    @QueryParam("participantCode")
+    @ApiParam(value = "Код системы участницы")
+    private String participantCode;
+
 }

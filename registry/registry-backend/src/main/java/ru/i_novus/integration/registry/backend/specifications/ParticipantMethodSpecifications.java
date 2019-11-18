@@ -22,6 +22,8 @@ public class ParticipantMethodSpecifications implements Specification<Participan
         Predicate predicate = builder.and();
         if (criteria.getParticipantCode() != null)
             predicate = builder.and(predicate, builder.equal(root.get(ParticipantMethodEntity_.participantCode), criteria.getParticipantCode()));
+        if (criteria.getMethodCode() != null)
+            predicate = builder.and(predicate, builder.equal(root.get(ParticipantMethodEntity_.methodCode), criteria.getMethodCode()));
         return predicate;
     }
 }
