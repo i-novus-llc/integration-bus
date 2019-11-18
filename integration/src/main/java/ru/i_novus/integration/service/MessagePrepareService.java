@@ -130,7 +130,7 @@ public class MessagePrepareService {
             }
         } catch (Exception ex) {
             monitoringRequestErrorMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
-                    MessageStatusEnum.ERROR.getId(), ex.getMessage(), String.valueOf(messageCommonModel.getPayload().getObject()));
+                    MessageStatusEnum.ERROR.getId(), ex.getMessage(), String.valueOf(messageCommonModel.getPayload().getObject()).substring(0, 1000));
             monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
             if (participantModel.getIntegrationType().equals("REST_POST")) {
                 if (participantModel.isSync()) {
