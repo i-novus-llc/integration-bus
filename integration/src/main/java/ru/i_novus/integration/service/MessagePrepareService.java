@@ -1,5 +1,6 @@
 package ru.i_novus.integration.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -130,7 +131,7 @@ public class MessagePrepareService {
             }
         } catch (Exception ex) {
             monitoringRequestErrorMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
-                    MessageStatusEnum.ERROR.getId(), ex.getMessage(), String.valueOf(messageCommonModel.getPayload().getObject()).substring(0, 1000));
+                    MessageStatusEnum.ERROR.getId(), ex.getMessage(), StringUtils.left(String.valueOf(messageCommonModel.getPayload().getObject()), 1000));
             monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
             if (participantModel.getIntegrationType().equals("REST_POST")) {
                 if (participantModel.isSync()) {
