@@ -1,7 +1,6 @@
 package ru.i_novus.integration.service;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.ws.security.util.UUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class InternalRequestPreparationService {
@@ -47,8 +43,8 @@ public class InternalRequestPreparationService {
             IntegrationMessage message = new IntegrationMessage();
 
             MessageData messageData = new MessageData();
-            messageData.setGroupUid(UUIDGenerator.getUUID());
-            messageData.setUuid(UUIDGenerator.getUUID());
+            messageData.setGroupUid(UUID.randomUUID().toString());
+            messageData.setUuid(UUID.randomUUID().toString());
 
             InternalRequestModel internalRequestModel = (InternalRequestModel) modelMessage.getPayload().getObject();
 
