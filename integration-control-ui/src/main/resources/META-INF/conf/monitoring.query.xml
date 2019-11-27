@@ -67,7 +67,9 @@
             <id>operation</id>
             <domain>string</domain>
             <display/>
-            <filters auto-generate="true"/>
+            <filters>
+                <filter type="eq" filter-field="operation">(upper(:expression) like '%'||upper(:operation)||'%')</filter>
+            </filters>
         </field>
         <field>
             <id>status.id</id>

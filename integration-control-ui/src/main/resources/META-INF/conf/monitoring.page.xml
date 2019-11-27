@@ -29,6 +29,7 @@
                         </ctrl:date-interval>
                         <ctrl:input-text id="sender" label="Отправитель"/>
                         <ctrl:input-text id="receiver" label="Получатель"/>
+                        <ctrl:input-text id="operation" label="Действие"/>
                         <ctrl:select id="status" label="Статус">
                             <ctrl:options>
                                 <ctrl:option>{"id":1, "name":"Создан"}</ctrl:option>
