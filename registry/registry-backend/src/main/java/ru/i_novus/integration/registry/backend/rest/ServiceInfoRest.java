@@ -55,7 +55,7 @@ public class ServiceInfoRest {
             participantModel.setIntegrationType(senderMethod.get().getIntegrationType());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {
-            throw new RuntimeException("permission error");
+            throw new RuntimeException("permission" + model.getSender() + "to" + model.getReceiver() + "not present");
         }
 
         return participantModel;
