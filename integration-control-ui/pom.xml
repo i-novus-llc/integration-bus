@@ -22,7 +22,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
-        <n2o.version>7.3.5</n2o.version>
+        <n2o.version>7.4.7</n2o.version>
         <security-admin.version>3.0</security-admin.version>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
