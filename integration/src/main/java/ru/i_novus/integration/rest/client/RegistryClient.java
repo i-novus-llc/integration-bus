@@ -71,7 +71,7 @@ public class RegistryClient {
     private void checkResponseError(Response response) throws IOException {
         if (response.getStatus() != HttpStatus.OK.value()) {
             throw new RuntimeException(messageSource.getMessage("registry.service.error", null, Locale.ENGLISH)
-                    + response.getStatus() + " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
+                    + " status:" + response.getStatus() + " from url: " + property.getRegistryAddress() + " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
         }
     }
 
