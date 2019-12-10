@@ -123,6 +123,7 @@ public class InternalWsClient {
         HTTPClientPolicy policy = new HTTPClientPolicy();
         policy.setAutoRedirect(true);
         policy.setReceiveTimeout(Long.valueOf(property.getInternalWsTimeOut()));
+        policy.setConnectionTimeout(Long.valueOf(property.getInternalWsTimeOut()));
         conduit.setClient(policy);
 
         /*KeyStore store = property.getKeyStore();
