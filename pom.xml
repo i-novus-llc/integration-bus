@@ -4,7 +4,7 @@
 
     <groupId>ru.i_novus.is</groupId>
     <artifactId>base</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.3</version>
     <packaging>pom</packaging>
 
     <name>integration-bus</name>
@@ -13,7 +13,7 @@
         <connection>scm:git:https://git.i-novus.ru/platform/integration-bus.git</connection>
         <url>https://git.i-novus.ru/platform/integration-bus.git</url>
         <developerConnection>scm:git:https://git.i-novus.ru/platform/integration-bus.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>2.3</tag>
     </scm>
 
     <modules>
