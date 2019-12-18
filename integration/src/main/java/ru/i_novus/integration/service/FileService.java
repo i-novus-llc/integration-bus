@@ -2,6 +2,7 @@ package ru.i_novus.integration.service;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.ws.security.util.UUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class FileService {
         if (!tmpDirectory.exists()) {
             tmpDirectory.mkdirs();
         }
-        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + data.getSplitDocument().getCount());
+        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + UUIDGenerator.getUUID());
 
         try (OutputStream outputStream = new FileOutputStream(tempFile)) {
             IOUtils.copy(data.getSplitDocument().getBinaryData().getInputStream(), outputStream);
