@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 
 @Configuration
 public class AmqConfig {
@@ -18,7 +18,7 @@ public class AmqConfig {
     private static final String ASYNC_QUEUE = "async.queue";
 
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
 
     @Bean
     public RedeliveryPolicy redeliveryPolicy() {

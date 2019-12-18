@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page xmlns="http://n2oapp.net/framework/config/schema/page-2.0"
+      object-id="registry" name="Системы" layout="TopBottomLayout">
+
+    <regions>
+        <region place="top">
+            <table name="Системы" query-id="registry" id="main" route="/">
+                <toolbar>
+                    <button id="createParticipant" label="Создать" model="filter" color="primary">
+                        <show-modal page-id="registry_create" submit-operation-id="createParticipant"
+                                    refresh-after-submit="true" upload="defaults" object-id="registry"/>
+                    </button>
+                </toolbar>
+                <columns>
+                    <column text-field-id="id" label="Код системы"/>
+                    <column text-field-id="name" label="Наименование системы"/>
+                    <column text-field-id="disable" label="Приостановлена">
+                        <checkbox/>
+                    </column>
+                    <column text-field-id="actions" label=" ">
+                        <toolbar>
+                            <button id="updateParticipant" label="Изменить" icon="fa fa-pencil" type="icon" >
+                                <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
+                                            refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
+                            </button>
+                            <button id="deleteParticipant" label="Удалить" confirm="true" icon="fa fa-trash" type="icon"
+                                    confirm-text="Вы действительно хотите удалить систему?">
+                                <invoke operation-id="deleteParticipant"/>
+                            </button>
+                        </toolbar>
+                    </column>
+                </columns>
+                <filters>
+                    <row>
+                        <input-text id="id" label="Код системы"/>
+                        <input-text id="name" label="Наименование системы"/>
+                        <select id="disable_select" label="Приостановлена">
+                            <options>
+                                <option id="1" name="Да"/>
+                                <option id="2" name="Нет"/>
+                            </options>
+                        </select>
+                    </row>
+                </filters>
+            </table>
+        </region>
+        <region place="bottom">
+            <table id="service" master-field-id="id" detail-field-id="participant_code" depends-on="main"
+                   name="Код сервиса (операции)" query-id="method">
+                <toolbar>
+                    <button id="createMethod" label="Создать" model="resolve" widget-id="main" color="primary">
+                        <show-modal page-id="method" submit-operation-id="createMethod"
+                                    master-field-id="id" detail-field-id="participant_code"
+                                    refresh-after-submit="true" upload="defaults"/>
+                    </button>
+                </toolbar>
+                <columns>
+                    <column text-field-id="method_code" label="Наименование сервиса"/>
+                    <column text-field-id="url" label="URL сервиса"/>
+                    <column text-field-id="disable" label="Приостановлен">
+                        <checkbox/>
+                    </column>
+                    <column text-field-id="integration_type.name" label="Тип взаимодействия"/>
+                    <column text-field-id="actions">
+                        <toolbar>
+                            <button id="deleteMethod" label="Удалить" confirm="true" icon="fa fa-trash" type="icon"
+                                    confirm-text="Вы действительно хотите удалить сервис?">
+                                <invoke operation-id="deleteMethod"/>
+                            </button>
+                            <button id="permission" label="Доступы" icon="fas fa-network-wired" type="icon">
+                                <open-page page-id="reg_permission" master-field-id="id" route="/:participant_method_id/permission"
+                                           detail-field-id="participant_method_id" master-param="participant_method_id"
+                                           refresh-after-submit="true"/>
+                            </button>
+                        </toolbar>
+                    </column>
+                </columns>
+                <rows>
+                    <click>
+                        <show-modal page-id="method" submit-operation-id="updateMethod"
+                                    detail-field-id="id" refresh-after-submit="true"/>
+                    </click>
+                </rows>
+            </table>
+        </region>
+    </regions>
+
+</page>

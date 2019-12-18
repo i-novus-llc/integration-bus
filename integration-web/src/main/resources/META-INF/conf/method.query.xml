@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
+       object-id="registry" name="registry">
+    <list result-mapping="['content']" count-mapping="['totalElements']">
+        <rest method="GET" filters-separator="&amp;">${integration.registry.url}/participantMethods?{filters}&amp;size={limit}&amp;page={page}&amp;{sorting}</rest>
+    </list>
+
+    <unique>
+        <rest method="GET" filters-separator="&amp;">${integration.registry.url}/participantMethods/{id}</rest>
+    </unique>
+
+
+    <fields>
+        <field id="id" domain="integer">
+            <select/>
+            <filters>
+                <eq filter-id="id">id={id}</eq>
+            </filters>
+        </field>
+
+        <field id="participant_code" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="participant_code">participantCode={participant_code}</eq>
+            </filters>
+        </field>
+
+        <field id="method_code" domain="string">
+            <select mapping="['methodCode']"/>
+        </field>
+
+        <field id="integration_type">
+            <select mapping="['integrationType']"/>
+        </field>
+
+        <field id="url" domain="string">
+            <select/>
+        </field>
+
+        <field id="disable" domain="boolean">
+            <select/>
+        </field>
+
+    </fields>
+</query>
+

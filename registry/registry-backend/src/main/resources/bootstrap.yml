@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: registry-service
+  cloud:
+    consul:
+      config:
+        enabled: ${config.server.enable}

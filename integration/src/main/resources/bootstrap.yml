@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: integration-bus-service
+  cloud:
+    consul:
+      host: consul-agent.local
+      config:
+        enabled: ${config.server.enable}

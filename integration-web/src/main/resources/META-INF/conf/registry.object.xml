@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<object xmlns="http://n2oapp.net/framework/config/schema/object-3.0" name="registry">
+    <operations>
+        <operation id="createParticipant">
+            <invocation>
+                <rest method="POST">${integration.registry.url}/participants</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['code']" domain="string" required="true"/>
+                <param id="name" mapping="['name']" domain="string" required="true"/>
+                <param id="disable" mapping="['disable']" domain="boolean" default-value="false"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="updateParticipant">
+            <invocation>
+                <rest method="PUT">${integration.registry.url}/participants</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['code']" domain="string" required="true"/>
+                <param id="name" mapping="['name']" domain="string" required="true"/>
+                <param id="disable" mapping="['disable']" domain="boolean" default-value="false"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="deleteParticipant" confirm="true" confirm-text="Вы уверены, что хотите удалить участника?"
+                   success-text="Участник удален">
+            <invocation>
+                <rest method="DELETE">${integration.registry.url}/participants/{code}</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['code']" domain="string"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="createMethod" success-text="Сервис создан">
+            <invocation>
+                <rest method="POST">${integration.registry.url}/participantMethods</rest>
+            </invocation>
+            <in-parameters>
+                <param id="participant_code" mapping="['participantCode']" domain="string" required="true"/>
+                <param id="method_code" mapping="['methodCode']" domain="string" required="true"/>
+                <param id="url" mapping="['url']" domain="string" required="true"/>
+                <param id="integration_type" mapping="['integrationType']" required="true"/>
+                <param id="disable" mapping="['disable']" domain="boolean"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="updateMethod" success-text="Сервис обновлен">
+            <invocation>
+                <rest method="PUT">${integration.registry.url}/participantMethods</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['id']" domain="integer"/>
+                <param id="participant_code" mapping="['participantCode']" domain="string"/>
+                <param id="method_code" mapping="['methodCode']" domain="string" required="true"/>
+                <param id="url" mapping="['url']" domain="string" required="true"/>
+                <param id="integration_type" mapping="['integrationType']" required="true"/>
+                <param id="disable" mapping="['disable']" domain="boolean"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="deleteMethod" confirm="true" confirm-text="Вы уверены, что хотите удалить сервис?" success-text="Сервис удален">
+            <invocation>
+                <rest method="DELETE">${integration.registry.url}/participantMethods/{id}</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['id']" domain="integer"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="permissionCreate">
+            <invocation>
+                <rest method="POST">${integration.registry.url}/participantPermissions</rest>
+            </invocation>
+            <in-parameters>
+                <param id="participant_method_id" mapping="['participantMethodId']" domain="integer"/>
+                <param id="participant.id" mapping="['participantCode']" domain="string"/>
+                <param id="group_code" mapping="['groupCode']" domain="string"/>
+                <param id="callback_url" mapping="['callbackUrl']" domain="string"/>
+                <param id="sync" mapping="['sync']" domain="boolean"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="permissionUpdate">
+            <invocation>
+                <rest method="PUT">${integration.registry.url}/participantPermissions</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['id']" domain="integer"/>
+                <param id="participant_method_id" mapping="['participantMethodId']" domain="integer"/>
+                <param id="participant.id" mapping="['participantCode']" domain="string"/>
+                <param id="group_code" mapping="['groupCode']" domain="string"/>
+                <param id="callback_url" mapping="['callbackUrl']" domain="string"/>
+                <param id="sync" mapping="['sync']" domain="boolean"/>
+            </in-parameters>
+        </operation>
+
+        <operation id="permissionDelete" confirm="true" confirm-text="Вы действительно хотите удалить правдо доступа?"
+                   success-text="Право доступа удалено">
+            <invocation>
+                <rest method="DELETE">${integration.registry.url}/participantPermissions/{id}</rest>
+            </invocation>
+            <in-parameters>
+                <param id="id" mapping="['id']" domain="integer"/>
+            </in-parameters>
+        </operation>
+    </operations>
+</object>

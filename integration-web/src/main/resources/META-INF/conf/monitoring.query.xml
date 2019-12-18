@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
+       object-id="monitoring" name="monitoring">
+    <list>
+        <sql>
+            SELECT :select
+            FROM monitoring.monitoring
+            WHERE :filters
+            ORDER BY date_time DESC, :sorting
+            LIMIT :limit OFFSET :offset
+        </sql>
+    </list>
+    <count count-mapping="[0]['cnt']">
+        <sql>
+            SELECT count(*) AS cnt
+            FROM monitoring.monitoring
+            WHERE :filters
+        </sql>
+    </count>
+
+    <fields>
+        <field id="id" domain="integer">
+            <select/>
+            <sorting/>
+            <filters>
+                <eq filter-id="id">id=:id</eq>
+            </filters>
+        </field>
+
+        <field id="uid" domain="string">
+            <select/>
+            <sorting/>
+            <filters>
+                <eq filter-id="uid">(upper(:expression) like '%'||upper(:uid)||'%')</eq>
+            </filters>
+        </field>
+        <field id="date_time" domain="date">
+            <select/>
+            <filters>
+                <more filter-id="date_time.begin">date_time>=:date_time.begin</more>
+                <less filter-id="date_time.end">:date_time.end>=date_time</less>
+            </filters>
+        </field>
+        <field id="date_time_text" domain="string">
+            <select/>
+<!--            <expression>to_char(date_time, 'DD.MM.YYYY HH24:MI:SS MS')</expression>-->
+        </field>
+        <field id="sender" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="sender">sender=:sender</eq>
+            </filters>
+        </field>
+        <field id="receiver" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="receiver">receiver=:receiver</eq>
+            </filters>
+        </field>
+        <field id="operation" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="operation">operation=:operation</eq>
+            </filters>
+        </field>
+        <field id="status.id" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="status.id">:status.id=status</eq>
+            </filters>
+<!--            <expression>status</expression>-->
+        </field>
+        <field id="status.name" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="status.name">:status=status</eq>
+            </filters>
+            <expression>
+                (case when status = '1' then 'Создан'
+                when status = '2' then 'Ошибка'
+                when status = '3' then 'В очереди'
+                when status = '4' then 'Удачно'
+                end)
+            </expression>
+        </field>
+        <field id="comment" domain="string">
+            <select/>
+            <filters>
+                <eq filter-id="comment">(upper(:expression}) like '%'||upper(:comment)||'%')</eq>
+            </filters>
+        </field>
+        <field id="error" domain="string">
+            <select/>
+        </field>
+    </fields>
+</query>

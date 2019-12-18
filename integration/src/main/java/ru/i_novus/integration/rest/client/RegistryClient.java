@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.common.api.ParticipantModel;
 import ru.i_novus.integration.common.api.RegistryInfoModel;
@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class RegistryClient {
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
     @Autowired
     MessageSource messageSource;
 
@@ -71,7 +71,7 @@ public class RegistryClient {
     private void checkResponseError(Response response) throws IOException {
         if (response.getStatus() != HttpStatus.OK.value()) {
             throw new RuntimeException(messageSource.getMessage("registry.service.error", null, Locale.ENGLISH)
-                    + response.getStatus() + " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
+                    + " status:" + response.getStatus() + " from url: " + property.getRegistryAddress() + " : " + IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
         }
     }
 

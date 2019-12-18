@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
 import ru.i_novus.integration.service.FileService;
 import ru.i_novus.integration.ws.internal.client.InternalWsClient;
@@ -22,7 +22,7 @@ import java.io.IOException;
 public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     @Autowired
-    PlaceholdersProperty property;
+    IntegrationProperties property;
     @Autowired
     InternalWsClient client;
     @Autowired

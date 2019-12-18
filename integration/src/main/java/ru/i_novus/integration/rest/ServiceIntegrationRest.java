@@ -2,6 +2,7 @@ package ru.i_novus.integration.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.Message;
 import org.springframework.web.bind.annotation.*;
 import ru.i_novus.integration.gateway.InboundGateway;
 import ru.i_novus.integration.model.CommonModel;
@@ -43,11 +44,13 @@ public class ServiceIntegrationRest {
                       @RequestParam Map<String, String> requestParams) throws IOException {
 
         CommonModel commonModel = modelPrepareService.getRequestModelPrepare(requestParams, method, service);
-        String url = commonModel.getParticipantModel().getUrl() + request.getRequestURI()
-                .replace("/integration/get/" + service + "/" + method, "") + "?" + request.getQueryString();
+        String url = commonModel.getParticipantModel().getUrl() +
+                (request.getRequestURI().replace("/integration/get/" + service + "/" + method, "")) +
+                (request.getQueryString() == null ? "" : "?" + request.getQueryString());
         commonModel.getParticipantModel().setUrl(url);
         if (commonModel.getParticipantModel().isSync()) {
-            return inboundGateway.syncRequest(commonModel).getPayload();
+            Message result = inboundGateway.syncRequest(commonModel);
+            return result == null ? null : result.getPayload();
         } else {
             inboundGateway.aSyncRequest(commonModel);
         }

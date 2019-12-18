@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.ws.internal.api.DocumentData;
 import ru.i_novus.integration.ws.internal.api.IntegrationMessage;
 import ru.i_novus.integration.ws.internal.api.MessageData;
@@ -28,10 +28,10 @@ public class FileService {
     private static final String TEMP_PATH = "tmp";
     private static final String MERGE_FILE_PATH = "merge";
     private static final char URL_SPLIT = '/';
-    private final PlaceholdersProperty property;
+    private final IntegrationProperties property;
 
     @Autowired
-    public FileService(PlaceholdersProperty property) {
+    public FileService(IntegrationProperties property) {
         this.property = property;
     }
 

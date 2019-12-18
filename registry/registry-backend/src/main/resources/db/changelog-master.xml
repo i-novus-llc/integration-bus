@@ -4,9 +4,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="classpath*:/security/admin/db/urp/properties.xml"/>
-    <include file="classpath*:/security/admin/db/urp/changelog.xml"/>
-    <include file="db/security/securityData.xml"/>
-    <includeAll path="classpath*:/db/changelog/"/>
+    <include file="db/changelog/201809191022_create_participant.xml"/>
+    <include file="db/changelog/201809241321_add_constraint.xml"/>
+    <include file="db/changelog/201824091728_drop_notNull_participant_method_integration_type.xml"/>
+    <include file="db/changelog/201908151127_fill_integration_type.xml"/>
+    <include file="db/changelog/201909091238_return_callbackUrl_to_particiapant_permission.xml"/>
 
 </databaseChangeLog>

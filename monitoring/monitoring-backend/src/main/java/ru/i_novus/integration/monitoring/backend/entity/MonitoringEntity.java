@@ -2,11 +2,17 @@ package ru.i_novus.integration.monitoring.backend.entity;
 
 
 import ru.i_novus.integration.common.api.MonitoringModel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(schema = "monitoring", name = "monitoring")
 public class MonitoringEntity {
 
@@ -40,9 +46,6 @@ public class MonitoringEntity {
     @Column(name = "comment")
     private String comment;
 
-    public MonitoringEntity() {
-    }
-
     public MonitoringEntity(MonitoringModel model) {
         this.uid = model.getUid();
         this.dateTime = model.getDateTime();
@@ -54,75 +57,4 @@ public class MonitoringEntity {
         this.comment = model.getComment();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public Date getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }

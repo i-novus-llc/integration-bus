@@ -1,8 +1,13 @@
 package ru.i_novus.integration.registry.backend.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(schema = "integration", name = "participant_permission")
 public class ParticipantPermissionEntity {
 
@@ -10,7 +15,7 @@ public class ParticipantPermissionEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
     @SequenceGenerator(name = "id_gen", sequenceName = "integration.participant_permission_id_seq",
             allocationSize = 1)
-    private int id;
+    private Integer id;
 
     @Column(name = "participant_method_id")
     private Integer participantMethodId;
@@ -25,53 +30,6 @@ public class ParticipantPermissionEntity {
     private String callBackUrl;
 
     @Column(name = "sync")
-    private boolean sync;
+    private Boolean sync;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Integer getParticipantMethodId() {
-        return participantMethodId;
-    }
-
-    public void setParticipantMethodId(Integer participantMethodId) {
-        this.participantMethodId = participantMethodId;
-    }
-
-    public String getParticipantCode() {
-        return participantCode;
-    }
-
-    public void setParticipantCode(String participantCode) {
-        this.participantCode = participantCode;
-    }
-
-    public String getGroupCode() {
-        return groupCode;
-    }
-
-    public void setGroupCode(String groupCode) {
-        this.groupCode = groupCode;
-    }
-
-    public String getCallBackUrl() {
-        return callBackUrl;
-    }
-
-    public void setCallBackUrl(String callBackUrl) {
-        this.callBackUrl = callBackUrl;
-    }
-
-    public boolean isSync() {
-        return sync;
-    }
-
-    public void setSync(boolean sync) {
-        this.sync = sync;
-    }
 }

@@ -22,17 +22,14 @@
 
     <int:service-activator input-channel="errorChannel" ref="monitoringService" method="createError"/>
 
-    <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>
+<!--    <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>-->
 
     <int-jms:outbound-channel-adapter id="jmsInMonitoring" destination="monitoringQueue" channel="monitoringJmsInChannel"/>
 
     <int-jms:message-driven-channel-adapter id="jmsOutMonitoring" destination="monitoringQueue" channel="monitoringJmsOutChannel"
                                             acknowledge="transacted"/>
 
-    <int:service-activator input-channel="monitoringJmsOutChannel" ref="monitoringClient" method="sendMonitoringMessage"/>
-
-    <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
-                 default-reply-timeout="3000" error-channel="errorChannel"/>
+    <int:service-activator input-channel="monitoringJmsOutChannel" ref="integrationAuditClient" method="sendMonitoringMessage"/>
 
     <int:gateway id="monitoringGateway" service-interface="ru.i_novus.integration.gateway.MonitoringGateway"
                  default-reply-timeout="3000"/>

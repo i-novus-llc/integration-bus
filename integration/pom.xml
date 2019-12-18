@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>integration</artifactId>
@@ -11,10 +10,24 @@
     <parent>
         <groupId>ru.i_novus.is</groupId>
         <artifactId>base</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>2.4-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>net.n2oapp.platform</groupId>-->
+            <!--<artifactId>n2o-platform-starter-ms</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -24,6 +37,12 @@
             <groupId>ru.i_novus.is</groupId>
             <artifactId>integration-common-api</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.i-novus.ms.audit</groupId>
+            <artifactId>audit-client-spring-boot-starter</artifactId>
+            <version>${audit.version}</version>
         </dependency>
 
         <dependency>
@@ -59,13 +78,13 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
-            <version>3.2.6</version>
+            <version>3.3.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-client</artifactId>
-            <version>3.2.6</version>
+            <version>3.3.1</version>
         </dependency>
 
         <dependency>
@@ -78,12 +97,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ru.i-novus.common</groupId>
-            <artifactId>common-sign-soap</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!--JMS-->
@@ -107,51 +120,30 @@
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.12</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>rt</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
         <!--/JMS-->
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.8.0</version>
+        </dependency>
 
     </dependencies>
 
     <build>
+        <finalName>integration</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-            <!-- Generate Java classes from WSDL during build -->
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-java2ws-plugin</artifactId>
-                <version>3.2.6</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.cxf</groupId>
-                        <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                        <version>3.2.6</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.cxf</groupId>
-                        <artifactId>cxf-rt-frontend-simple</artifactId>
-                        <version>3.2.6</version>
-                    </dependency>
-                </dependencies>
-
-                <executions>
-                    <execution>
-                        <id>process-classes</id>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <className>ru.i_novus.integration.ws.internal.endpoint.InternalWsEndpoint</className>
-                            <genWsdl>true</genWsdl>
-                            <verbose>true</verbose>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 

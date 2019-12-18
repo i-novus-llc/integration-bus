@@ -1,0 +1,22 @@
+version: "3.6"
+services:
+  registry-service:
+    build:
+      context: registry/registry-backend
+      args:
+        JAR_FILE: target/registry-service.jar
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/registry-service:${TAG}"
+
+  registry-web:
+    build:
+      context: integration-control-ui
+      args:
+        JAR_FILE: target/registry-web.jar
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/registry-web:${TAG}"
+
+  integration:
+    build:
+      context: integration
+      args:
+        JAR_FILE: target/integration.jar
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/integration:${TAG}"
