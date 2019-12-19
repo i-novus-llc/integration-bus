@@ -43,7 +43,12 @@ public class FileService {
         if (!tmpDirectory.exists()) {
             tmpDirectory.mkdirs();
         }
-        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + UUID.randomUUID());
+        File[] filesCount = tmpDirectory.listFiles();
+        int count = 1;
+        if (filesCount != null) {
+            count = count + filesCount.length;
+        }
+        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + count);
 
         try (OutputStream outputStream = new FileOutputStream(tempFile)) {
             IOUtils.copy(data.getSplitDocument().getBinaryData().getInputStream(), outputStream);
