@@ -58,7 +58,9 @@ public class FileService {
             margeDir.mkdirs();
             File concatFile = new File(margeDir.getPath() + URL_SPLIT + data.getDocName());
             File[] fileList = new File(tmpDirectory.getPath()).listFiles();
-            IntegrationFileUtils.sortedFilesByName(fileList);
+            if (fileList != null && fileList.length != 1) {
+                IntegrationFileUtils.sortedFilesByName(fileList);
+            }
             IntegrationFileUtils.mergeFile(concatFile, fileList);
 
             try (InputStream in = new FileInputStream(concatFile);
