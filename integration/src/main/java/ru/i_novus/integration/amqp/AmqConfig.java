@@ -28,7 +28,7 @@ public class AmqConfig {
     public RedeliveryPolicy redeliveryPolicy() {
         RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
         redeliveryPolicy.setUseCollisionAvoidance(true);
-        redeliveryPolicy.setRedeliveryDelay(1800000);
+        redeliveryPolicy.setRedeliveryDelay(180000);
         redeliveryPolicy.setUseExponentialBackOff(false);
         redeliveryPolicy.setMaximumRedeliveries(-1);
 
