@@ -112,7 +112,7 @@ public class InternalWsClient {
             } catch (Exception e) {
                 request.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
                 monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
-
+                LOGGER.info(e.getMessage());
                 throw new RuntimeException(e);
             }
         }
