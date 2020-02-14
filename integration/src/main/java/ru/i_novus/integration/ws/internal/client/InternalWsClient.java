@@ -73,6 +73,7 @@ public class InternalWsClient {
      * Подготовка и отправка файла потребителю
      */
     public void sendInternal(Message<CommonModel> request) {
+        LOGGER.info("start send");
         if (request.getPayload().getObject() != null) {
             try {
                 IntegrationMessage message = (IntegrationMessage) request.getPayload().getObject();
