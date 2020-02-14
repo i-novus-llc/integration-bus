@@ -10,13 +10,13 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
 import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.InternalRequestModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
 import ru.i_novus.integration.model.RequestModel;
-import ru.i_novus.integration.common.api.model.MonitoringModel;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -40,6 +40,7 @@ public class MonitoringService {
         this.messageSource = messageSource;
     }
 
+    @SuppressWarnings("unused")
     public Message<CommonModel> create(@Payload CommonModel commonModel, String status) {
         MonitoringModel monitoringModel = commonModel.getMonitoringModel();
         if (!monitoringModel.getReceiver().equals("nsi")) {

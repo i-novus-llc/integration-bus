@@ -1,30 +1,28 @@
 package ru.i_novus.integration.service;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
 import ru.i_novus.integration.common.api.model.ParticipantModel;
 import ru.i_novus.integration.configuration.IntegrationProperties;
-import ru.i_novus.integration.model.AbstractRequestModel;
-import ru.i_novus.integration.model.CommonModel;
-import ru.i_novus.integration.model.InternalRequestModel;
-import ru.i_novus.integration.model.RequestModel;
+import ru.i_novus.integration.model.*;
 import ru.i_novus.integration.rest.client.RegistryClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Component
 public class CommonModelPrepareService {
 
     private final RegistryClient registryClient;
     private final IntegrationProperties property;
-    private final MonitoringService monitoringService;
+    private final MessageSource messageSource;
 
-    public CommonModelPrepareService(RegistryClient registryClient, IntegrationProperties property, MonitoringService monitoringService) {
+    public CommonModelPrepareService(RegistryClient registryClient, IntegrationProperties property, MessageSource messageSource) {
         this.registryClient = registryClient;
         this.property = property;
-        this.monitoringService = monitoringService;
+        this.messageSource = messageSource;
     }
 
     public CommonModel getRequestModelPrepare(Map<String, String> requestParams, String method, String service) throws IOException {
@@ -71,9 +69,37 @@ public class CommonModelPrepareService {
     private CommonModel prepareCommonModel(ParticipantModel participantModel, Object model, String recipient) {
         CommonModel commonModel = new CommonModel();
         commonModel.setParticipantModel(participantModel);
-        commonModel.setMonitoringModel(monitoringService.prepareModel(model, recipient, participantModel.getMethod()));
+        commonModel.setMonitoringModel(prepareModel(model, recipient, participantModel.getMethod()));
 
         return commonModel;
+    }
+
+    private MonitoringModel prepareModel(Object values, String recipient, String method) {
+        MonitoringModel monitoringModel = null;
+        String envCode;
+        if (values instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> map = (Map<String, String>) values;
+            envCode = map.get("envCode") != null ? map.get("envCode") : property.getEnvCode();
+            monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), LocalDateTime.now(), envCode,
+                    recipient, method, MessageStatusEnum.CREATE.getId());
+        }
+        if (values instanceof InternalRequestModel) {
+            InternalRequestModel model = (InternalRequestModel) values;
+            envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
+            monitoringModel = new MonitoringModel(model.getUid(),
+                    LocalDateTime.now(), envCode, recipient, method, MessageStatusEnum.CREATE.getId());
+
+            monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
+                    model.getDataModel().getName());
+        }
+        if (values instanceof RequestModel) {
+            RequestModel model = (RequestModel) values;
+            envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
+            monitoringModel = new MonitoringModel(model.getUid(),
+                    LocalDateTime.now(), envCode, recipient, method, MessageStatusEnum.CREATE.getId());
+        }
+        return monitoringModel;
     }
 
 }
