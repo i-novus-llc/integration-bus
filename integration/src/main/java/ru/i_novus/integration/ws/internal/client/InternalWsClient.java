@@ -76,14 +76,18 @@ public class InternalWsClient {
         LOGGER.info("start send");
         if (request.getPayload().getObject() != null) {
             try {
+                LOGGER.info("1");
                 IntegrationMessage message = (IntegrationMessage) request.getPayload().getObject();
                 SplitDocumentModel splitModel = message.getMessage().getAppData().getSplitDocument();
                 File[] files = new File(splitModel.getTemporaryPath()).listFiles();
                 IntegrationFileUtils.sortedFilesByName(files);
 
+                LOGGER.info("2");
                 if (files != null) {
+                    LOGGER.info("3");
                     Client wsClient = getPort(property.getAdapterUrl());
                     //поочередная отправка файлов потребителю
+                    LOGGER.info("4");
                     for (int index = 1; index <= files.length; index++) {
                         splitModel.setBinaryData(IntegrationFileUtils.prepareDataHandler(files[index - 1].getPath()));
                         splitModel.setCount(index);
@@ -91,8 +95,10 @@ public class InternalWsClient {
                         if (index == files.length) {
                             splitModel.setIsLast(true);
                         }
+                        LOGGER.info("5");
                         List result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
                                 request.getHeaders().get("method", String.class))[0];
+                        LOGGER.info("6");
                         if (result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0)) {
                             Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
                         } else {
