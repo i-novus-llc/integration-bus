@@ -25,5 +25,8 @@ public class IntegrationProperties {
     String adapterUrl;
     @Value("${integration.internal-ws-timeout}")
     String internalWsTimeOut;
+    @Value("${sender.queue.concurrent.consumers:5}")
+    String queueConcurrent;
+
 
 }
