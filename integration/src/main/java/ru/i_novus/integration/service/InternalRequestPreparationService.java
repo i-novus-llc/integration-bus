@@ -26,7 +26,7 @@ import java.util.*;
 
 @Component
 public class InternalRequestPreparationService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(InternalWsClient.class);
 
     private final MonitoringGateway monitoringGateway;
     private final FileService storageService;
@@ -74,7 +74,7 @@ public class InternalRequestPreparationService {
 
             Files.deleteIfExists(Paths.get(dataModel.getPath()));
         } catch (Exception e) {
-            LOGGER.info(ExceptionUtils.getStackTrace(e));
+            logger.error("Error on preparePackage", e);
             modelMessage.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
         }

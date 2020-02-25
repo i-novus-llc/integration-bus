@@ -81,12 +81,12 @@ public class InternalWsClient {
             }
 
             IntegrationFileUtils.sortedFilesByName(files);
-            logger.debug("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
+            logger.info("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
 
             Client wsClient = getPort(property.getAdapterUrl());
             //поочередная отправка файлов потребителю
             for (int index = 1; index <= files.length; index++) {
-                logger.debug("Try to send part {}: {}", index - 1, files[index - 1].getPath());
+                logger.info("Try to send part {}: {}", index - 1, files[index - 1].getPath());
                 splitModel.setBinaryData(IntegrationFileUtils.prepareDataHandler(files[index - 1].getPath()));
                 splitModel.setCount(index);
                 message.getMessage().getAppData().setSplitDocument(splitModel);
@@ -95,7 +95,7 @@ public class InternalWsClient {
                 }
                 List result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
                         request.getHeaders().get("method", String.class))[0];
-                logger.debug("Sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
+                logger.info("Sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
                 if (result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0)) {
                     Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
                 } else {

@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @Component
 public class FileService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     private static final String TEMP_PATH = "tmp";
     private static final String MERGE_FILE_PATH = "merge";
@@ -66,7 +66,7 @@ public class FileService {
             try (InputStream in = new FileInputStream(concatFile);
                  FileOutputStream out = new FileOutputStream(new File(property.getTempPath() + URL_SPLIT + data.getDocName()))) {
                 IOUtils.copy(in, out);
-                LOGGER.info("file " + data.getDocName() + "put to" + property.getTempPath());
+                logger.info("file {} put to {}", data.getDocName(), property.getTempPath());
             }
             FileUtils.deleteDirectory(tmpDirectory);
             Files.deleteIfExists(Paths.get(concatFile.getPath()));
