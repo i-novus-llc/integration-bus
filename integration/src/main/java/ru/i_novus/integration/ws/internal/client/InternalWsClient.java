@@ -53,7 +53,7 @@ public class InternalWsClient {
      */
     public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) {
         try {
-            return getPort(recipientUrl).invoke(method, integrationMessage, recipientUrl, method);
+            return getPort(recipientUrl, property.getInternalWsTimeOut()).invoke(method, integrationMessage, recipientUrl, method);
         } catch (Exception e) {
             logger.error("Failed sendRequest to recipient {}, method {}, integrationMessage {}",
                     recipientUrl, method, integrationMessage, e);
@@ -83,7 +83,7 @@ public class InternalWsClient {
             IntegrationFileUtils.sortedFilesByName(files);
             logger.info("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
 
-            Client wsClient = getPort(property.getAdapterUrl());
+            Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut() * 2);
             //поочередная отправка файлов потребителю
             for (int index = 1; index <= files.length; index++) {
                 logger.info("Try to send part {}: {}", index - 1, files[index - 1].getPath());
@@ -116,15 +116,15 @@ public class InternalWsClient {
     /**
      * Подготовка клиента по wsdl url
      */
-    private Client getPort(String wsdlUrl) {
+    private Client getPort(String wsdlUrl, Long timeout) {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient(wsdlUrl + "?wsdl");
 
         HTTPConduit conduit = (HTTPConduit) client.getConduit();
         HTTPClientPolicy policy = new HTTPClientPolicy();
         policy.setAutoRedirect(true);
-        policy.setReceiveTimeout(Long.parseLong(property.getInternalWsTimeOut()));
-        policy.setConnectionTimeout(Long.parseLong(property.getInternalWsTimeOut()));
+        policy.setReceiveTimeout(timeout);
+        policy.setConnectionTimeout(timeout);
         conduit.setClient(policy);
 
         return client;
