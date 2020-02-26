@@ -114,7 +114,9 @@ public class InternalWsClient {
             FileUtils.deleteDirectory(new File(splitModel.getTemporaryPath()));
             monitoringService.fineStatus(request.getPayload());
         } catch (Exception e) {
-            logger.error("Error on sending part of {}", splitModel.getTemporaryPath(), e);
+            logger.error("Error on sending part of {}, to adapter {}, receiver {}",
+                    splitModel.getTemporaryPath(), property.getAdapterUrl(),
+                    request.getPayload().getParticipantModel().getReceiver(), e);
             request.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
             throw new RuntimeException(e);
@@ -126,13 +128,10 @@ public class InternalWsClient {
      */
     private Client getPort(String serviceUrl, Long timeout) {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-
-
         Client client;
         String wsdlUrl = serviceUrl + "?wsdl";
-        ExecutorService executorService;
 
-        executorService = new ThreadPoolExecutor(0, 10,
+        ExecutorService executorService = new ThreadPoolExecutor(0, 10,
                 timeout, TimeUnit.MILLISECONDS,
                 new SynchronousQueue<>());
 
