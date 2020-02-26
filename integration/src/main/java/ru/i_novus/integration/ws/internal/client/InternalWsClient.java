@@ -1,5 +1,6 @@
 package ru.i_novus.integration.ws.internal.client;
 
+import com.google.common.util.concurrent.SimpleTimeLimiter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.endpoint.Client;
@@ -27,6 +28,8 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * WsClient.
@@ -54,7 +57,7 @@ public class InternalWsClient {
     public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) {
         try {
             logger.info("Try to getPort {}", recipientUrl);
-            Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3);
+            Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3 + 1);
             logger.info("Try to invoke {}", recipientUrl);
             Object[] invoke = port.invoke(method, integrationMessage, recipientUrl, method);
             logger.info("Invocation completed");
@@ -123,14 +126,25 @@ public class InternalWsClient {
      */
     private Client getPort(String wsdlUrl, Long timeout) {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient(wsdlUrl + "?wsdl");
 
-        HTTPConduit conduit = (HTTPConduit) client.getConduit();
+        @SuppressWarnings("UnstableApiUsage")
+        SimpleTimeLimiter simpleTimeLimiter = SimpleTimeLimiter.create(Executors.newCachedThreadPool());
+
+        Client client;
+        try {
+            client = simpleTimeLimiter.callWithTimeout(
+                    () -> dcf.createClient(wsdlUrl + "?wsdl"),
+                    timeout, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            logger.error("Can not create port by wsdl {}", wsdlUrl, e);
+            throw new RuntimeException(e);
+        }
+
         HTTPClientPolicy policy = new HTTPClientPolicy();
         policy.setAutoRedirect(true);
         policy.setReceiveTimeout(timeout);
         policy.setConnectionTimeout(timeout);
-        conduit.setClient(policy);
+        ((HTTPConduit) client.getConduit()).setClient(policy);
 
         return client;
     }
@@ -140,7 +154,6 @@ public class InternalWsClient {
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         StringWriter sw = new StringWriter();
         jaxbMarshaller.marshal(message, sw);
-
         return sw.toString();
     }
 }

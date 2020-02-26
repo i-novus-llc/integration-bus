@@ -1,6 +1,5 @@
 package ru.i_novus.integration.ws.internal.client;
 
-import org.apache.cxf.service.factory.ServiceConstructionException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,6 +20,7 @@ import ru.i_novus.integration.ws.internal.api.SplitDocumentModel;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InternalWsClientTest {
@@ -42,10 +42,19 @@ public class InternalWsClientTest {
     @Test
     public void sendRequest() {
         try {
+            when(placeholdersProperty.getInternalWsTimeOut()).thenReturn(10000L);
             client.sendRequest("", "not_exists_url", "");
         } catch (Exception e) {
-            assertTrue(e.getCause() instanceof ServiceConstructionException);
+            assertTrue(e.getMessage().contains("ServiceConstructionException"));
         }
+
+        try {
+            when(placeholdersProperty.getInternalWsTimeOut()).thenReturn(10L);
+            client.sendRequest("", "not_exists_url", "");
+        } catch (Exception e) {
+            assertTrue(e.getMessage().contains("TimeoutException"));
+        }
+
     }
 
     @Test
