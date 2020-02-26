@@ -1,6 +1,5 @@
 package ru.i_novus.integration.ws.internal.client;
 
-import com.google.common.util.concurrent.SimpleTimeLimiter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.endpoint.Client;
@@ -28,8 +27,7 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * WsClient.
@@ -55,10 +53,12 @@ public class InternalWsClient {
      * Отправка сообщения потребителю
      */
     public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) {
+
+        logger.info("Try to getPort {}", recipientUrl);
+        Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3 + 1);
+
+        logger.info("Try to invoke {}", recipientUrl);
         try {
-            logger.info("Try to getPort {}", recipientUrl);
-            Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3 + 1);
-            logger.info("Try to invoke {}", recipientUrl);
             Object[] invoke = port.invoke(method, integrationMessage, recipientUrl, method);
             logger.info("Invocation completed");
             return invoke;
@@ -124,19 +124,23 @@ public class InternalWsClient {
     /**
      * Подготовка клиента по wsdl url
      */
-    private Client getPort(String wsdlUrl, Long timeout) {
+    private Client getPort(String serviceUrl, Long timeout) {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 
-        @SuppressWarnings("UnstableApiUsage")
-        SimpleTimeLimiter simpleTimeLimiter = SimpleTimeLimiter.create(Executors.newCachedThreadPool());
 
         Client client;
+        String wsdlUrl = serviceUrl + "?wsdl";
+        ExecutorService executorService;
+
+        executorService = new ThreadPoolExecutor(0, 10,
+                timeout, TimeUnit.MILLISECONDS,
+                new SynchronousQueue<>());
+
         try {
-            client = simpleTimeLimiter.callWithTimeout(
-                    () -> dcf.createClient(wsdlUrl + "?wsdl"),
-                    timeout, TimeUnit.MILLISECONDS);
+            Future<Client> future = executorService.submit(() -> dcf.createClient(wsdlUrl));
+            client = future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            logger.error("Can not create port by wsdl {}", wsdlUrl, e);
+            logger.error("Can not create port by wsdl {}", wsdlUrl);
             throw new RuntimeException(e);
         }
 
