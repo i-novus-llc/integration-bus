@@ -1,10 +1,11 @@
 package ru.i_novus.integration.ws.internal.endpoint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
-import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
 import ru.i_novus.integration.service.FileService;
 import ru.i_novus.integration.ws.internal.client.InternalWsClient;
@@ -21,12 +22,12 @@ import java.io.IOException;
 @BindingType(value = SOAPBinding.SOAP12HTTP_MTOM_BINDING)
 public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
+    private static final Logger logger = LoggerFactory.getLogger(InternalWsEndpointImpl.class);
+
     @Autowired
-    IntegrationProperties property;
+    private InternalWsClient client;
     @Autowired
-    InternalWsClient client;
-    @Autowired
-    FileService fileService;
+    private FileService fileService;
 
     public InternalWsEndpointImpl() {
         AutowiredAnnotationBeanPostProcessor bpp = new AutowiredAnnotationBeanPostProcessor();
@@ -37,15 +38,18 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
 
     @Override
     public Boolean internal(String message) throws IOException, JAXBException {
+        logger.info("receive 'internal' call, message.length {}", message.length());
         fileService.saveDocumentInStorage(message);
-
+        logger.info("'internal' call completed");
         return true;
     }
 
     @Override
-    public Object[] adapter(String message, String recipientUrl, String method) throws Exception {
-        return client.sendRequest(message, recipientUrl, method);
+    public Object[] adapter(String message, String recipientUrl, String method) {
+        logger.info("receive 'adapter' call, recipientUrl {}, method {}", recipientUrl, method);
+        Object[] objects = client.sendRequest(message, recipientUrl, method);
+        logger.info("'adapter' call completed");
+        return objects;
     }
-
 
 }

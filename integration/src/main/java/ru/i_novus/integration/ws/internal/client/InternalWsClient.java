@@ -53,7 +53,12 @@ public class InternalWsClient {
      */
     public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) {
         try {
-            return getPort(recipientUrl, property.getInternalWsTimeOut()).invoke(method, integrationMessage, recipientUrl, method);
+            logger.info("Try to getPort {}", recipientUrl);
+            Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3);
+            logger.info("Try to invoke {}", recipientUrl);
+            Object[] invoke = port.invoke(method, integrationMessage, recipientUrl, method);
+            logger.info("Invocation completed");
+            return invoke;
         } catch (Exception e) {
             logger.error("Failed sendRequest to recipient {}, method {}, integrationMessage {}",
                     recipientUrl, method, integrationMessage, e);
@@ -83,7 +88,7 @@ public class InternalWsClient {
             IntegrationFileUtils.sortedFilesByName(files);
             logger.info("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
 
-            Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut() * 2);
+            Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut());
             //поочередная отправка файлов потребителю
             for (int index = 1; index <= files.length; index++) {
                 logger.info("Try to send part {}: {}", index - 1, files[index - 1].getPath());
