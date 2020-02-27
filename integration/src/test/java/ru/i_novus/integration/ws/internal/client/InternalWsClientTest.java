@@ -49,7 +49,7 @@ public class InternalWsClientTest {
         }
 
         try {
-            when(placeholdersProperty.getInternalWsTimeOut()).thenReturn(10L);
+            when(placeholdersProperty.getInternalWsTimeOut()).thenReturn(1L);
             client.sendRequest("", "not_exists_url", "");
         } catch (Exception e) {
             assertTrue(e.getMessage().contains("TimeoutException"));
