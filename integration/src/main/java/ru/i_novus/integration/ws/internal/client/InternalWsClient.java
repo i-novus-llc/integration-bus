@@ -116,7 +116,9 @@ public class InternalWsClient {
         } catch (Exception e) {
             logger.error("Error on sending part of {}, to adapter {}, receiver {}",
                     splitModel.getTemporaryPath(), property.getAdapterUrl(),
-                    request.getPayload().getParticipantModel().getReceiver(), e);
+                    request.getPayload().getParticipantModel() == null ?
+                            "<empty>" : request.getPayload().getParticipantModel().getReceiver(),
+                    e);
             request.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
             throw new RuntimeException(e);
