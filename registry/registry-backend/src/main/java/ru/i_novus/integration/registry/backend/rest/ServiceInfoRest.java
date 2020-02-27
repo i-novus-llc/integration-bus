@@ -1,8 +1,7 @@
 package ru.i_novus.integration.registry.backend.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.i_novus.integration.common.api.model.ParticipantModel;
 import ru.i_novus.integration.common.api.model.RegistryInfoModel;
 import ru.i_novus.integration.registry.backend.api.PrepareRequestService;
@@ -22,6 +21,12 @@ public class ServiceInfoRest implements PrepareRequestService {
     private ParticipantRepository participantRepository;
     private ParticipantMethodRepository participantMethodRepository;
     private ParticipantPermissionRepository participantPermissionRepository;
+
+    public ServiceInfoRest(ParticipantRepository participantRepository, ParticipantMethodRepository participantMethodRepository, ParticipantPermissionRepository participantPermissionRepository) {
+        this.participantRepository = participantRepository;
+        this.participantMethodRepository = participantMethodRepository;
+        this.participantPermissionRepository = participantPermissionRepository;
+    }
 
     @Override
     public ParticipantModel getServiceInfo(@RequestBody RegistryInfoModel model) {
@@ -57,20 +62,5 @@ public class ServiceInfoRest implements PrepareRequestService {
         }
 
         return participantModel;
-    }
-
-    @Autowired
-    public void setParticipantRepository(ParticipantRepository participantRepository) {
-        this.participantRepository = participantRepository;
-    }
-
-    @Autowired
-    public void setParticipantMethodRepository(ParticipantMethodRepository participantMethodRepository) {
-        this.participantMethodRepository = participantMethodRepository;
-    }
-
-    @Autowired
-    public void setParticipantPermissionRepository(ParticipantPermissionRepository participantPermissionRepository) {
-        this.participantPermissionRepository = participantPermissionRepository;
     }
 }

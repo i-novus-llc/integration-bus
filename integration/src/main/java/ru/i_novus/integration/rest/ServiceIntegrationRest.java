@@ -12,6 +12,7 @@ import ru.i_novus.integration.service.CommonModelPrepareService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,11 @@ public class ServiceIntegrationRest {
     public ServiceIntegrationRest(InboundGateway inboundGateway, CommonModelPrepareService modelPrepareService) {
         this.inboundGateway = inboundGateway;
         this.modelPrepareService = modelPrepareService;
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello at " + LocalDateTime.now();
     }
 
     /**
