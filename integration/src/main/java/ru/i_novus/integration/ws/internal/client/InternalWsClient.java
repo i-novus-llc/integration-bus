@@ -112,7 +112,7 @@ public class InternalWsClient {
                                 request.getHeaders().get("method", String.class))[0];
                         success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
                     } catch (Fault e) {
-                        logger.info("Failed try number {} to send part {}: {}, error: {}",
+                        logger.error("Failed try number {} to send part {}: {}, error: {}",
                                 retriesCount, index - 1, files[index - 1].getPath(), e.getMessage());
                         if (retriesCount >= 10) {
                             throw new RuntimeException(
