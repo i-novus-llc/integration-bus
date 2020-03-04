@@ -3,6 +3,7 @@ package ru.i_novus.integration.ws.internal.client;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
@@ -101,14 +102,26 @@ public class InternalWsClient {
                 if (index == files.length) {
                     splitModel.setIsLast(true);
                 }
-                List result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
-                        request.getHeaders().get("method", String.class))[0];
-                logger.info("Sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
-                if (result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0)) {
-                    Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
-                } else {
-                    throw new RuntimeException(result != null ? result.toString() : "result = null");
-                }
+                List result = null;
+                boolean success = false;
+                int retriesCount = 0;
+                do {
+                    retriesCount++;
+                    try {
+                        result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
+                                request.getHeaders().get("method", String.class))[0];
+                        success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
+                    } catch (Fault e) {
+                        if (retriesCount >= 10) {
+                            throw new RuntimeException(
+                                    String.format("Sending part %s retries exceeded, remains %s",
+                                    files[index - 1].getPath(), files.length - index), e);
+                        }
+                    }
+                    logger.info("Sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
+                } while (!success);
+
+                Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
             }
 
             FileUtils.deleteDirectory(new File(splitModel.getTemporaryPath()));
