@@ -112,14 +112,16 @@ public class InternalWsClient {
                                 request.getHeaders().get("method", String.class))[0];
                         success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
                     } catch (Fault e) {
+                        logger.info("Failed try number {} to send part {}: {}, error: {}",
+                                retriesCount, index - 1, files[index - 1].getPath(), e.getMessage());
                         if (retriesCount >= 10) {
                             throw new RuntimeException(
-                                    String.format("Sending part %s retries exceeded, remains %s",
+                                    String.format("Sending part %s retries exceeded, remains %s parts",
                                     files[index - 1].getPath(), files.length - index), e);
                         }
                     }
-                    logger.info("Sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
                 } while (!success);
+                logger.info("Successfully sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
 
                 Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
             }
