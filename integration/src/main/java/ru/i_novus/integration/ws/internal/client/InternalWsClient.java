@@ -92,7 +92,6 @@ public class InternalWsClient {
             IntegrationFileUtils.sortedFilesByName(files);
             logger.info("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
 
-            Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut());
             //поочередная отправка файлов потребителю
             for (int index = 1; index <= files.length; index++) {
                 logger.info("Try to send part {}: {}", index - 1, files[index - 1].getPath());
@@ -108,6 +107,7 @@ public class InternalWsClient {
                 do {
                     retriesCount++;
                     try {
+                        Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut());
                         result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
                                 request.getHeaders().get("method", String.class))[0];
                         success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
