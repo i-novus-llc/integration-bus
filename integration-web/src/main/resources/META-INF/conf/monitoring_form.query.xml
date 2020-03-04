@@ -2,8 +2,9 @@
 <query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
        object-id="monitoring"
        name="monitoring">
+
     <list result-mapping="['content']" count-mapping="['totalElements']">
-        <rest method="GET" filters-separator="&amp;">${integration.monitoring.url}/service?{filters}&amp;size={limit}&amp;{sorting}</rest>
+        <rest method="GET" filters-separator="&amp;">${integration.monitoring.url}/service/form?{filters}&amp;size={limit}&amp;{sorting}</rest>
     </list>
 
     <fields>
@@ -19,15 +20,6 @@
             <filters>
                 <eq filter-id="uid">uid={uid}</eq>
             </filters>
-        </field>
-
-        <field id="dateTime" domain="localdatetime">
-            <select mapping="['dateTime']"/>
-            <filters>
-                <more filter-id="dateTime.begin">dateFrom={dateTime.begin}</more>
-                <less filter-id="dateTime.end">dateTo={dateTime.end}</less>
-            </filters>
-            <sorting mapping="['direction']">sort=dateTime,{direction}</sorting>
         </field>
 
         <field id="sender" domain="string">
@@ -46,20 +38,13 @@
 
         <field id="operation" domain="string">
             <select mapping="['operation']"/>
-        </field>
-
-        <field id="status">
-            <select mapping="['status.name']"/>
             <filters>
-                <eq filter-id="status.id">status={status.id}</eq>
+                <eq filter-id="operation">operation={operation}</eq>
             </filters>
         </field>
 
-        <field id="comment" domain="string">
-            <select mapping="['comment']"/>
-            <filters>
-                <eq filter-id="comment">comment={comment}</eq>
-            </filters>
+        <field id="monitoringStageModel" domain="object[]">
+            <select mapping="['monitoringStageModel']"/>
         </field>
     </fields>
 

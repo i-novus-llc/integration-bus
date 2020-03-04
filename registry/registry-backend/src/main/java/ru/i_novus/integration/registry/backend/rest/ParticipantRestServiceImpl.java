@@ -18,11 +18,15 @@ import java.util.Arrays;
 @Controller
 public class ParticipantRestServiceImpl implements ParticipantRestService, Mappers {
 
-    @Autowired
-    private ParticipantRepository repository;
+    private final ParticipantRepository repository;
+
+    private final RegistryAuditClient auditClient;
 
     @Autowired
-    private RegistryAuditClient auditClient;
+    public ParticipantRestServiceImpl(ParticipantRepository repository, RegistryAuditClient auditClient) {
+        this.repository = repository;
+        this.auditClient = auditClient;
+    }
 
     @Override
     public Page<Participant> findAll(ParticipantCriteria criteria) {
@@ -70,9 +74,5 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
             auditClient.audit(action, entity, entity.getCode(), "audit.objectName.participant");
         }
         return map(entity);
-    }
-
-    public void setRepository(ParticipantRepository repository) {
-        this.repository = repository;
     }
 }

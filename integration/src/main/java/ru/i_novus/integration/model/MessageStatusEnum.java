@@ -1,18 +1,18 @@
 package ru.i_novus.integration.model;
 
 public enum MessageStatusEnum {
-    CREATE(1),
-    ERROR(2),
-    QUEUE(3),
-    SEND(4);
+    CREATE("CREATE"),
+    ERROR("ERROR"),
+    QUEUE("QUEUE"),
+    SEND("SEND");
 
-    private int id;
+    private String id;
 
-    MessageStatusEnum(int id) {
+    MessageStatusEnum(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 }

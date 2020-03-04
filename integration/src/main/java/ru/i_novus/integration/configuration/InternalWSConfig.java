@@ -17,8 +17,12 @@ import java.util.Map;
 @Configuration
 public class InternalWSConfig {
 
+    private final Bus bus;
+
     @Autowired
-    private Bus bus;
+    public InternalWSConfig(Bus bus) {
+        this.bus = bus;
+    }
 
     @Bean
     public Endpoint endpoint() {

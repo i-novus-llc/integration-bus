@@ -18,11 +18,15 @@ import java.util.Arrays;
 @Controller
 public class ParticipantPermissionRestServiceImpl implements ParticipantPermissionRestService, Mappers {
 
-    @Autowired
-    private ParticipantPermissionRepository repository;
+    private final ParticipantPermissionRepository repository;
+
+    private final RegistryAuditClient auditClient;
 
     @Autowired
-    private RegistryAuditClient auditClient;
+    public ParticipantPermissionRestServiceImpl(ParticipantPermissionRepository repository, RegistryAuditClient auditClient) {
+        this.repository = repository;
+        this.auditClient = auditClient;
+    }
 
     @Override
     public Page<ParticipantPermission> findAll(ParticipantPermissionCriteria criteria) {
@@ -72,9 +76,5 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
             auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantPermission");
         }
         return map(entity);
-    }
-
-    public void setRepository(ParticipantPermissionRepository repository) {
-        this.repository = repository;
     }
 }

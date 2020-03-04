@@ -15,7 +15,6 @@ public class IntegrationFileUtils {
     // buffer size
     private final static Integer BUF_SIZE = 1024 * 1024;
 
-
     /**
      * Соединение массива файлов в один файл
      */

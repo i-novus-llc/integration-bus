@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page xmlns="http://n2oapp.net/framework/config/schema/page-2.0"
+      object-id="monitoring"
+      name="Мониторинг просмотр">
+
+    <regions>
+        <region place="top">
+            <form id="main" object-id="registry" query-id="monitoring_form_header">
+                <fields>
+                    <output-text id="uid" label="UID"/>
+                    <output-text id="sender" label="Отправитель"/>
+                    <output-text id="receiver" label="Получатель"/>
+                    <output-text id="operation" label="Действие"/>
+                </fields>
+            </form>
+        </region>
+        <region place="top">
+            <table query-id="monitoring_form" depends-on="main">
+                <columns>
+                    <column text-field-id="uid" label="Идентификатор сообщения"/>
+                    <column text-field-id="dateTime" label="Дата/Время">
+                        <text format="date YYYY-MM-DD HH:mm:ss"/>
+                    </column>
+                    <column text-field-id="status" label="Статус"/>
+                    <column text-field-id="comment" label="Комментарий"/>
+                </columns>
+                <pre-filters>
+                    <eq field-id="uid" value="{uid}"/>
+                    <eq field-id="sender" value="{sender}"/>
+                    <eq field-id="receiver" value="{receiver}"/>
+                    <eq field-id="operation" value="{operation}"/>
+                </pre-filters>
+            </table>
+        </region>
+    </regions>
+</page>

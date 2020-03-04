@@ -22,14 +22,18 @@ import java.util.stream.Collectors;
 @Controller
 public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestService, Mappers {
 
-    @Autowired
-    private ParticipantMethodRepository repository;
+    private final ParticipantMethodRepository repository;
+
+    private final RegistryAuditClient auditClient;
+
+    private final IntegrationTypeRepository integrationTypeRepository;
 
     @Autowired
-    private RegistryAuditClient auditClient;
-
-    @Autowired
-    private IntegrationTypeRepository integrationTypeRepository;
+    public ParticipantMethodRestServiceImpl(ParticipantMethodRepository repository, RegistryAuditClient auditClient, IntegrationTypeRepository integrationTypeRepository) {
+        this.repository = repository;
+        this.auditClient = auditClient;
+        this.integrationTypeRepository = integrationTypeRepository;
+    }
 
     @Override
     public Page<ParticipantMethod> findAll(ParticipantMethodCriteria criteria) {
@@ -83,9 +87,5 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
             auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantMethod");
         }
         return map(entity);
-    }
-
-    public void setRepository(ParticipantMethodRepository repository) {
-        this.repository = repository;
     }
 }

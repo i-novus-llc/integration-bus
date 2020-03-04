@@ -18,7 +18,7 @@
     <int:channel id="internalRequestChannel"/>
     <int:channel id="mqOutChannel"/>
 
-    <int:chain input-channel="internalRequestChannel">
+    <int:chain input-channel="internalRequestChannel" send-timeout="">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
         <int:header-enricher>
             <int:header name="jms_correlationId" type="java.lang.String"

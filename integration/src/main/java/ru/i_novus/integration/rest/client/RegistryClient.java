@@ -6,12 +6,10 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
+import ru.i_novus.integration.common.api.model.ParticipantModel;
+import ru.i_novus.integration.common.api.model.RegistryInfoModel;
 import ru.i_novus.integration.configuration.IntegrationProperties;
-import ru.i_novus.integration.model.CommonModel;
-import ru.i_novus.integration.common.api.ParticipantModel;
-import ru.i_novus.integration.common.api.RegistryInfoModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,14 +18,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @Component
 public class RegistryClient {
+    private final IntegrationProperties property;
+    private final MessageSource messageSource;
+
     @Autowired
-    IntegrationProperties property;
-    @Autowired
-    MessageSource messageSource;
+    public RegistryClient(IntegrationProperties property, MessageSource messageSource) {
+        this.property = property;
+        this.messageSource = messageSource;
+    }
 
     public ParticipantModel getServiceParticipant(String receiver, String sender, String  method) throws IOException {
         List<Object> providers = new ArrayList<>();
@@ -44,24 +45,6 @@ public class RegistryClient {
             Response response = client.post(registryInfoModel);
             checkResponseError(response);
             return response.readEntity(ParticipantModel.class);
-        } finally {
-            if (client.getResponse() != null)
-                client.getResponse().close();
-        }
-    }
-
-    public Message getServiceUrl(Message<CommonModel> message) throws IOException {
-        Map<String, String> messageParam = (Map) message.getPayload().getObject();
-        WebClient client = WebClient
-                .fromClient(WebClient.create(property.getRegistryAddress())
-                        .accept(MediaType.APPLICATION_JSON))
-                .replacePath("/service/info/" + messageParam.get("recipient"));
-        try {
-            Response response = client.get();
-            checkResponseError(response);
-            messageParam.put("url", IOUtils.toString((InputStream) response.getEntity(), "UTF-8"));
-
-            return message;
         } finally {
             if (client.getResponse() != null)
                 client.getResponse().close();

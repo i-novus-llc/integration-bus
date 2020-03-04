@@ -3,7 +3,6 @@ package ru.i_novus.integration.registry.backend.specifications;
 import org.springframework.data.jpa.domain.Specification;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantCriteria;
 import ru.i_novus.integration.registry.backend.entity.*;
-import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
 
 import javax.persistence.criteria.*;
 

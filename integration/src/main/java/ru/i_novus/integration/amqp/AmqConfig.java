@@ -17,8 +17,12 @@ public class AmqConfig {
     private static final String PREPARATION_QUEUE = "preparation.queue";
     private static final String ASYNC_QUEUE = "async.queue";
 
+    private final IntegrationProperties property;
+
     @Autowired
-    IntegrationProperties property;
+    public AmqConfig(IntegrationProperties property) {
+        this.property = property;
+    }
 
     @Bean
     public RedeliveryPolicy redeliveryPolicy() {

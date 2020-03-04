@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
-import ru.i_novus.integration.service.FileService;
 import ru.i_novus.integration.service.IntegrationFileUtils;
 import ru.i_novus.integration.service.MonitoringService;
 import ru.i_novus.integration.ws.internal.api.IntegrationMessage;
@@ -45,14 +44,16 @@ import java.util.List;
 public class InternalWsClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
 
+    private final IntegrationProperties property;
+    private final MonitoringService monitoringService;
+    private final MonitoringGateway monitoringGateway;
+
     @Autowired
-    IntegrationProperties property;
-    @Autowired
-    MonitoringService monitoringService;
-    @Autowired
-    MonitoringGateway monitoringGateway;
-    @Autowired
-    FileService storageService;
+    public InternalWsClient(IntegrationProperties property, MonitoringService monitoringService, MonitoringGateway monitoringGateway) {
+        this.property = property;
+        this.monitoringService = monitoringService;
+        this.monitoringGateway = monitoringGateway;
+    }
 
     /**
      * Отправка сообщения потребителю
@@ -109,8 +110,6 @@ public class InternalWsClient {
             }
         }
     }
-
-
 
     /**
      * Подготовка клиента по wsdl url

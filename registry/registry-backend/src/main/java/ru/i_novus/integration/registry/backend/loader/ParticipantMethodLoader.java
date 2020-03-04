@@ -30,11 +30,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class ParticipantMethodLoader implements ServerLoader<ParticipantMethodInfo>, Mappers {
 
-    @Autowired
-    private ParticipantMethodRepository participantMethodRepository;
+    private final ParticipantMethodRepository participantMethodRepository;
+
+    private final ParticipantPermissionRepository participantPermissionRepository;
 
     @Autowired
-    private ParticipantPermissionRepository participantPermissionRepository;
+    public ParticipantMethodLoader(ParticipantMethodRepository participantMethodRepository, ParticipantPermissionRepository participantPermissionRepository) {
+        this.participantMethodRepository = participantMethodRepository;
+        this.participantPermissionRepository = participantPermissionRepository;
+    }
 
     @Override
     public void load(List<ParticipantMethodInfo> list, String participantCode) {

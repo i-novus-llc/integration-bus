@@ -3,6 +3,7 @@
     <!--Администрирование-->
     <permit-all>
         <object-access object-id="registry" operations="*"/>
+        <object-access object-id="monitoring" operations="*"/>
     </permit-all>
 
 </access>

@@ -8,6 +8,7 @@ import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntit
 import javax.persistence.criteria.*;
 
 public class ParticipantPermissionSpecifications implements Specification<ParticipantPermissionEntity> {
+
     private ParticipantPermissionCriteria criteria;
 
     public ParticipantPermissionSpecifications(ParticipantPermissionCriteria criteria) {

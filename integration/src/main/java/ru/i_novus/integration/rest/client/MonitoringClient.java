@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.configuration.IntegrationProperties;
-import ru.i_novus.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,10 +20,14 @@ import java.util.Locale;
 
 @Component
 public class MonitoringClient {
+    private final IntegrationProperties property;
+    private final MessageSource messageSource;
+
     @Autowired
-    IntegrationProperties property;
-    @Autowired
-    MessageSource messageSource;
+    public MonitoringClient(IntegrationProperties property, MessageSource messageSource) {
+        this.property = property;
+        this.messageSource = messageSource;
+    }
 
     public void sendMonitoringMessage(MonitoringModel model) throws IOException {
         List<Object> providers = new ArrayList<>();

@@ -18,9 +18,12 @@ import java.util.List;
 @Transactional
 public class ParticipantLoader implements ServerLoader<Participant>, Mappers {
 
-    @Autowired
-    private ParticipantRepository participantRepository;
+    private final ParticipantRepository participantRepository;
 
+    @Autowired
+    public ParticipantLoader(ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
+    }
 
     @Override
     public void load(List<Participant> list, String s) {

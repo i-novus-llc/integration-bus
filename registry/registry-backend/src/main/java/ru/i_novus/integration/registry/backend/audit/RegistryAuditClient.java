@@ -10,12 +10,16 @@ import ru.i_novus.ms.audit.client.model.AuditClientRequest;
 
 @Component
 public class RegistryAuditClient {
+    private final AuditClient auditClient;
+    private final ObjectMapper mapper;
+    private final MessageSourceAccessor messageSourceAccessor;
+
     @Autowired
-    private AuditClient auditClient;
-    @Autowired
-    private ObjectMapper mapper;
-    @Autowired
-    private MessageSourceAccessor messageSourceAccessor;
+    public RegistryAuditClient(AuditClient auditClient, ObjectMapper mapper, MessageSourceAccessor messageSourceAccessor) {
+        this.auditClient = auditClient;
+        this.mapper = mapper;
+        this.messageSourceAccessor = messageSourceAccessor;
+    }
 
     public void audit(String action, Object object, String objectId, String objectName) {
         AuditClientRequest request = new AuditClientRequest();

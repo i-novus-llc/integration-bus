@@ -2,8 +2,8 @@ package ru.i_novus.integration.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.i_novus.integration.common.api.MonitoringModel;
-import ru.i_novus.integration.common.api.ParticipantModel;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.common.api.model.ParticipantModel;
 
 import java.io.Serializable;
 

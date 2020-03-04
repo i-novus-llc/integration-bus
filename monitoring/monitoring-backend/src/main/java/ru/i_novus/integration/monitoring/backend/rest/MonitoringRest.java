@@ -1,23 +1,32 @@
 package ru.i_novus.integration.monitoring.backend.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.i_novus.integration.monitoring.backend.entity.MonitoringEntity;
-import ru.i_novus.integration.monitoring.backend.repository.MonitoringRepository;
-import ru.i_novus.integration.common.api.MonitoringModel;
+import org.springframework.data.domain.Page;
+import ru.i_novus.integration.monitoring.backend.MonitoringCriteria;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.monitoring.backend.model.MonitoringFormModel;
+import ru.i_novus.integration.monitoring.backend.model.MonitoringStageModel;
 
-@RestController
-@RequestMapping("/monitoring/service")
-public class MonitoringRest {
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
-    @Autowired
-    MonitoringRepository repository;
+@Path("/service")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public interface MonitoringRest {
+    @GET
+    @Path("/")
+    Page<MonitoringModel> findAll(@BeanParam MonitoringCriteria criteria);
 
-    @PostMapping(value = "/save")
-    public void getServiceInfo(@RequestBody MonitoringModel model) {
-        repository.save(new MonitoringEntity(model));
-    }
+    @GET
+    @Path("/form")
+    Page<MonitoringStageModel> findByUid(@BeanParam MonitoringCriteria criteria);
+
+    @GET
+    @Path("/header")
+    MonitoringFormModel fillHeader(@QueryParam("uid") String uid, @QueryParam("sender") String sender,
+                                  @QueryParam("receiver") String receiver, @QueryParam("operation") String operation);
+
+    @GET
+    @Path("error/{id}")
+    String getErrorStackTrace(@PathParam("id") Integer id);
 }

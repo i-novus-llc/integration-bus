@@ -1,18 +1,15 @@
 package ru.i_novus.integration.monitoring.backend.entity;
-
-
-import ru.i_novus.integration.common.api.MonitoringModel;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.monitoring.backend.model.MonitoringStageModel;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
-@Entity
-@Getter
-@Setter
 @NoArgsConstructor
+@Data
+@Entity
 @Table(schema = "monitoring", name = "monitoring")
 public class MonitoringEntity {
 
@@ -26,7 +23,7 @@ public class MonitoringEntity {
     private String uid;
 
     @Column(name = "dateTime")
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
     @Column(name = "sender")
     private String sender;
@@ -46,15 +43,27 @@ public class MonitoringEntity {
     @Column(name = "comment")
     private String comment;
 
-    public MonitoringEntity(MonitoringModel model) {
-        this.uid = model.getUid();
-        this.dateTime = model.getDateTime();
-        this.sender = model.getSender();
-        this.receiver = model.getReceiver();
-        this.operation = model.getOperation();
-        this.status = Integer.toString(model.getStatus());
-        this.error = model.getError();
-        this.comment = model.getComment();
+    public MonitoringModel getMonitoringModel() {
+        MonitoringModel model = new MonitoringModel();
+        model.setId(this.getId());
+        model.setUid(this.getUid());
+        model.setSender(this.getSender());
+        model.setReceiver(this.getReceiver());
+        model.setStatus(this.getStatus());
+        model.setOperation(this.getOperation());
+        model.setDateTime(this.getDateTime());
+        model.setComment(this.getComment());
+        return model;
     }
 
+    public MonitoringStageModel fillMonitoringStageModel() {
+        MonitoringStageModel stageModel = new MonitoringStageModel();
+        stageModel.setId(this.getId());
+        stageModel.setDateTime(this.getDateTime());
+        stageModel.setStatus(this.getStatus());
+        stageModel.setComment(this.getComment());
+        stageModel.setError(this.getError().substring(0, 20) + "...");
+
+        return stageModel;
+    }
 }

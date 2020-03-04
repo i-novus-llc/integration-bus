@@ -1,7 +1,6 @@
 package ru.i_novus.integration.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -11,11 +10,11 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.common.api.model.ParticipantModel;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.integration.common.api.MonitoringModel;
-import ru.i_novus.integration.common.api.ParticipantModel;
 import ru.i_novus.integration.model.PostResultModel;
 
 import javax.xml.transform.stream.StreamResult;
@@ -23,13 +22,12 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Component
 public class MessagePrepareService {
+
     private final RestTemplate restTemplate;
     private final MonitoringGateway monitoringGateway;
     private final MessageSource messageSource;
@@ -176,7 +174,7 @@ public class MessagePrepareService {
      * @param monitoringModel модель
      * @param status статус передачи
      */
-    private void monitoringNsiMessage(String operation, MonitoringModel monitoringModel, int status, String comment) {
+    private void monitoringNsiMessage(String operation, MonitoringModel monitoringModel, String status, String comment) {
         monitoringRequestMessage(operation, monitoringModel, status);
         monitoringModel.setComment(comment);
         monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
@@ -188,13 +186,13 @@ public class MessagePrepareService {
      * @param monitoringModel модель
      * @param status статус передачи
      */
-    private void monitoringRequestMessage(String operation, MonitoringModel monitoringModel, int status) {
-        monitoringModel.setDateTime(new Date());
+    private void monitoringRequestMessage(String operation, MonitoringModel monitoringModel, String status) {
+        monitoringModel.setDateTime(LocalDateTime.now());
         monitoringModel.setStatus(status);
         monitoringModel.setOperation(operation);
     }
 
-    private void monitoringRequestErrorMessage(String operation, MonitoringModel monitoringModel, int status, String error, String comment) {
+    private void monitoringRequestErrorMessage(String operation, MonitoringModel monitoringModel, String status, String error, String comment) {
         monitoringModel.setError(error);
         monitoringRequestMessage(operation, monitoringModel, status);
         monitoringModel.setComment(comment);

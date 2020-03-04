@@ -2,7 +2,6 @@ package ru.i_novus.integration.service;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.ws.security.util.UUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Component
 public class FileService {
@@ -43,7 +43,7 @@ public class FileService {
         if (!tmpDirectory.exists()) {
             tmpDirectory.mkdirs();
         }
-        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + UUIDGenerator.getUUID());
+        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + UUID.randomUUID());
 
         try (OutputStream outputStream = new FileOutputStream(tempFile)) {
             IOUtils.copy(data.getSplitDocument().getBinaryData().getInputStream(), outputStream);
@@ -82,7 +82,6 @@ public class FileService {
                 URL_SPLIT + LocalDate.now().getMonth() +
                 URL_SPLIT + LocalDate.now().getDayOfMonth() +
                 URL_SPLIT;
-
     }
 
     private IntegrationMessage stringToJaxb(String message) throws JAXBException {

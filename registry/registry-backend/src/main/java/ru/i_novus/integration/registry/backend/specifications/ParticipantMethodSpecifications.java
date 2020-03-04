@@ -11,6 +11,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 public class ParticipantMethodSpecifications implements Specification<ParticipantMethodEntity> {
+    private static final long serialVersionUID = -4719617411733919264L;
+
     private ParticipantMethodCriteria criteria;
 
     public ParticipantMethodSpecifications(ParticipantMethodCriteria criteria) {
