@@ -1,0 +1,45 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="create_sent_message_table" author="asamoilov" dbms="postgresql">
+        <sql>
+            create sequence monitoring.sent_message_id_seq;
+
+            CREATE TABLE monitoring.sent_message
+            (
+            id integer NOT NULL,
+            sent_date_time date NOT NULL,
+            uid character varying(50) NOT NULL,
+            sender character varying(50) NOT NULL,
+            receiver character varying(50) NOT NULL,
+            comment text,
+            operation character varying(250) NOT NULL,
+            current_status character varying(50) NOT NULL,
+            CONSTRAINT sent_message_pk PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_sent_message_stage_table" author="asamoilov" dbms="postgresql">
+        <sql>
+            create sequence monitoring.sent_message_stage_id_seq;
+
+            CREATE TABLE monitoring.sent_message_stage
+            (
+            id integer NOT NULL,
+            sent_message_id integer NOT NULL,
+            date_time date NOT NULL,
+            status character varying(50) NOT NULL,
+            error text,
+            CONSTRAINT sent_message_stage_pk PRIMARY KEY (id),
+            CONSTRAINT sent_message_stage_sent_message_id_fk foreign key ( sent_message_id )
+            REFERENCES monitoring.sent_message ( id ) ON DELETE CASCADE
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

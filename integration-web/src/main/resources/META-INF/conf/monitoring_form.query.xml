@@ -4,48 +4,34 @@
        name="monitoring">
 
     <list result-mapping="['content']" count-mapping="['totalElements']">
-        <rest method="GET" filters-separator="&amp;">${integration.monitoring.url}/service/form?{filters}&amp;size={limit}&amp;{sorting}</rest>
+        <rest method="GET" filters-separator="&amp;">${integration.monitoring.url}/service/stage?{filters}&amp;size={limit}&amp;{sorting}</rest>
     </list>
 
     <fields>
         <field id="id" domain="integer">
             <select mapping="['id']"/>
+        </field>
+
+        <field id="sent_message_id" domain="string">
+            <select mapping="['sent_message_id']"/>
             <filters>
-                <eq filter-id="id">id</eq>
+                <eq filter-id="sent_message_id">sentMessageId={sent_message_id}</eq>
             </filters>
         </field>
 
-        <field id="uid" domain="string">
-            <select mapping="['uid']"/>
-            <filters>
-                <eq filter-id="uid">uid={uid}</eq>
-            </filters>
+        <field id="dateTime" domain="localdatetime">
+            <select mapping="['dateTime']"/>
+            <sorting mapping="['direction']">sort=dateTime,{direction}</sorting>
         </field>
 
-        <field id="sender" domain="string">
-            <select mapping="['sender']"/>
-            <filters>
-                <eq filter-id="sender">sender={sender}</eq>
-            </filters>
+        <field id="status">
+            <select mapping="['status']"/>
         </field>
 
-        <field id="receiver" domain="string">
-            <select mapping="['receiver']"/>
-            <filters>
-                <eq filter-id="receiver">receiver={receiver}</eq>
-            </filters>
+        <field id="error" domain="string">
+            <select mapping="['error']"/>
         </field>
 
-        <field id="operation" domain="string">
-            <select mapping="['operation']"/>
-            <filters>
-                <eq filter-id="operation">operation={operation}</eq>
-            </filters>
-        </field>
-
-        <field id="monitoringStageModel" domain="object[]">
-            <select mapping="['monitoringStageModel']"/>
-        </field>
     </fields>
 
 </query>

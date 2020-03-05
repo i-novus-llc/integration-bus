@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MonitoringFormModel {
-    private String uid;
-    private String sender;
-    private String receiver;
-    private String operation;
+public class ErrorModel {
+    public String error;
 }

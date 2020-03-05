@@ -68,7 +68,7 @@
                                 <invoke operation-id="deleteMethod"/>
                             </button>
                             <button id="permission" label="Доступы" icon="fas fa-network-wired" type="icon">
-                                <show-modal page-id="reg_permission" master-field-id="id" route="/:participant_method_id/permission"
+                                <open-page page-id="reg_permission" master-field-id="id" route="/:participant_method_id/permission"
                                            detail-field-id="participant_method_id" master-param="participant_method_id"
                                            refresh-after-submit="true"/>
                             </button>

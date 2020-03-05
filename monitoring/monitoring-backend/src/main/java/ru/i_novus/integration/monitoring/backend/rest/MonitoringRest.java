@@ -1,10 +1,12 @@
 package ru.i_novus.integration.monitoring.backend.rest;
 
 import org.springframework.data.domain.Page;
-import ru.i_novus.integration.monitoring.backend.MonitoringCriteria;
+import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
-import ru.i_novus.integration.monitoring.backend.model.MonitoringFormModel;
-import ru.i_novus.integration.monitoring.backend.model.MonitoringStageModel;
+import ru.i_novus.integration.monitoring.backend.criteria.SentMessageStageCriteria;
+import ru.i_novus.integration.monitoring.backend.model.ErrorModel;
+import ru.i_novus.integration.monitoring.backend.model.SentMessageModel;
+import ru.i_novus.integration.monitoring.backend.model.SentMessageStageModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -15,18 +17,17 @@ import javax.ws.rs.core.MediaType;
 public interface MonitoringRest {
     @GET
     @Path("/")
-    Page<MonitoringModel> findAll(@BeanParam MonitoringCriteria criteria);
+    Page<SentMessageModel> findAll(@BeanParam SentMessageCriteria criteria);
+
+    @POST
+    @Path(("/save"))
+    void getServiceInfo(@BeanParam MonitoringModel model);
 
     @GET
-    @Path("/form")
-    Page<MonitoringStageModel> findByUid(@BeanParam MonitoringCriteria criteria);
-
-    @GET
-    @Path("/header")
-    MonitoringFormModel fillHeader(@QueryParam("uid") String uid, @QueryParam("sender") String sender,
-                                  @QueryParam("receiver") String receiver, @QueryParam("operation") String operation);
+    @Path("/stage")
+    Page<SentMessageStageModel> findByUid(@BeanParam SentMessageStageCriteria criteria);
 
     @GET
     @Path("error/{id}")
-    String getErrorStackTrace(@PathParam("id") Integer id);
+    ErrorModel getErrorStackTrace(@PathParam("id") Integer id);
 }

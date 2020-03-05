@@ -1,4 +1,4 @@
-package ru.i_novus.integration.monitoring.backend;
+package ru.i_novus.integration.monitoring.backend.criteria;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class MonitoringCriteria extends RestCriteria {
+public class SentMessageCriteria extends RestCriteria {
 
     @QueryParam("uid")
     private String uid;
-    @QueryParam("dateFrom")
-    private LocalDateTime dateFrom;
+    @QueryParam("sentDateTime")
+    private LocalDateTime sentDateTime;
     @QueryParam("dateTo")
     private LocalDateTime dateTo;
     @QueryParam("sender")
@@ -24,7 +24,7 @@ public class MonitoringCriteria extends RestCriteria {
     @QueryParam("receiver")
     private String receiver;
     @QueryParam("status")
-    private Integer status;
+    private String status;
     @QueryParam("comment")
     private String comment;
     @QueryParam("operation")

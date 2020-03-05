@@ -4,8 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
-import ru.i_novus.integration.common.api.ParticipantModel;
-import ru.i_novus.integration.common.api.RegistryInfoModel;
+import ru.i_novus.integration.common.api.model.ParticipantModel;
+import ru.i_novus.integration.common.api.model.RegistryInfoModel;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

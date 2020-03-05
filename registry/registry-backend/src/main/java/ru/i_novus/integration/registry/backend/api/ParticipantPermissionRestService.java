@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.data.domain.Page;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantPermissionCriteria;
 import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
-import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

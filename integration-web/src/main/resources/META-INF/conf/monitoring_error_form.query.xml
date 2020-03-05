@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-4.0"
+       object-id="monitoring"
+       name="monitoring">
+
+    <unique>
+        <rest method="GET" filters-separator="&amp;">${integration.monitoring.url}/service/error/{id}</rest>
+    </unique>
+
+    <fields>
+        <field id="id" domain="integer">
+            <select mapping="['id']"/>
+        </field>
+
+        <field id="error" domain="string">
+            <select mapping="['error']"/>
+        </field>
+
+    </fields>
+
+</query>

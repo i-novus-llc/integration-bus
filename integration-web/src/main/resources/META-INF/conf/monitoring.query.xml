@@ -21,26 +21,26 @@
             </filters>
         </field>
 
-        <field id="dateTime" domain="localdatetime">
-            <select mapping="['dateTime']"/>
+        <field id="sentDateTime" domain="localdatetime">
+            <select mapping="['sentDateTime']"/>
             <filters>
-                <more filter-id="dateTime.begin">dateFrom={dateTime.begin}</more>
-                <less filter-id="dateTime.end">dateTo={dateTime.end}</less>
+                <more filter-id="sentDateTime.begin">sentDateTime={sentDateTime.begin}</more>
+                <less filter-id="sentDateTime.end">sentDateTime={sentDateTime.end}</less>
             </filters>
-            <sorting mapping="['direction']">sort=dateTime,{direction}</sorting>
+            <sorting mapping="['direction']">sort=sentDateTime,{direction}</sorting>
         </field>
 
         <field id="sender" domain="string">
             <select mapping="['sender']"/>
             <filters>
-                <eq filter-id="sender">sender={sender}</eq>
+                <eq filter-id="sender.id">sender={sender.id}</eq>
             </filters>
         </field>
 
         <field id="receiver" domain="string">
             <select mapping="['receiver']"/>
             <filters>
-                <eq filter-id="receiver">receiver={receiver}</eq>
+                <eq filter-id="receiver.id">receiver={receiver.id}</eq>
             </filters>
         </field>
 
@@ -49,12 +49,11 @@
         </field>
 
         <field id="status">
-            <select mapping="['status.name']"/>
+            <select mapping="['status']"/>
             <filters>
                 <eq filter-id="status.id">status={status.id}</eq>
             </filters>
         </field>
-
         <field id="comment" domain="string">
             <select mapping="['comment']"/>
             <filters>

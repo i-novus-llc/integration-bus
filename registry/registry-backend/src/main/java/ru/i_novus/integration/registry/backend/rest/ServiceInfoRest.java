@@ -3,6 +3,8 @@ package ru.i_novus.integration.registry.backend.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.i_novus.integration.common.api.model.ParticipantModel;
+import ru.i_novus.integration.common.api.model.RegistryInfoModel;
 import ru.i_novus.integration.registry.backend.api.PrepareRequestService;
 import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
@@ -10,8 +12,6 @@ import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntit
 import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
-import ru.i_novus.integration.common.api.ParticipantModel;
-import ru.i_novus.integration.common.api.RegistryInfoModel;
 
 import java.util.List;
 import java.util.Optional;

@@ -14,6 +14,8 @@ import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
 import ru.i_novus.integration.registry.backend.specifications.ParticipantSpecifications;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ParticipantRestServiceImpl implements ParticipantRestService, Mappers {
@@ -38,6 +40,16 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
         }
         Page<ParticipantEntity> participants = repository.findAll(specification, criteria);
         return participants.map(this::map);
+    }
+
+    @Override
+    public List<Participant> list(ParticipantCriteria criteria) {
+        List<ParticipantEntity> entities =  repository.findAll();
+
+        return entities
+                .stream()
+                .map(e-> new Participant(e.getCode(), e.getGroupCode(), e.getName(), e.getDisable()))
+                .collect(Collectors.toList());
     }
 
     @Override

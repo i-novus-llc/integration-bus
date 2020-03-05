@@ -10,6 +10,7 @@ import ru.i_novus.integration.registry.backend.model.Participant;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * REST сервис управления участниками
@@ -24,6 +25,12 @@ public interface ParticipantRestService {
     @ApiOperation("Найти всех участников")
     @ApiResponse(code = 200, message = "Страница участников")
     Page<Participant> findAll(@BeanParam ParticipantCriteria criteria);
+
+    @GET
+    @Path("/list")
+    @ApiOperation("Найти всех участников")
+    @ApiResponse(code = 200, message = "Страница участников")
+    List<Participant> list(@BeanParam ParticipantCriteria criteria);
 
     @GET
     @Path("/{id}")

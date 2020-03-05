@@ -4,32 +4,20 @@
       name="Мониторинг просмотр">
 
     <regions>
-        <region place="top">
-            <form id="main" object-id="registry" query-id="monitoring_form_header">
-                <fields>
-                    <output-text id="uid" label="UID"/>
-                    <output-text id="sender" label="Отправитель"/>
-                    <output-text id="receiver" label="Получатель"/>
-                    <output-text id="operation" label="Действие"/>
-                </fields>
-            </form>
-        </region>
-        <region place="top">
-            <table query-id="monitoring_form" depends-on="main">
+        <region place="single">
+            <table query-id="monitoring_form">
+                <toolbar place="topRight" generate="filters, resize">
+                    <button id="view" label="Просмотр ошибки">
+                        <show-modal page-id="monitoring_error_form" master-param="id" detail-field-id="id"/>
+                    </button>
+                </toolbar>
                 <columns>
-                    <column text-field-id="uid" label="Идентификатор сообщения"/>
                     <column text-field-id="dateTime" label="Дата/Время">
                         <text format="date YYYY-MM-DD HH:mm:ss"/>
                     </column>
                     <column text-field-id="status" label="Статус"/>
-                    <column text-field-id="comment" label="Комментарий"/>
+                    <column text-field-id="error" label="Ошибка"/>
                 </columns>
-                <pre-filters>
-                    <eq field-id="uid" value="{uid}"/>
-                    <eq field-id="sender" value="{sender}"/>
-                    <eq field-id="receiver" value="{receiver}"/>
-                    <eq field-id="operation" value="{operation}"/>
-                </pre-filters>
             </table>
         </region>
     </regions>

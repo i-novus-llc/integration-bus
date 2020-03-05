@@ -8,19 +8,12 @@
             <table id="monitoring" name="Мониторинг" query-id="monitoring">
                 <toolbar place="topRight" generate="filters, resize">
                     <button id="view" label="Просмотр">
-                        <show-modal page-id="monitoring_form">
-                            <pre-filters>
-                                <eq field-id="uid" value="{uid}"/>
-                                <eq field-id="sender" value="{sender}"/>
-                                <eq field-id="receiver" value="{receiver}"/>
-                                <eq field-id="operation" value="{operation}"/>
-                            </pre-filters>
-                        </show-modal>
+                        <show-modal page-id="monitoring_form" master-param="id" detail-field-id="sent_message_id"/>
                     </button>
                 </toolbar>
                 <columns>
                     <column text-field-id="uid" label="Идентификатор сообщения"/>
-                    <column text-field-id="dateTime" label="Дата/Время">
+                    <column text-field-id="sentDateTime" label="Дата/Время">
                         <text format="date YYYY-MM-DD HH:mm:ss"/>
                     </column>
                     <column text-field-id="sender" label="Отправитель"/>
@@ -32,11 +25,19 @@
                 <filters>
                     <row>
                         <input-text id="uid" label="Идентификатор"/>
-                        <date-interval id="dateTime" label="Дата/время" date-format="DD.MM.YYYY HH.mm"/>
-                        <input-text id="sender" label="Отправитель"/>
-                        <input-text id="receiver" label="Получатель"/>
-                        <input-select id="status" type="single" label="Статус"
-                                      query-id="status" label-field-id="name"/>
+                        <date-interval id="sentDateTime" label="Дата/время отправки" date-format="DD.MM.YYYY HH.mm"/>
+                        <input-select id="sender" type="single" label="Отправитель"
+                                      query-id="participant" label-field-id="name"/>
+                        <input-select id="receiver" type="single" label="Получатель"
+                                      query-id="participant" label-field-id="name"/>
+                        <select id="status" label="Статус">
+                            <options>
+                                <option id="CREATE" name="Создан"/>
+                                <option id="ERROR" name="Ошибка"/>
+                                <option id="QUEUE" name="В очереди"/>
+                                <option id="SUCCES" name="Удачно"/>
+                            </options>
+                        </select>
                         <input-text id="comment" label="Комментарий"/>
                     </row>
                 </filters>

@@ -6,13 +6,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.i_novus.integration.monitoring.backend.MonitoringCriteria;
+import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
-import ru.i_novus.integration.monitoring.backend.entity.MonitoringEntity;
-import ru.i_novus.integration.monitoring.backend.model.MonitoringStageModel;
-import ru.i_novus.integration.monitoring.backend.repository.MonitoringRepository;
-import ru.i_novus.integration.monitoring.backend.repository.MonitoringSpecifications;
+import ru.i_novus.integration.monitoring.backend.criteria.SentMessageStageCriteria;
+import ru.i_novus.integration.monitoring.backend.entity.SentMessageEntity;
+import ru.i_novus.integration.monitoring.backend.entity.SentMessageStageEntity;
+import ru.i_novus.integration.monitoring.backend.model.ErrorModel;
+import ru.i_novus.integration.monitoring.backend.model.SentMessageModel;
+import ru.i_novus.integration.monitoring.backend.model.SentMessageStageModel;
+import ru.i_novus.integration.monitoring.backend.repository.SentMessageRepository;
+import ru.i_novus.integration.monitoring.backend.repository.SentMessageSpecifications;
+import ru.i_novus.integration.monitoring.backend.repository.SentMessageStageRepository;
+import ru.i_novus.integration.monitoring.backend.repository.SentMessageStageSpecifications;
 import ru.i_novus.integration.monitoring.backend.service.MonitoringService;
+
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -20,30 +28,59 @@ import static java.util.Objects.nonNull;
 @AllArgsConstructor
 public class MonitoringServiceImpl implements MonitoringService {
 
-    private MonitoringRepository repository;
+    private SentMessageRepository sentMessageRepository;
+    private SentMessageStageRepository sentMessageStageRepository;
 
     @Override
-    public Page<MonitoringModel> findAll(MonitoringCriteria criteria) {
-        return findMonitoring(criteria).map(MonitoringEntity::getMonitoringModel);
+    public Page<SentMessageModel> findAll(SentMessageCriteria criteria) {
+        return findSentMessage(criteria).map(SentMessageEntity::getSentMessageModel);
     }
 
     @Override
-    public Page<MonitoringStageModel> monitoringFormByUid(MonitoringCriteria criteria) {
-        return findMonitoring(criteria).map(MonitoringEntity::fillMonitoringStageModel);
+    public Page<SentMessageStageModel> monitoringFormByUid(SentMessageStageCriteria criteria) {
+        return findSentMessageStage(criteria).map(SentMessageStageEntity::fillSentMessageStageModel);
     }
 
     @Override
-    public String getErrorStackTrace(Integer id) {
-        return repository.findById(id).orElseThrow().getError();
+    public ErrorModel getErrorStackTrace(Integer id) {
+        ErrorModel errorModel = new ErrorModel();
+        errorModel.setError(sentMessageStageRepository.findById(id).orElseThrow().getError());
+
+        return errorModel;
+    }
+
+    @Override
+    public void save(MonitoringModel model) {
+        Optional<SentMessageEntity> messageEntity = sentMessageRepository.findByUidAndSenderAndReceiver(model.getUid(),
+                model.getSender(), model.getReceiver());
+        Integer sentMessageId;
+        if (messageEntity.isPresent()) {
+            messageEntity.get().setCurrentStatus(model.getStatus());
+            sentMessageId = messageEntity.get().getId();
+        } else {
+            sentMessageId = sentMessageRepository.save(new SentMessageEntity(model.getUid(), model.getDateTime(),
+                    model.getSender(), model.getReceiver(), model.getOperation(), model.getStatus(), model.getComment())).getId();
+        }
+        sentMessageStageRepository.save(new SentMessageStageEntity(sentMessageId, model.getDateTime(), model.getStatus(),
+                model.getError(), model.getComment()));
+    }
+
+    private Page<SentMessageEntity> findSentMessage(SentMessageCriteria criteria) {
+        Pageable pageable = PageRequest.of(
+                criteria.getPageNumber(), criteria.getPageSize(),
+                (nonNull(criteria.getOrders()) && !criteria.getOrders().isEmpty()) ?
+                        Sort.by(criteria.getOrders()) : Sort.by(Sort.Direction.DESC, "sentDateTime")
+        );
+        return sentMessageRepository.findAll(SentMessageSpecifications.equalCriteriaParams(criteria), pageable);
     }
 
 
-    private Page<MonitoringEntity> findMonitoring(MonitoringCriteria criteria) {
+    private Page<SentMessageStageEntity> findSentMessageStage(SentMessageStageCriteria criteria) {
         Pageable pageable = PageRequest.of(
                 criteria.getPageNumber(), criteria.getPageSize(),
                 (nonNull(criteria.getOrders()) && !criteria.getOrders().isEmpty()) ?
                         Sort.by(criteria.getOrders()) : Sort.by(Sort.Direction.DESC, "dateTime")
         );
-        return repository.findAll(MonitoringSpecifications.equalCriteriaParams(criteria), pageable);
+        return sentMessageStageRepository.findAll(SentMessageStageSpecifications.equalCriteriaParams(criteria), pageable);
     }
 }
