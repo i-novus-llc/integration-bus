@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
@@ -23,7 +24,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class MessagePrepareService {
@@ -69,7 +72,7 @@ public class MessagePrepareService {
 
         Message message = null;
         Object result = null;
-        ResponseEntity<Object> responseEntity = null;
+        ResponseEntity<Object> responseEntity;
         try {
             if (participantModel.getIntegrationType().equals("REST_GET")) {
                 String url = participantModel.getUrl();
@@ -102,10 +105,18 @@ public class MessagePrepareService {
                 return message;
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
-                responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
-                        messageCommonModel.getPayload().getObject(), Object.class);
+                try {
+                    responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
+                            messageCommonModel.getPayload().getObject(), Object.class);
+                } catch (RestClientResponseException e) {
+                    if (!participantModel.isSync()) {
+                        monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
+                        throw new RuntimeException(e.getResponseBodyAsString());
+                    } else {
+                        responseEntity = new ResponseEntity<>(e.getResponseBodyAsString(), HttpStatus.valueOf(e.getRawStatusCode()));
+                    }
+                }
 
-                checkError(responseEntity, messageCommonModel);
                 result = responseEntity.getBody();
                 if (participantModel.isSync() && result != null) {
                     PostResultModel postResultModel = new PostResultModel();
