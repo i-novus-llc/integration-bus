@@ -113,7 +113,7 @@ public class MessagePrepareService {
                         monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
                         throw new RuntimeException(e.getResponseBodyAsString());
                     } else {
-                        responseEntity = new ResponseEntity<>(e.getResponseBodyAsString(), HttpStatus.valueOf(e.getRawStatusCode()));
+                        responseEntity = new ResponseEntity<>(e.getResponseBodyAsByteArray(), HttpStatus.valueOf(e.getRawStatusCode()));
                     }
                 }
 
