@@ -3,11 +3,14 @@ package ru.i_novus.integration.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -17,9 +20,12 @@ import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
 import ru.i_novus.integration.model.PostResultModel;
+import ru.i_novus.integration.model.StringClientHttpResponse;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
@@ -113,7 +119,10 @@ public class MessagePrepareService {
                         monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
                         throw new RuntimeException(e.getResponseBodyAsString());
                     } else {
-                        responseEntity = new ResponseEntity<>(e.getResponseBodyAsByteArray(), HttpStatus.valueOf(e.getRawStatusCode()));
+                        StringClientHttpResponse response = new StringClientHttpResponse(e);
+                        Object payload = new HttpMessageConverterExtractor<>(Object.class, restTemplate.getMessageConverters())
+                                .extractData(response);
+                        responseEntity = new ResponseEntity<>(payload, response.getStatusCode());
                     }
                 }
 
