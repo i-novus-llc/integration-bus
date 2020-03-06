@@ -76,7 +76,9 @@ public class MessagePrepareService {
                 responseEntity = restTemplate.getForEntity(new URI(url), Object.class);
                 message = MessageBuilder.withPayload(responseEntity.getBody()).build();
 
-                checkError(responseEntity, messageCommonModel);
+                if (!participantModel.isSync())
+                    checkError(responseEntity, messageCommonModel);
+
                 result = responseEntity.getBody();
 
                 if (messageCommonModel.getPayload().getMonitoringModel().getReceiver().equals("nsi")) {
