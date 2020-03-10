@@ -15,10 +15,10 @@
         <module>registry</module>
         <module>integration</module>
         <module>integration-web</module>
-        <module>integration-control-ui</module>
         <module>monitoring</module>
         <module>integration-example</module>
         <module>integration-security-admin</module>
+        <module>integration-control-ui</module>
     </modules>
 
     <parent>
