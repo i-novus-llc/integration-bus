@@ -60,7 +60,8 @@
             </in-parameters>
         </operation>
 
-        <operation id="deleteMethod" confirm="true" confirm-text="Вы уверены, что хотите удалить сервис?" success-text="Сервис удален">
+        <operation id="deleteMethod" confirm="true" confirm-text="Вы уверены, что хотите удалить сервис?"
+                   success-text="Сервис удален">
             <invocation>
                 <rest method="DELETE">${integration.registry.url}/participantMethods/{id}</rest>
             </invocation>

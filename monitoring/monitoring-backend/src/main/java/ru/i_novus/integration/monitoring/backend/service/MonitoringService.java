@@ -10,7 +10,10 @@ import ru.i_novus.integration.monitoring.backend.model.SentMessageStageModel;
 
 public interface MonitoringService {
     Page<SentMessageModel> findAll(SentMessageCriteria sentMessageCriteria);
+
     Page<SentMessageStageModel> monitoringFormByUid(SentMessageStageCriteria criteria);
+
     ErrorModel getErrorStackTrace(Integer id);
+
     void save(MonitoringModel monitoringModel);
 }

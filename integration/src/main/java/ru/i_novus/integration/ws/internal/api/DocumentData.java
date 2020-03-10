@@ -30,10 +30,8 @@ public class DocumentData implements Serializable {
     /**
      * Gets the value of the docName property.
      *
-     * @return
-     *     possible object integration
-     *     {@link String }
-     *
+     * @return possible object integration
+     * {@link String }
      */
     public String getDocName() {
         return docName;
@@ -42,10 +40,8 @@ public class DocumentData implements Serializable {
     /**
      * Sets the value of the docName property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link String }
-     *
+     * @param value allowed object integration
+     *              {@link String }
      */
     public void setDocName(String value) {
         this.docName = value;
@@ -54,10 +50,8 @@ public class DocumentData implements Serializable {
     /**
      * Gets the value of the docFormat property.
      *
-     * @return
-     *     possible object integration
-     *     {@link String }
-     *
+     * @return possible object integration
+     * {@link String }
      */
     public String getDocFormat() {
         return docFormat;
@@ -66,10 +60,8 @@ public class DocumentData implements Serializable {
     /**
      * Sets the value of the docFormat property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link String }
-     *
+     * @param value allowed object integration
+     *              {@link String }
      */
     public void setDocFormat(String value) {
         this.docFormat = value;
@@ -78,10 +70,8 @@ public class DocumentData implements Serializable {
     /**
      * Gets the value of the digestData property.
      *
-     * @return
-     *     possible object integration
-     *     {@link String }
-     *
+     * @return possible object integration
+     * {@link String }
      */
     public String getDigestData() {
         return digestData;
@@ -90,10 +80,8 @@ public class DocumentData implements Serializable {
     /**
      * Sets the value of the digestData property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link String }
-     *
+     * @param value allowed object integration
+     *              {@link String }
      */
     public void setDigestData(String value) {
         this.digestData = value;
@@ -102,10 +90,8 @@ public class DocumentData implements Serializable {
     /**
      * Gets the value of the docType property.
      *
-     * @return
-     *     possible object integration
-     *     {@link Integer }
-     *
+     * @return possible object integration
+     * {@link Integer }
      */
     public Integer getDocType() {
         return docType;
@@ -114,10 +100,8 @@ public class DocumentData implements Serializable {
     /**
      * Sets the value of the docType property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link Integer }
-     *
+     * @param value allowed object integration
+     *              {@link Integer }
      */
     public void setDocType(Integer value) {
         this.docType = value;
@@ -126,10 +110,8 @@ public class DocumentData implements Serializable {
     /**
      * Gets the value of the splitDocument property.
      *
-     * @return
-     *     possible object integration
-     *     {@link SplitDocumentModel }
-     *
+     * @return possible object integration
+     * {@link SplitDocumentModel }
      */
     public SplitDocumentModel getSplitDocument() {
         return splitDocument;
@@ -138,10 +120,8 @@ public class DocumentData implements Serializable {
     /**
      * Sets the value of the splitDocument property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link SplitDocumentModel }
-     *
+     * @param value allowed object integration
+     *              {@link SplitDocumentModel }
      */
     public void setSplitDocument(SplitDocumentModel value) {
         this.splitDocument = value;

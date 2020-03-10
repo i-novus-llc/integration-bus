@@ -14,5 +14,5 @@ public interface InternalWsEndpoint {
 
     @WebMethod()
     Object[] adapter(@WebParam(name = "Message") String message,
-                    @WebParam(name = "RecipientUrl")String recipientUrl, @WebParam(name = "Method")String method) throws Exception;
+                     @WebParam(name = "RecipientUrl") String recipientUrl, @WebParam(name = "Method") String method) throws Exception;
 }

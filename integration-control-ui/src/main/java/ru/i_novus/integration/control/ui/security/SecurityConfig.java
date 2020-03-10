@@ -1,26 +1,25 @@
 package ru.i_novus.integration.control.ui.security;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 
 /**
  * Конфигурация spring security
  */
 @Configuration
-//@EnableWebSecurity
-public class SecurityConfig {// extends N2oSecurityConfigurerAdapter {
+@ComponentScan("net.n2oapp.framework.security.auth.simple")
+public class SecurityConfig extends IntegrationSecurityConfigurerAdapter {
 
-//    public SecurityConfig(DaoAuthenticationProvider daoAuthenticationProvider) {
-//        super(daoAuthenticationProvider);
-//    }
-
-/*    @Override
-    protected void authorize(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry url) throws Exception {
-        url.anyRequest().permitAll();
+    public SecurityConfig(DaoAuthenticationProvider daoAuthenticationProvider) {
+        super(daoAuthenticationProvider);
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.ignoring().antMatchers("/*");
-    }*/
+    protected void authorize(ExpressionUrlAuthorizationConfigurer<HttpSecurity>
+                                     .ExpressionInterceptUrlRegistry url) {
+        url.anyRequest().authenticated();
+    }
 }

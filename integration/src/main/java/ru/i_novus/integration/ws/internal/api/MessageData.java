@@ -23,10 +23,8 @@ public class MessageData implements Serializable {
     /**
      * Gets the value of the groupUid property.
      *
-     * @return
-     *     possible object integration
-     *     {@link String }
-     *
+     * @return possible object integration
+     * {@link String }
      */
     public String getGroupUid() {
         return groupUid;
@@ -35,10 +33,8 @@ public class MessageData implements Serializable {
     /**
      * Sets the value of the groupUid property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link String }
-     *
+     * @param value allowed object integration
+     *              {@link String }
      */
     public void setGroupUid(String value) {
         this.groupUid = value;
@@ -47,10 +43,8 @@ public class MessageData implements Serializable {
     /**
      * Gets the value of the uuid property.
      *
-     * @return
-     *     possible object integration
-     *     {@link String }
-     *
+     * @return possible object integration
+     * {@link String }
      */
     public String getUuid() {
         return uuid;
@@ -59,10 +53,8 @@ public class MessageData implements Serializable {
     /**
      * Sets the value of the uuid property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link String }
-     *
+     * @param value allowed object integration
+     *              {@link String }
      */
     public void setUuid(String value) {
         this.uuid = value;
@@ -71,10 +63,8 @@ public class MessageData implements Serializable {
     /**
      * Gets the value of the appData property.
      *
-     * @return
-     *     possible object integration
-     *     {@link DocumentData }
-     *
+     * @return possible object integration
+     * {@link DocumentData }
      */
     public DocumentData getAppData() {
         return appData;
@@ -83,10 +73,8 @@ public class MessageData implements Serializable {
     /**
      * Sets the value of the appData property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link DocumentData }
-     *
+     * @param value allowed object integration
+     *              {@link DocumentData }
      */
     public void setAppData(DocumentData value) {
         this.appData = value;

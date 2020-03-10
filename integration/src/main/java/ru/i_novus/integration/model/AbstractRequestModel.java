@@ -2,6 +2,7 @@ package ru.i_novus.integration.model;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.List;
 
 @Getter

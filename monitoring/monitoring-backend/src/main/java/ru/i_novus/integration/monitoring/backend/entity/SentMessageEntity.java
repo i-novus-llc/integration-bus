@@ -1,4 +1,5 @@
 package ru.i_novus.integration.monitoring.backend.entity;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.i_novus.integration.monitoring.backend.model.SentMessageModel;
@@ -60,16 +61,16 @@ public class SentMessageEntity {
         model.setOperation(this.operation);
         model.setComment(this.comment);
         switch (this.currentStatus) {
-            case("CREATE") :
+            case ("CREATE"):
                 model.setStatus("Создан");
                 break;
-            case("QUEUE") :
+            case ("QUEUE"):
                 model.setStatus("В очереди");
                 break;
-            case("ERROR") :
+            case ("ERROR"):
                 model.setStatus("Ошибка");
                 break;
-            case("SUCCES") :
+            case ("SUCCES"):
                 model.setStatus("Удачно");
                 break;
         }

@@ -41,6 +41,7 @@ public class MessagePrepareService {
 
     /**
      * Синхронный запрос
+     *
      * @param messageCommonModel модель для запроса
      * @return возвращает Message c обьектом ответа
      */
@@ -50,6 +51,7 @@ public class MessagePrepareService {
 
     /**
      * Асинхронный запрос
+     *
      * @param messageCommonModel модель для запроса
      */
     public void prepareAsyncRequest(Message<CommonModel> messageCommonModel) {
@@ -58,6 +60,7 @@ public class MessagePrepareService {
 
     /**
      * Подготовка и передача запроса получателю
+     *
      * @param messageCommonModel модель для запроса
      * @return если вызов синхронный вернет Message c обьектом ответа иначе вернет SUCCESS
      */
@@ -78,10 +81,10 @@ public class MessagePrepareService {
 
                 if (messageCommonModel.getPayload().getMonitoringModel().getReceiver().equals("nsi")) {
                     List<String> list = Arrays.asList(url.split("&"));
-                    String dataComment = list.stream().filter(l-> l.contains("identifier")).findFirst().get();
+                    String dataComment = list.stream().filter(l -> l.contains("identifier")).findFirst().get();
                     if (participantModel.getMethod().equals("data") && result.toString().contains("list=[]")) {
 
-                        String versionComment = list.stream().filter(l-> l.contains("version")).findFirst().get();
+                        String versionComment = list.stream().filter(l -> l.contains("version")).findFirst().get();
                         monitoringNsiMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(),
                                 MessageStatusEnum.SEND.getId(),
                                 messageSource.getMessage("nsi.update.operation", null, Locale.ENGLISH) + dataComment + "-" + versionComment);
@@ -161,7 +164,8 @@ public class MessagePrepareService {
 
     /**
      * Вызов сервиса для callBack
-     * @param url callBackUrl
+     *
+     * @param url      callBackUrl
      * @param response Object для передачи
      */
     private void sendCallBack(String url, Object response) {
@@ -170,9 +174,10 @@ public class MessagePrepareService {
 
     /**
      * Заполнение мониторинга для NSI
-     * @param operation выполненная операция
+     *
+     * @param operation       выполненная операция
      * @param monitoringModel модель
-     * @param status статус передачи
+     * @param status          статус передачи
      */
     private void monitoringNsiMessage(String operation, MonitoringModel monitoringModel, String status, String comment) {
         monitoringRequestMessage(operation, monitoringModel, status);
@@ -182,9 +187,10 @@ public class MessagePrepareService {
 
     /**
      * Заполнение мониторинга для отправки
-     * @param operation выполненная операция
+     *
+     * @param operation       выполненная операция
      * @param monitoringModel модель
-     * @param status статус передачи
+     * @param status          статус передачи
      */
     private void monitoringRequestMessage(String operation, MonitoringModel monitoringModel, String status) {
         monitoringModel.setDateTime(LocalDateTime.now());

@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantMethodRestService;
-import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.model.IntegrationType;
@@ -24,14 +23,11 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
 
     private final ParticipantMethodRepository repository;
 
-    private final RegistryAuditClient auditClient;
-
     private final IntegrationTypeRepository integrationTypeRepository;
 
     @Autowired
-    public ParticipantMethodRestServiceImpl(ParticipantMethodRepository repository, RegistryAuditClient auditClient, IntegrationTypeRepository integrationTypeRepository) {
+    public ParticipantMethodRestServiceImpl(ParticipantMethodRepository repository, IntegrationTypeRepository integrationTypeRepository) {
         this.repository = repository;
-        this.auditClient = auditClient;
         this.integrationTypeRepository = integrationTypeRepository;
     }
 
@@ -55,7 +51,7 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
     @Override
     public ParticipantMethod create(ParticipantMethod participant) {
         ParticipantMethodEntity result = repository.save(map(participant));
-        return audit("audit.eventType.create", result);
+        return map(result);
     }
 
     @Override
@@ -68,24 +64,17 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
         entity.setIntegrationType(map(participantMethod.getIntegrationType()));
         entity.setMethodCode(participantMethod.getMethodCode());
         entity.setUrl(participantMethod.getUrl());
-        return audit("audit.eventType.update", repository.save(entity));
+        return map(repository.save(entity));
     }
 
     @Override
     public void delete(Integer code) {
-        repository.findById(code).ifPresent(ent -> audit("audit.eventType.delete", ent));
+        repository.findById(code).ifPresent(this::map);
         repository.deleteById(code);
     }
 
     @Override
     public List<IntegrationType> getAllIntegrationTypes() {
         return integrationTypeRepository.findAll().stream().map(this::map).collect(Collectors.toList());
-    }
-
-    private ParticipantMethod audit(String action, ParticipantMethodEntity entity) {
-        if (entity != null) {
-            auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantMethod");
-        }
-        return map(entity);
     }
 }

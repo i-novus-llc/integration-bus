@@ -1,4 +1,5 @@
 package ru.i_novus.integration.monitoring.backend.entity;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.i_novus.integration.monitoring.backend.model.SentMessageStageModel;
@@ -38,22 +39,22 @@ public class SentMessageStageEntity {
         this.error = error;
     }
 
-    public SentMessageStageModel fillSentMessageStageModel(){
+    public SentMessageStageModel fillSentMessageStageModel() {
         SentMessageStageModel model = new SentMessageStageModel();
         model.setId(this.id);
         model.setDateTime(this.dateTime);
         model.setError(this.error != null ? this.error.substring(0, 20) + "..." : "");
         switch (this.status) {
-            case("CREATE") :
+            case ("CREATE"):
                 model.setStatus("Создан");
                 break;
-            case("QUEUE") :
+            case ("QUEUE"):
                 model.setStatus("В очереди");
                 break;
-            case("ERROR") :
+            case ("ERROR"):
                 model.setStatus("Ошибка");
                 break;
-            case("SUCCES") :
+            case ("SUCCES"):
                 model.setStatus("Удачно");
                 break;
         }

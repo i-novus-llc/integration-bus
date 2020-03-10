@@ -26,10 +26,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Gets the value of the binaryData property.
      *
-     * @return
-     *     possible object integration
-     *     {@link DataHandler }
-     *
+     * @return possible object integration
+     * {@link DataHandler }
      */
     public DataHandler getBinaryData() {
         return binaryData;
@@ -38,10 +36,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Sets the value of the binaryData property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link DataHandler }
-     *
+     * @param value allowed object integration
+     *              {@link DataHandler }
      */
     public void setBinaryData(DataHandler value) {
         this.binaryData = value;
@@ -50,10 +46,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Gets the value of the temporaryPath property.
      *
-     * @return
-     *     possible object integration
-     *     {@link String }
-     *
+     * @return possible object integration
+     * {@link String }
      */
     public String getTemporaryPath() {
         return temporaryPath;
@@ -62,10 +56,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Sets the value of the temporaryPath property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link String }
-     *
+     * @param value allowed object integration
+     *              {@link String }
      */
     public void setTemporaryPath(String value) {
         this.temporaryPath = value;
@@ -74,10 +66,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Gets the value of the count property.
      *
-     * @return
-     *     possible object integration
-     *     {@link Integer }
-     *
+     * @return possible object integration
+     * {@link Integer }
      */
     public Integer getCount() {
         return count;
@@ -86,10 +76,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Sets the value of the count property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link Integer }
-     *
+     * @param value allowed object integration
+     *              {@link Integer }
      */
     public void setCount(Integer value) {
         this.count = value;
@@ -98,10 +86,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Gets the value of the isLast property.
      *
-     * @return
-     *     possible object integration
-     *     {@link Boolean }
-     *
+     * @return possible object integration
+     * {@link Boolean }
      */
     public Boolean isIsLast() {
         return isLast;
@@ -110,10 +96,8 @@ public class SplitDocumentModel implements Serializable {
     /**
      * Sets the value of the isLast property.
      *
-     * @param value
-     *     allowed object integration
-     *     {@link Boolean }
-     *
+     * @param value allowed object integration
+     *              {@link Boolean }
      */
     public void setIsLast(Boolean value) {
         this.isLast = value;

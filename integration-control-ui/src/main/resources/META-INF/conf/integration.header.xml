@@ -3,6 +3,6 @@
     <nav welcome-page-id="index">
         <page page-id="monitoring" label="Мониторинг"/>
         <page page-id="registry" label="Регистрация"/>
-<!--        <user-menu login-url="login" logout-url="logout" registration-url="registration" profile-page-id="#profile"/>-->
+        <!--        <user-menu login-url="login" logout-url="logout" registration-url="registration" profile-page-id="#profile"/>-->
     </nav>
 </header>

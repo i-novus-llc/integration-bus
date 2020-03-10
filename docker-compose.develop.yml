@@ -1,0 +1,111 @@
+version: '3.6'
+networks:
+  default:
+    driver: overlay
+    attachable: true
+
+services:
+  integration:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.dc == hetzner
+      resources:
+        limits:
+          memory: 2000M
+    labels:
+      filebeat: "springboot"
+    depends_on:
+      - activemq
+
+  integration-control-ui:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.dc == hetzner
+    labels:
+      filebeat: "springboot"
+
+  monitoring-service:
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    deploy:
+      placement:
+        constraints:
+          - node.labels.dc == hetzner
+    labels:
+      filebeat: "springboot"
+    depends_on:
+      - postgres
+
+  registry-service:
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    deploy:
+      placement:
+        constraints:
+          - node.labels.dc == hetzner
+    labels:
+      filebeat: "springboot"
+    depends_on:
+      - postgres
+
+  security-admin-backend:
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+      placement:
+        constraints:
+          - node.labels.type == db
+    depends_on:
+      - postgres
+
+  activemq:
+    image: 'webcenter/activemq:5.14.3'
+    environment:
+      ACTIVEMQ_NAME: amq
+      ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: 'True'
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+    volumes:
+      - 'activemq-data:/data/activemq'
+      - 'activemq-log:/var/log/activemq'
+    deploy:
+      resources:
+        limits:
+          memory: 2000M
+
+  postgres:
+    image: postgres:11
+    command: postgres -c 'max_connections=250'
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'postgres'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 2000M
+      placement:
+        constraints:
+          - node.labels.type == db
+
+volumes:
+  postgres-data:
+  activemq-data:
+  activemq-log:
+        

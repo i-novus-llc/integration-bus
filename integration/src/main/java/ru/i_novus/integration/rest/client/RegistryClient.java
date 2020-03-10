@@ -30,7 +30,7 @@ public class RegistryClient {
         this.messageSource = messageSource;
     }
 
-    public ParticipantModel getServiceParticipant(String receiver, String sender, String  method) throws IOException {
+    public ParticipantModel getServiceParticipant(String receiver, String sender, String method) throws IOException {
         List<Object> providers = new ArrayList<>();
         providers.add(new JacksonJsonProvider());
 

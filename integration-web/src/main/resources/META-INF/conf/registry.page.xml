@@ -19,7 +19,7 @@
                     </column>
                     <column text-field-id="actions" label=" ">
                         <toolbar>
-                            <button id="updateParticipant" label="Изменить" icon="fa fa-pencil" type="icon" >
+                            <button id="updateParticipant" label="Изменить" icon="fa fa-pencil" type="icon">
                                 <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
                                             refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
                             </button>
@@ -68,7 +68,8 @@
                                 <invoke operation-id="deleteMethod"/>
                             </button>
                             <button id="permission" label="Доступы" icon="fas fa-network-wired" type="icon">
-                                <open-page page-id="reg_permission" master-field-id="id" route="/:participant_method_id/permission"
+                                <open-page page-id="reg_permission" master-field-id="id"
+                                           route="/:participant_method_id/permission"
                                            detail-field-id="participant_method_id" master-param="participant_method_id"
                                            refresh-after-submit="true"/>
                             </button>

@@ -1,0 +1,32 @@
+version: '3.6'
+
+services:
+  integration:
+    deploy:
+      resources:
+        limits:
+          memory: 2000M
+
+  integration-control-ui:
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+
+  monitoring-service:
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+
+  registry-service:
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+
+  security-admin-backend:
+    deploy:
+      resources:
+        limits:
+          memory: 600M

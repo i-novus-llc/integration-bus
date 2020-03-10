@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantPermissionRestService;
-import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantPermissionCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
 import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
@@ -20,12 +19,9 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
 
     private final ParticipantPermissionRepository repository;
 
-    private final RegistryAuditClient auditClient;
-
     @Autowired
-    public ParticipantPermissionRestServiceImpl(ParticipantPermissionRepository repository, RegistryAuditClient auditClient) {
+    public ParticipantPermissionRestServiceImpl(ParticipantPermissionRepository repository) {
         this.repository = repository;
-        this.auditClient = auditClient;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
     @Override
     public ParticipantPermission create(ParticipantPermission participant) {
         ParticipantPermissionEntity result = repository.save(map(participant));
-        return audit("audit.eventType.create", result);
+        return map(result);
     }
 
     @Override
@@ -62,19 +58,12 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
         entity.setParticipantCode(participantPermission.getParticipantCode());
         entity.setParticipantMethodId(participantPermission.getParticipantMethodId());
         entity.setSync(participantPermission.isSync());
-        return audit("audit.eventType.update", repository.save(entity));
+        return map(repository.save(entity));
     }
 
     @Override
     public void delete(Integer code) {
-        repository.findById(code).ifPresent(ent -> audit("audit.eventType.delete", ent));
+        repository.findById(code).ifPresent(this::map);
         repository.deleteById(code);
-    }
-
-    private ParticipantPermission audit(String action, ParticipantPermissionEntity entity) {
-        if (entity != null) {
-            auditClient.audit(action, entity, "" + entity.getId(), "audit.objectName.participantPermission");
-        }
-        return map(entity);
     }
 }

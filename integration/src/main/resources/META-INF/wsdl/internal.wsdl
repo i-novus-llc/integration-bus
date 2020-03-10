@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="InternalWsEndpointService" targetNamespace="http://ws.integration.i_novus.ru/internal" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="InternalWsEndpointService" targetNamespace="http://ws.integration.i_novus.ru/internal"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://ws.integration.i_novus.ru/internal"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <wsdl:types>
-        <xs:schema xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.integration.i_novus.ru/internal">
+        <xs:schema xmlns:tns="http://ws.integration.i_novus.ru/internal" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                   attributeFormDefault="unqualified" elementFormDefault="unqualified"
+                   targetNamespace="http://ws.integration.i_novus.ru/internal">
             <xs:element name="adapter" type="tns:adapter"/>
             <xs:element name="adapterResponse" type="tns:adapterResponse"/>
             <xs:element name="internal" type="tns:internal"/>

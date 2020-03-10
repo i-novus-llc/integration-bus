@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import ru.i_novus.integration.registry.backend.api.ParticipantRestService;
-import ru.i_novus.integration.registry.backend.audit.RegistryAuditClient;
 import ru.i_novus.integration.registry.backend.criteria.ParticipantCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
 import ru.i_novus.integration.registry.backend.model.Participant;
@@ -22,12 +21,9 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
 
     private final ParticipantRepository repository;
 
-    private final RegistryAuditClient auditClient;
-
     @Autowired
-    public ParticipantRestServiceImpl(ParticipantRepository repository, RegistryAuditClient auditClient) {
+    public ParticipantRestServiceImpl(ParticipantRepository repository) {
         this.repository = repository;
-        this.auditClient = auditClient;
     }
 
     @Override
@@ -44,11 +40,11 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
 
     @Override
     public List<Participant> list(ParticipantCriteria criteria) {
-        List<ParticipantEntity> entities =  repository.findAll();
+        List<ParticipantEntity> entities = repository.findAll();
 
         return entities
                 .stream()
-                .map(e-> new Participant(e.getCode(), e.getGroupCode(), e.getName(), e.getDisable()))
+                .map(e -> new Participant(e.getCode(), e.getGroupCode(), e.getName(), e.getDisable()))
                 .collect(Collectors.toList());
     }
 
@@ -60,7 +56,7 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
     @Override
     public Participant create(Participant participant) {
         ParticipantEntity result = repository.save(map(participant));
-        return audit("audit.eventType.create" ,result);
+        return map(result);
     }
 
     @Override
@@ -72,19 +68,12 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
         entity.setName(participant.getName());
         entity.setDisable(participant.getDisable());
         entity.setGroupCode(participant.getGroupCode());
-        return audit("audit.eventType.update", repository.save(entity));
+        return map(repository.save(entity));
     }
 
     @Override
     public void delete(String code) {
-        audit("audit.eventType.delete", repository.findById(code).orElse(null));
+        map(repository.findById(code).orElse(null));
         repository.deleteById(code);
-    }
-
-    private Participant audit(String action, ParticipantEntity entity) {
-        if (entity != null) {
-            auditClient.audit(action, entity, entity.getCode(), "audit.objectName.participant");
-        }
-        return map(entity);
     }
 }

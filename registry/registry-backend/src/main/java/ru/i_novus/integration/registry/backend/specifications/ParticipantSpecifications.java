@@ -29,7 +29,7 @@ public class ParticipantSpecifications implements Specification<ParticipantEntit
         }
         if (criteria.getExcludeParticipantMethodId() != null) {
             Subquery<String> sq = criteriaQuery.subquery(String.class);
-            Root<ParticipantMethodEntity> participantEntityRoot  = sq.from(ParticipantMethodEntity.class);
+            Root<ParticipantMethodEntity> participantEntityRoot = sq.from(ParticipantMethodEntity.class);
             sq.select(participantEntityRoot.get(ParticipantMethodEntity_.participantCode)).where(
                     builder.equal(participantEntityRoot.get(ParticipantMethodEntity_.ID),
                             criteria.getExcludeParticipantMethodId()));
