@@ -10,13 +10,6 @@
 
     <name>integration-bus</name>
 
-    <scm>
-        <connection>scm:git:https://git.i-novus.ru/platform/integration-bus.git</connection>
-        <url>https://git.i-novus.ru/platform/integration-bus.git</url>
-        <developerConnection>scm:git:https://git.i-novus.ru/platform/integration-bus.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
     <modules>
         <module>integration-common-api</module>
         <module>registry</module>
