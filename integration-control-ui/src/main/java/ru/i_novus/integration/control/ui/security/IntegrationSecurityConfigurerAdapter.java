@@ -37,7 +37,7 @@ public abstract class IntegrationSecurityConfigurerAdapter extends N2oSecurityCo
     }
 
     public ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry configureAuthorizeAuthRequests(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry url) throws Exception {
-        return ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) url.antMatchers(new String[]{"/registration/**", "/registrationServlet/**", "/dist/**", "/favicon.ico"})).permitAll();
+        return ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) url.antMatchers(new String[]{"/registration/**", "/registrationServlet/**", "/dist/**", "/integration/**", "/favicon.ico"})).permitAll();
     }
 
     @Override

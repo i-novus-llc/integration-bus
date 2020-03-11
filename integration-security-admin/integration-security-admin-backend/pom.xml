@@ -9,7 +9,7 @@
     <parent>
         <artifactId>integration-security-admin</artifactId>
         <groupId>ru.i_novus.is</groupId>
-        <version>2.4-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
