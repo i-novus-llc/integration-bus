@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="18px" viewBox="0 0 12 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>Username</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Username" fill-rule="nonzero" stroke="#D7DDEA" stroke-width="1.5">
+            <g id="Group">
+                <g>
+                    <ellipse id="Oval" cx="5.78571429" cy="3.726" rx="3.26828571" ry="3.26828571"></ellipse>
+                    <path d="M10.2490714,8.15657143 L1.32171429,8.15657143 C0.740571429,8.15657143 0.268714286,8.62778571 0.268714286,9.20957143 L0.268714286,15.8547857 C1.8765,16.8537857 3.76778571,17.4407143 5.8005,17.4407143 C7.82035714,17.4407143 9.70007143,16.8608571 11.3027143,15.8727857 L11.3027143,9.20957143 C11.3027143,8.62842857 10.8308571,8.15657143 10.2490714,8.15657143 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
