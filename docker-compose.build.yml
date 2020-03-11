@@ -16,18 +16,18 @@ services:
 
   monitoring-service:
     build:
-      context: monitoring-service
+      context: monitoring/monitoring-service
       args:
         JAR_FILE: target/monitoring-service.jar
 
   registry-service:
     build:
-      context: registry-service
+      context: registry/registry-service
       args:
         JAR_FILE: target/registry-service.jar
 
   security-admin-backend:
     build:
-      context: integration-security-admin/cad-security-admin-backend
+      context: integration-security-admin/integration-security-admin-backend
       args:
         JAR_FILE: target/integration-security-admin-backend.jar

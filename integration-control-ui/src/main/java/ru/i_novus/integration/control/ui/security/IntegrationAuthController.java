@@ -20,7 +20,7 @@ public class IntegrationAuthController {
         return "auth";
     }
 
-    @RequestMapping("/CadRegistration")
+    @RequestMapping("/integrationRegistration")
     public String registration() {
         return "registration";
     }
