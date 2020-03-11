@@ -16,13 +16,13 @@ services:
 
   monitoring-service:
     build:
-      context: monitoring/monitoring-service
+      context: monitoring/monitoring-backend
       args:
         JAR_FILE: target/monitoring-service.jar
 
   registry-service:
     build:
-      context: registry/registry-service
+      context: registry/registry-backend
       args:
         JAR_FILE: target/registry-service.jar
 
