@@ -47,7 +47,7 @@ services:
     labels:
       filebeat: "springboot"
     depends_on:
-      - postgres
+      - db
 
   registry-service:
     ports:
@@ -64,7 +64,7 @@ services:
     labels:
       filebeat: "springboot"
     depends_on:
-      - postgres
+      - db
 
   security-admin-backend:
     ports:
@@ -82,7 +82,7 @@ services:
         constraints:
           - node.labels.type == db
     depends_on:
-      - postgres
+      - db
 
   activemq:
     ports:
@@ -102,7 +102,7 @@ services:
         limits:
           memory: 2000M
 
-  postgres:
+  db:
     ports:
       - '8132:5432'
     image: postgres:11
