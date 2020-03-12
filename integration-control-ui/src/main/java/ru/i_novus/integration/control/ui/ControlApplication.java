@@ -1,19 +1,28 @@
 package ru.i_novus.integration.control.ui;
 
+import net.n2oapp.security.admin.api.service.UserDetailsService;
 import net.n2oapp.security.admin.rest.client.AdminRestClientConfiguration;
 import net.n2oapp.security.admin.web.AdminWebConfiguration;
+import net.n2oapp.security.auth.common.AuthoritiesPrincipalExtractor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import ru.i_novus.integration.web.IntegrationWebConfiguration;
+import org.springframework.context.annotation.Primary;
 
 @SpringBootApplication
-@Import({IntegrationWebConfiguration.class, AdminWebConfiguration.class, AdminRestClientConfiguration.class})
-public class ControlApplication {
+@Import({AdminWebConfiguration.class, AdminRestClientConfiguration.class})
+public class ControlApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(ControlApplication.class, args);
     }
 
+    @Bean
+    @Primary
+    public AuthoritiesPrincipalExtractor principalExtractor(UserDetailsService service) {
+        return new AuthoritiesPrincipalExtractor(service);
+    }
 
 }
