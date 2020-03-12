@@ -1,0 +1,46 @@
+version: '3.6'
+networks:
+  default:
+    driver: overlay
+    attachable: true
+
+services:
+  integration:
+    ports:
+      - '9100:8080'
+    environment:
+      INTEGRATION_ENV-CODE: 'region'
+    deploy:
+      placement:
+        constraints:
+          - node.labels.dc == hetzner
+      resources:
+        limits:
+          memory: 2000M
+    labels:
+      filebeat: "springboot"
+    depends_on:
+      - activemq
+
+  activemq:
+    ports:
+      - '9120:8161'
+      - '9116:61616'
+    image: 'webcenter/activemq:5.14.3'
+    environment:
+      ACTIVEMQ_NAME: amq
+      ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: 'True'
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+    volumes:
+      - 'activemq-data:/data/activemq'
+      - 'activemq-log:/var/log/activemq'
+    deploy:
+      resources:
+        limits:
+          memory: 2000M
+
+volumes:
+  activemq-data:
+  activemq-log:
+        

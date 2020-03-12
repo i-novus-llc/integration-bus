@@ -8,6 +8,8 @@ services:
   integration:
     ports:
       - '8100:8080'
+    environment:
+      INTEGRATION_ENV-CODE: 'center'
     deploy:
       placement:
         constraints:
