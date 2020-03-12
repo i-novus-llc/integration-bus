@@ -1,0 +1,26 @@
+version: "3.6"
+
+services:
+  integration:
+    integration:
+      test: curl -f http://localhost:8080/integration/monitoring/health | grep -io '^{"status":"UP"' || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+
+  monitoring-service:
+    healthcheck:
+      test: curl -f http://localhost:8080/monitoring/monitoring/health | grep -io '^{"status":"UP"' || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+
+  registry-service:
+    healthcheck:
+      test: curl -f http://localhost:8080/registry/monitoring/health | grep -io '^{"status":"UP"' || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
