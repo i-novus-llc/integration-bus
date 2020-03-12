@@ -80,7 +80,7 @@ services:
           memory: 1000M
       placement:
         constraints:
-          - node.labels.type == db
+          - node.labels.type == hetzner
     depends_on:
       - db
 
@@ -119,7 +119,7 @@ services:
           memory: 2000M
       placement:
         constraints:
-          - node.labels.type == db
+          - node.labels.type == hetzner
 
 volumes:
   postgres-data:
