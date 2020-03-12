@@ -6,7 +6,6 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import ru.i_novus.integration.configuration.IntegrationProperties;
 
 @Configuration
@@ -17,12 +16,13 @@ public class AmqConfig {
     private static final String PREPARATION_QUEUE = "preparation.queue";
     private static final String ASYNC_QUEUE = "async.queue";
 
-    private final IntegrationProperties property;
+    private final IntegrationProperties properties;
 
     @Autowired
-    public AmqConfig(IntegrationProperties property) {
-        this.property = property;
+    public AmqConfig(IntegrationProperties properties) {
+        this.properties = properties;
     }
+
 
     @Bean
     public RedeliveryPolicy redeliveryPolicy() {
@@ -38,21 +38,12 @@ public class AmqConfig {
     @Bean
     public ActiveMQConnectionFactory jmsConnectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(property.getAmqBrokerUrl());
+        connectionFactory.setBrokerURL(properties.getAmqBrokerUrl());
         connectionFactory.setNonBlockingRedelivery(true);
         connectionFactory.setRedeliveryPolicy(redeliveryPolicy());
         connectionFactory.setTrustAllPackages(true);
 
         return connectionFactory;
-    }
-
-    @Bean
-    public CachingConnectionFactory connectionFactory() {
-        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
-        cachingConnectionFactory.setTargetConnectionFactory(jmsConnectionFactory());
-        cachingConnectionFactory.setReconnectOnException(true);
-
-        return cachingConnectionFactory;
     }
 
     @Bean
