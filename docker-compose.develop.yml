@@ -80,7 +80,7 @@ services:
           memory: 1000M
       placement:
         constraints:
-          - node.labels.type == hetzner
+          - node.labels.type == db
     depends_on:
       - db
 
