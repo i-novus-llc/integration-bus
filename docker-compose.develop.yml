@@ -7,7 +7,7 @@ networks:
 services:
   integration:
     ports:
-      - '7100:8080'
+      - '8100:8080'
     deploy:
       placement:
         constraints:
@@ -22,7 +22,7 @@ services:
 
   integration-control-ui:
     ports:
-      - '7101:8080'
+      - '8101:8080'
     deploy:
       placement:
         constraints:
@@ -32,7 +32,7 @@ services:
 
   monitoring-service:
     ports:
-      - '7102:8080'
+      - '8102:8080'
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
@@ -49,7 +49,7 @@ services:
 
   registry-service:
     ports:
-      - '7104:8080'
+      - '8104:8080'
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
@@ -66,7 +66,7 @@ services:
 
   security-admin-backend:
     ports:
-      - '7103:8080'
+      - '8103:8080'
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
@@ -84,8 +84,8 @@ services:
 
   activemq:
     ports:
-      - '7120:8161'
-      - '7116:61616'
+      - '8120:8161'
+      - '8116:61616'
     image: 'webcenter/activemq:5.14.3'
     environment:
       ACTIVEMQ_NAME: amq
@@ -102,7 +102,7 @@ services:
 
   postgres:
     ports:
-      - '7132:5432'
+      - '8132:5432'
     image: postgres:11
     command: postgres -c 'max_connections=250'
     environment:
