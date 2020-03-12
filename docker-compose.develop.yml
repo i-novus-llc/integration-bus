@@ -119,7 +119,7 @@ services:
           memory: 2000M
       placement:
         constraints:
-          - node.labels.type == hetzner
+          - node.labels.type == db
 
 volumes:
   postgres-data:
