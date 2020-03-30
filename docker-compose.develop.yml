@@ -86,8 +86,8 @@ services:
 
   activemq:
     ports:
-      - '8120:8161'
-      - '8116:61616'
+      - '8105:8161'
+      - '8106:61616'
     image: 'webcenter/activemq:5.14.3'
     environment:
       ACTIVEMQ_NAME: amq
