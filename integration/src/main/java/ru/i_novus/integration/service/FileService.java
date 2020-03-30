@@ -88,6 +88,7 @@ public class FileService {
                 URL_SPLIT + LocalDate.now().getYear() +
                 URL_SPLIT + LocalDate.now().getMonth() +
                 URL_SPLIT + LocalDate.now().getDayOfMonth() +
+                URL_SPLIT + UUID.randomUUID() +
                 URL_SPLIT;
     }
 
