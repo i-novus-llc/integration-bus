@@ -29,10 +29,13 @@ audit.rest.url='http://docker.one:8816/api'
 integration.env-code='код окружения'
 integration.central-adapter-url='url центрального сегмента (http://localhost:8080/ws/internal)'
 integration.internal-ws-timeout='таймаут отправки файлов (300000L)'
+sign.soap.key.store.password='пароль для keystore'
+sign.soap.key.store.region.alias.name='alias ключа ситемы'
+sign.soap.key.store.region.alias.password='пароль для alias'
 sender.queue.concurrent.consumers='количество слушателей sender.queue'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
-classpath приложения
+'/opt/integration/' приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
 
 *registry-backend:*
 
@@ -45,7 +48,7 @@ datasource.username='user'
 datasource.password='password'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
-classpath приложения
+'/opt/integration/' приложения
 
 * создать db и указать параметры в properties
 
