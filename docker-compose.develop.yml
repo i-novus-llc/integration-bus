@@ -11,9 +11,6 @@ services:
     environment:
       INTEGRATION_ENV-CODE: 'center'
     deploy:
-      placement:
-        constraints:
-          - node.labels.dc == hetzner
       resources:
         limits:
           memory: 2000M
@@ -25,10 +22,6 @@ services:
   integration-control-ui:
     ports:
       - '8101:8080'
-    deploy:
-      placement:
-        constraints:
-          - node.labels.dc == hetzner
     labels:
       filebeat: "springboot"
 
@@ -40,10 +33,6 @@ services:
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
       SPRING_DATASOURCE_USERNAME: integration
       SPRING_DATASOURCE_PASSWORD: integration
-    deploy:
-      placement:
-        constraints:
-          - node.labels.dc == hetzner
     labels:
       filebeat: "springboot"
     depends_on:
@@ -57,10 +46,6 @@ services:
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
       SPRING_DATASOURCE_USERNAME: integration
       SPRING_DATASOURCE_PASSWORD: integration
-    deploy:
-      placement:
-        constraints:
-          - node.labels.dc == hetzner
     labels:
       filebeat: "springboot"
     depends_on:
