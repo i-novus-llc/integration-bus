@@ -3,7 +3,6 @@ package ru.i_novus.integration.service;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import java.io.*;
-import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -31,10 +30,6 @@ public class IntegrationFileUtils {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        splitFile(new File("E://C200000948AD40-717B-4CDB-8A89-431BADF482F9.csv"), new File("E://testDir"));
     }
 
     /**
