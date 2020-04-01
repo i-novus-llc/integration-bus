@@ -3,6 +3,7 @@ package ru.i_novus.integration.service;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -32,6 +33,10 @@ public class IntegrationFileUtils {
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        splitFile(new File("E://C200000948AD40-717B-4CDB-8A89-431BADF482F9.csv"), new File("E://testDir"));
+    }
+
     /**
      * Разделение файла на части по BUF_SIZE
      */
@@ -42,12 +47,16 @@ public class IntegrationFileUtils {
 
         try (FileInputStream fis = new FileInputStream(toSplit); BufferedInputStream bis = new BufferedInputStream(fis)) {
             int amount;
-            while ((amount = bis.read(buffer)) > 0) {
-                File partFile = new File(dir + "/" + counter++);
+            if (fis.available() != 0) {
+                while ((amount = bis.read(buffer)) > 0) {
+                    File partFile = new File(dir + "/" + counter++);
 
-                try (FileOutputStream out = new FileOutputStream(partFile)) {
-                    out.write(buffer, 0, amount);
+                    try (FileOutputStream out = new FileOutputStream(partFile)) {
+                        out.write(buffer, 0, amount);
+                    }
                 }
+            } else {
+                new File(dir + "/" + counter).createNewFile();
             }
         }
     }
