@@ -40,7 +40,7 @@
         <int-jms:outbound-channel-adapter id="jmsAsyncChenal" destination="asyncQueue"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsAsync" destination="asyncQueue" channel="asyncOutChannel"/>
+    <int-jms:message-driven-channel-adapter id="jmsAsync" destination="asyncQueue" channel="asyncOutChannel" concurrent-consumers="5"/>
 
     <int:chain input-channel="asyncOutChannel" output-channel="responseSyncChannel">
         <int:service-activator ref="messagePrepareService" method="prepareAsyncRequest"/>
