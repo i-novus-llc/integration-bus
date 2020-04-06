@@ -11,9 +11,6 @@ services:
     environment:
       INTEGRATION_ENV-CODE: 'region'
     deploy:
-      placement:
-        constraints:
-          - node.labels.dc == hetzner
       resources:
         limits:
           memory: 2000M
