@@ -1,0 +1,8 @@
+version: '3.6'
+
+services:
+  integration:
+    deploy:
+      resources:
+        limits:
+          memory: 2000M
