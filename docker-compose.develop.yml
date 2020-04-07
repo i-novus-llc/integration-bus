@@ -18,6 +18,8 @@ services:
       filebeat: "springboot"
     depends_on:
       - activemq
+    volumes:
+    - 'integration-shared-data:/share'
 
   integration-control-ui:
     ports:
@@ -87,4 +89,10 @@ services:
 volumes:
   activemq-data:
   activemq-log:
+  integration-shared-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /opt/share/erz/center/data
         
