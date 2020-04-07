@@ -1,0 +1,6 @@
+version: "3.6"
+
+services:
+
+  integration:
+    image: "cr.yandex/crpm4vdqh47ppohdbm3j/is/integration:${TAG}"
