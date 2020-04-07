@@ -1,0 +1,9 @@
+version: "3.6"
+
+services:
+
+  integration:
+    build:
+      context: integration
+      args:
+        JAR_FILE: target/integration.jar
