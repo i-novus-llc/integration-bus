@@ -57,7 +57,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://172.30.1.29:5432/integration
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
-      SPRING_DATASOURCE_USERNAME: integrationhetzner
+      SPRING_DATASOURCE_USERNAME: integration
       SPRING_DATASOURCE_PASSWORD: integration
     deploy:
       resources:
