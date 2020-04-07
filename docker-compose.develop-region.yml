@@ -19,7 +19,7 @@ services:
     depends_on:
       - activemq
     volumes:
-    - 'integration-shared-data:/share'
+    - 'integration-shared-data:/share/esb/output'
 
   activemq:
     ports:
