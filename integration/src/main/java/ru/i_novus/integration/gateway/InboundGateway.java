@@ -18,15 +18,15 @@ public interface InboundGateway {
     void internalRequest(CommonModel model);
 
     @Gateway(requestChannel = "preparationQueueChannel")
-    void preparation(Message<CommonModel> modelMessage);
+    void preparation(CommonModel modelMessage);
 
     @Gateway(requestChannel = "senderQueueChannel")
-    void sender(Message<CommonModel> modelMessage);
+    void sender(CommonModel modelMessage);
 
     @Gateway(requestChannel = "asyncQueueChannel")
-    void async(Message<CommonModel> modelMessage);
+    void async(CommonModel modelMessage);
 
     @Gateway(requestChannel = "monitoringQueueChannel")
-    void monitoring(Message<MonitoringModel> model);
+    void monitoring(MonitoringModel model);
 
 }

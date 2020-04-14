@@ -5,6 +5,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -69,14 +70,15 @@ public class AmqConfig {
 
     @Bean
     @Primary
-    public JmsListenerContainerFactory<?> concurrentJmsListenerContainerFactory() {
+    public JmsListenerContainerFactory<?> concurrentJmsListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                                DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        configurer.configure(factory, connectionFactory);
         factory.setSessionTransacted(true);
         factory.setConcurrency(properties.getQueueConcurrent());
         factory.setConnectionFactory(connectionFactory());
         return factory;
     }
-
 
     @Bean // Serialize message content to json using TextMessage
     public MessageConverter jacksonJmsMessageConverter(ObjectMapper mapper) {
