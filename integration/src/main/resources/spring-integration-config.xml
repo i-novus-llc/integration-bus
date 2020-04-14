@@ -12,7 +12,12 @@
     <int:channel id="senderQueueChannel"/>
 
     <int:chain input-channel="internalRequestChannel" send-timeout="30000">
-
+        <int:service-activator expression="@monitoringService.create(payload, 1)"/>
+        <int:header-enricher>
+            <int:header name="jms_correlationId" type="java.lang.String"
+                        expression="payload.monitoringModel.sender + ' -> '
+                        + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
+        </int:header-enricher>
         <int:service-activator expression="@jmsPublisher.preparation(payload)"/>
     </int:chain>
 

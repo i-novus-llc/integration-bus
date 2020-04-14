@@ -1,6 +1,7 @@
 package ru.i_novus.integration.amqp;
 
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.i_novus.integration.common.api.MonitoringModel;
@@ -17,22 +18,22 @@ public class JmsSubcriber {
     }
 
     @JmsListener(destination = "preparation.queue", containerFactory = "concurrentJmsListenerContainerFactory")
-    public void preparation(CommonModel msg){
-        gateway.preparation(msg);
+    public void preparation(final Message<CommonModel> task){
+        gateway.preparation(task);
     }
 
     @JmsListener(destination = "sender.queue", containerFactory = "concurrentJmsListenerContainerFactory")
-    public void sender(CommonModel msg){
-        gateway.sender(msg);
+    public void sender(final Message<CommonModel> task){
+        gateway.sender(task);
     }
 
     @JmsListener(destination = "async.queue", containerFactory = "concurrentJmsListenerContainerFactory")
-    public void async(CommonModel msg){
-        gateway.async(msg);
+    public void async(final Message<CommonModel> task){
+        gateway.async(task);
     }
 
     @JmsListener(destination = "monitoring.queue", containerFactory = "concurrentJmsListenerContainerFactory")
-    public void monitoring(MonitoringModel msg){
-        gateway.monitoring(msg);
+    public void monitoring(final Message<MonitoringModel> task){
+        gateway.monitoring(task);
     }
 }
