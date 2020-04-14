@@ -97,4 +97,8 @@ public class PlaceholdersProperty {
     public String getInternalWsTimeOut() {
         return internalWsTimeOut;
     }
+
+    public String getQueueConcurrent() {
+        return queueConcurrent;
+    }
 }

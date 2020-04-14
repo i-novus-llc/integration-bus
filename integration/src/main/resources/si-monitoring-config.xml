@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
-       xmlns:int-http="http://www.springframework.org/schema/integration/http"
-       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
-       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-       http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
-       http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
-       http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
 
     <int:channel id="monitoringChannel"/>
     <int:channel id="monitoringJmsInChannel"/>
-    <int:channel id="monitoringJmsOutChannel"/>
+    <int:channel id="monitoringQueueChannel"/>
     <int:channel id="errorChannel"/>
 
     <int:service-activator input-channel="errorChannel" ref="monitoringService" method="createError"/>
 
-    <!--    <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>-->
+    <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>
+    <bean id="jmsPublisher" class="ru.i_novus.integration.amqp.JmsPublisher"/>
 
-    <int-jms:outbound-channel-adapter id="jmsInMonitoring" destination="monitoringQueue"
-                                      channel="monitoringJmsInChannel"/>
+    <int:chain input-channel="monitoringJmsInChannel">
+        <int:service-activator expression="@jmsPublisher.monitoring(payload)"/>
+    </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsOutMonitoring" destination="monitoringQueue"
-                                            channel="monitoringJmsOutChannel"
-                                            acknowledge="transacted"/>
+    <int:service-activator input-channel="monitoringQueueChannel" ref="monitoringClient" method="sendMonitoringMessage"/>
 
-    <int:service-activator input-channel="monitoringJmsOutChannel" ref="monitoringClient" method="sendMonitoringMessage"/>
+    <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
+                 default-reply-timeout="3000" error-channel="errorChannel"/>
 
     <int:gateway id="monitoringGateway" service-interface="ru.i_novus.integration.gateway.MonitoringGateway"
                  default-reply-timeout="3000"/>

@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
-       xmlns:int-http="http://www.springframework.org/schema/integration/http"
-       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
-       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-       http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
-       http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
-       http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
     <!--    <import resource="si-monitoring-config.xml"/>-->
 
     <int:channel id="responseSyncChannel"/>
     <int:channel id="requestSyncChannel"/>
     <int:channel id="requestAsyncChannel"/>
-
-    <!--<int:channel id="syncChannel"/>
-    <int:router input-channel="requestSyncChannel" expression="payload.monitoringModel.receiver">
-        <int:mapping value="nsi" channel="syncChannel"/>
-    </int:router>-->
+    <int:channel id="asyncQueueChannel"/>
 
     <int:chain input-channel="requestSyncChannel" output-channel="responseSyncChannel">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
@@ -37,12 +24,10 @@
                         + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true"/>
         </int:header-enricher>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
-        <int-jms:outbound-channel-adapter id="jmsAsyncChenal" destination="asyncQueue"/>
+        <int:service-activator expression="@jmsPublisher.async(payload)"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsAsync" destination="asyncQueue" channel="asyncOutChannel" concurrent-consumers="5"/>
-
-    <int:chain input-channel="asyncOutChannel" output-channel="responseSyncChannel">
+    <int:chain input-channel="asyncQueueChannel">
         <int:service-activator ref="messagePrepareService" method="prepareAsyncRequest"/>
     </int:chain>
 
