@@ -24,7 +24,7 @@
                         + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true"/>
         </int:header-enricher>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
-        <int:service-activator expression="@jmsPublisher.async(payload)"/>
+        <int:service-activator ref="jmsPublisher" method="async"/>
     </int:chain>
 
     <int:chain input-channel="asyncQueueChannel">

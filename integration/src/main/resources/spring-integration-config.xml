@@ -18,13 +18,13 @@
                         expression="payload.monitoringModel.sender + ' -> '
                         + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true" />
         </int:header-enricher>
-        <int:service-activator expression="@jmsPublisher.preparation(payload)"/>
+        <int:service-activator ref="jmsPublisher" method="preparation"/>
     </int:chain>
 
     <int:chain input-channel="preparationQueueChannel" >
         <int:service-activator ref="internalRequestPreparationService" method="preparePackage"/>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
-        <int:service-activator expression="@jmsPublisher.sender(payload)"/>
+        <int:service-activator ref="jmsPublisher" method="sender"/>
     </int:chain>
 
     <int:chain input-channel="senderQueueChannel">

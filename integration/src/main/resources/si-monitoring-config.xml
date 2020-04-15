@@ -14,10 +14,9 @@
     <int:service-activator input-channel="errorChannel" ref="monitoringService" method="createError"/>
 
     <bean id="monitoringService" class="ru.i_novus.integration.service.MonitoringService"/>
-    <bean id="jmsPublisher" class="ru.i_novus.integration.amqp.JmsPublisher"/>
 
     <int:chain input-channel="monitoringJmsInChannel">
-        <int:service-activator expression="@jmsPublisher.monitoring(payload)"/>
+        <int:service-activator ref="jmsPublisher" method="monitoring"/>
     </int:chain>
 
     <int:service-activator input-channel="monitoringQueueChannel" ref="monitoringClient" method="sendMonitoringMessage"/>
