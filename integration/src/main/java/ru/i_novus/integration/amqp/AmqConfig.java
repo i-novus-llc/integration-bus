@@ -1,6 +1,5 @@
 package ru.i_novus.integration.amqp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.command.ActiveMQQueue;
@@ -13,9 +12,6 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-import org.springframework.jms.support.converter.MessageConverter;
-import org.springframework.jms.support.converter.MessageType;
 import ru.i_novus.integration.configuration.IntegrationProperties;
 
 import javax.jms.ConnectionFactory;
@@ -38,6 +34,36 @@ public class AmqConfig {
 
 
     @Bean
+    public ActiveMQConnectionFactory jmsConnectionFactory(RedeliveryPolicy redeliveryPolicy) {
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+        connectionFactory.setBrokerURL(properties.getAmqBrokerUrl());
+        connectionFactory.setNonBlockingRedelivery(true);
+        connectionFactory.setRedeliveryPolicy(redeliveryPolicy);
+        connectionFactory.setTrustAllPackages(true);
+
+        return connectionFactory;
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setSessionTransacted(true);
+
+        return jmsTemplate;
+    }
+
+    @Bean
+    @Primary
+    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+        factory.setConcurrency(properties.getQueueConcurrent());
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
     public RedeliveryPolicy redeliveryPolicy() {
         RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
         redeliveryPolicy.setUseCollisionAvoidance(true);
@@ -46,47 +72,6 @@ public class AmqConfig {
         redeliveryPolicy.setMaximumRedeliveries(-1);
 
         return redeliveryPolicy;
-    }
-
-    @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(properties.getAmqBrokerUrl());
-        connectionFactory.setNonBlockingRedelivery(true);
-        connectionFactory.setRedeliveryPolicy(redeliveryPolicy());
-        connectionFactory.setTrustAllPackages(true);
-
-        return connectionFactory;
-    }
-
-    @Bean
-    public JmsTemplate jmsTemplate(MessageConverter messageConverter, ConnectionFactory connectionFactory) {
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-        jmsTemplate.setSessionTransacted(true);
-        jmsTemplate.setMessageConverter(messageConverter);
-
-        return jmsTemplate;
-    }
-
-    @Bean
-    @Primary
-    public JmsListenerContainerFactory<?> concurrentJmsListenerContainerFactory(ConnectionFactory connectionFactory,
-                                                                                DefaultJmsListenerContainerFactoryConfigurer configurer) {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(factory, connectionFactory);
-        factory.setSessionTransacted(true);
-        factory.setConcurrency(properties.getQueueConcurrent());
-        factory.setConnectionFactory(connectionFactory());
-        return factory;
-    }
-
-    @Bean // Serialize message content to json using TextMessage
-    public MessageConverter jacksonJmsMessageConverter(ObjectMapper mapper) {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setObjectMapper(mapper);
-        converter.setTargetType(MessageType.TEXT);
-        converter.setTypeIdPropertyName("_type");
-        return converter;
     }
 
     @Bean

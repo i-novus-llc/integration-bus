@@ -23,7 +23,7 @@
     <int:service-activator input-channel="monitoringQueueChannel" ref="monitoringClient" method="sendMonitoringMessage"/>
 
     <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
-                 default-reply-timeout="3000" error-channel="errorChannel"/>
+                 default-reply-timeout="3000"/>
 
     <int:gateway id="monitoringGateway" service-interface="ru.i_novus.integration.gateway.MonitoringGateway"
                  default-reply-timeout="3000"/>

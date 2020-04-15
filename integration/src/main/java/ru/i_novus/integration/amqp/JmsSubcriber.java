@@ -16,22 +16,22 @@ public class JmsSubcriber {
         this.gateway = gateway;
     }
 
-    @JmsListener(destination = "preparation.queue", containerFactory = "concurrentJmsListenerContainerFactory")
+    @JmsListener(destination = "preparation.queue")
     public void preparation(final CommonModel task){
         gateway.preparation(task);
     }
 
-    @JmsListener(destination = "sender.queue", containerFactory = "concurrentJmsListenerContainerFactory")
+    @JmsListener(destination = "sender.queue")
     public void sender(final CommonModel task){
         gateway.sender(task);
     }
 
-    @JmsListener(destination = "async.queue", containerFactory = "concurrentJmsListenerContainerFactory")
+    @JmsListener(destination = "async.queue")
     public void async(final CommonModel task){
         gateway.async(task);
     }
 
-    @JmsListener(destination = "monitoring.queue", containerFactory = "concurrentJmsListenerContainerFactory")
+    @JmsListener(destination = "monitoring.queue")
     public void monitoring(final MonitoringModel task){
         gateway.monitoring(task);
     }
