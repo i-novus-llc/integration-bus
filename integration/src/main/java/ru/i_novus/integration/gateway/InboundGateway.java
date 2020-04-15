@@ -3,6 +3,7 @@ package ru.i_novus.integration.gateway;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.messaging.Message;
+import ru.i_novus.integration.common.api.MonitoringModel;
 import ru.i_novus.integration.model.CommonModel;
 
 @MessagingGateway
@@ -17,15 +18,15 @@ public interface InboundGateway {
     void internalRequest(CommonModel model);
 
     @Gateway(requestChannel = "preparationQueueChannel")
-    void preparation(Message modelMessage);
+    void preparation(Message<CommonModel> modelMessage);
 
     @Gateway(requestChannel = "senderQueueChannel")
-    void sender(Message modelMessage);
+    void sender(Message<CommonModel> modelMessage);
 
     @Gateway(requestChannel = "asyncQueueChannel")
-    void async(Message modelMessage);
+    void async(Message<CommonModel> modelMessage);
 
     @Gateway(requestChannel = "monitoringQueueChannel")
-    void monitoring(Message model);
+    void monitoring(Message<MonitoringModel> model);
 
 }
