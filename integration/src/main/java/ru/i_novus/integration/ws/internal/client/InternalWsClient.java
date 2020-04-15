@@ -108,8 +108,8 @@ public class InternalWsClient {
                     retriesCount++;
                     try {
                         Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut());
-                        result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
-                                request.getHeaders().get("method", String.class))[0];
+                        result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getPayload().getParticipantModel().getUrl(),
+                                request.getPayload().getParticipantModel().getMethod())[0];
                         success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
                     } catch (Fault e) {
                         logger.error("Failed try number {} to send part {}: {}, error: {}",
