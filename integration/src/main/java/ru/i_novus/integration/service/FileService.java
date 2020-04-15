@@ -74,7 +74,7 @@ public class FileService {
     }
 
     SplitDocumentModel prepareSplitModel(String filePath, String uid) throws IOException {
-        File splitDir = new File(getTempPath() + uid);
+        File splitDir = new File(getTempPath() + uid + "_");
         splitDir.mkdirs();
         SplitDocumentModel splitModel = new SplitDocumentModel();
         splitModel.setTemporaryPath(splitDir.getPath());

@@ -53,7 +53,8 @@ public class InternalRequestPreparationService {
             DocumentData documentData = new DocumentData();
             documentData.setDocFormat(dataModel.getMime());
             documentData.setDocName(dataModel.getName());
-            documentData.setSplitDocument(storageService.prepareSplitModel(dataModel.getPath(), messageData.getGroupUid()));
+            documentData.setSplitDocument(storageService.prepareSplitModel(dataModel.getPath(),
+                    modelMessage.getPayload().getMonitoringModel().getUid()));
             messageData.setAppData(documentData);
 
             MessageInfo messageInfo = new MessageInfo();
