@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.gateway.MonitoringGateway;
@@ -22,7 +21,9 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
 @Component
 public class InternalRequestPreparationService {
@@ -79,12 +80,8 @@ public class InternalRequestPreparationService {
             modelMessage.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
         }
-        Map<String, Object> messageHeaders = new HashMap<>();
-        messageHeaders.put("url", modelMessage.getPayload().getParticipantModel().getUrl());
-        messageHeaders.put("method", modelMessage.getPayload().getParticipantModel().getMethod());
 
-        return MessageBuilder.createMessage(integrationRequest,
-                new MessageHeaders(messageHeaders));
+        return MessageBuilder.withPayload(integrationRequest).build();
 
     }
 

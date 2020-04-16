@@ -14,19 +14,28 @@ public class JmsPublisher {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void preparation(Message<CommonModel> apple){
-        jmsTemplate.convertAndSend("preparation.queue", apple);
+    public void preparation(Message<CommonModel> apple) {
+
+        jmsTemplate.convertAndSend("preparation.queue", apple, (message) -> {
+            message.setJMSCorrelationID(apple.getPayload().getMonitoringModel().getSender() + " -> "
+                    + apple.getPayload().getMonitoringModel().getReceiver() + " uid: " + apple.getPayload().getMonitoringModel().getUid());
+            return message;
+        });
     }
 
-    public void sender(Message<CommonModel> apple){
-        jmsTemplate.convertAndSend("sender.queue", apple);
+    public void sender(Message<CommonModel> apple) {
+        jmsTemplate.convertAndSend("sender.queue", apple, (message) -> {
+            message.setJMSCorrelationID(apple.getPayload().getMonitoringModel().getSender() + " -> "
+                    + apple.getPayload().getMonitoringModel().getReceiver() + " uid: " + apple.getPayload().getMonitoringModel().getUid());
+            return message;
+        });
     }
 
-    public void async(Message<CommonModel> apple){
+    public void async(Message<CommonModel> apple) {
         jmsTemplate.convertAndSend("async.queue", apple);
     }
 
-    public void monitoring(Message<MonitoringModel> apple){
+    public void monitoring(Message<MonitoringModel> apple) {
         jmsTemplate.convertAndSend("monitoring.queue", apple);
     }
 }
