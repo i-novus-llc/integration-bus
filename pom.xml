@@ -69,7 +69,7 @@
                                     <outputDirectory>${project.basedir}</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/compose-center</directory>
+                                            <directory>${project.basedir}/resource-center</directory>
                                             <filtering>true</filtering>
                                             <includes>
                                                 <include>*.yml</include>
@@ -102,7 +102,7 @@
                                     <outputDirectory>${project.basedir}</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/compose-region</directory>
+                                            <directory>${project.basedir}/resource-region</directory>
                                             <filtering>true</filtering>
                                             <includes>
                                                 <include>*.yml</include>
