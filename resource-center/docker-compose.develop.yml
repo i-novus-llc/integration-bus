@@ -15,6 +15,9 @@ services:
       resources:
         limits:
           memory: 2000M
+      placement:
+        constrainst:
+          -'node.role==worker'
     labels:
       filebeat: "springboot"
     depends_on:
@@ -27,6 +30,10 @@ services:
       - '8101:8080'
     environment:
       SPRING_CLOUD_CONSUL_CONFIG_PREFIX: "integration-ui-center"
+    deploy:
+      placement:
+        constrainst:
+          -'node.role==worker'
     labels:
       filebeat: "springboot"
 
@@ -38,6 +45,10 @@ services:
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
       SPRING_DATASOURCE_USERNAME: integration
       SPRING_DATASOURCE_PASSWORD: integration
+    deploy:
+      placement:
+        constrainst:
+          -'node.role==worker'
     labels:
       filebeat: "springboot"
     depends_on:
@@ -51,6 +62,10 @@ services:
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
       SPRING_DATASOURCE_USERNAME: integration
       SPRING_DATASOURCE_PASSWORD: integration
+    deploy:
+      placement:
+        constrainst:
+          -'node.role==worker'
     labels:
       filebeat: "springboot"
     depends_on:
@@ -68,6 +83,9 @@ services:
       resources:
         limits:
           memory: 1000M
+      placement:
+        constrainst:
+          -'node.role==worker'
     depends_on:
       - db
 
@@ -88,6 +106,9 @@ services:
       resources:
         limits:
           memory: 2000M
+      placement:
+        constrainst:
+          -'node.role==worker'
 
 volumes:
   activemq-data:
