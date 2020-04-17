@@ -16,7 +16,7 @@ services:
         limits:
           memory: 2000M
       placement:
-        constrainst:
+        constraints:
           - node.role == worker
     labels:
       filebeat: "springboot"
@@ -43,7 +43,7 @@ services:
         limits:
           memory: 2000M
       placement:
-        constrainst:
+        constraints:
           - node.role == worker
 
 volumes:
