@@ -17,7 +17,7 @@ services:
           memory: 2000M
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
     labels:
       filebeat: "springboot"
     depends_on:
@@ -33,7 +33,7 @@ services:
     deploy:
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
     labels:
       filebeat: "springboot"
 
@@ -48,7 +48,7 @@ services:
     deploy:
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
     labels:
       filebeat: "springboot"
     depends_on:
@@ -65,7 +65,7 @@ services:
     deploy:
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
     labels:
       filebeat: "springboot"
     depends_on:
@@ -85,7 +85,7 @@ services:
           memory: 1000M
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
     depends_on:
       - db
 
@@ -108,7 +108,7 @@ services:
           memory: 2000M
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
 
 volumes:
   activemq-data:

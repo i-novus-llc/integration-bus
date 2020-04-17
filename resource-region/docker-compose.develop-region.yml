@@ -17,7 +17,7 @@ services:
           memory: 2000M
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
     labels:
       filebeat: "springboot"
     depends_on:
@@ -44,7 +44,7 @@ services:
           memory: 2000M
       placement:
         constrainst:
-          - 'node.role==worker'
+          - node.role == worker
 
 volumes:
   activemq-data:
