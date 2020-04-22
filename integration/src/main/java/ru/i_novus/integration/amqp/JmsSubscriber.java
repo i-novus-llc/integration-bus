@@ -11,10 +11,10 @@ import ru.i_novus.integration.model.CommonModel;
 
 @Component
 @Transactional
-public class JmsSubcriber {
+public class JmsSubscriber {
     private final InboundGateway gateway;
 
-    public JmsSubcriber(InboundGateway gateway) {
+    public JmsSubscriber(InboundGateway gateway) {
         this.gateway = gateway;
     }
 
