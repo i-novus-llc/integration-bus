@@ -33,6 +33,8 @@ sign.soap.key.store.password='пароль для keystore'
 sign.soap.key.store.region.alias.name='alias ключа ситемы'
 sign.soap.key.store.region.alias.password='пароль для alias'
 sender.queue.concurrent.consumers='количество слушателей sender.queue'
+preparation.queue.concurrent.consumers='количество слушателей preparation.queue'
+async.queue.concurrent.consumers='количество слушателей async.queue'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
 '/opt/integration/' приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`

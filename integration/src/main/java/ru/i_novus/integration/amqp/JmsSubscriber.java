@@ -18,17 +18,17 @@ public class JmsSubscriber {
         this.gateway = gateway;
     }
 
-    @JmsListener(destination = "preparation.queue", concurrency = "5-10")
+    @JmsListener(destination = "preparation.queue", containerFactory = "jmsPreparationListenerContainerFactory")
     public void preparation(final Message<CommonModel> task){
         gateway.preparation(task);
     }
 
-    @JmsListener(destination = "sender.queue", concurrency = "50-50")
+    @JmsListener(destination = "sender.queue", containerFactory = "jmsSenderListenerContainerFactory")
     public void sender(final Message<CommonModel> task){
         gateway.sender(task);
     }
 
-    @JmsListener(destination = "async.queue", concurrency = "5-10")
+    @JmsListener(destination = "async.queue", containerFactory = "jmsAsyncListenerContainerFactory")
     public void async(final Message<CommonModel> task){
         gateway.async(task);
     }

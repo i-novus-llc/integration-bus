@@ -53,12 +53,44 @@ public class AmqConfig {
     }
 
     @Bean
-    @Primary
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                            DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsSenderListenerContainerFactory(ConnectionFactory connectionFactory,
                                                                       DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setSessionTransacted(true);
-        factory.setConcurrency(properties.getQueueConcurrent());
+        factory.setConcurrency(properties.getQueueSenderConcurrent());
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsPreparationListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+        factory.setConcurrency(properties.getQueuePreparationConcurrent());
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsAsyncListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+        factory.setConcurrency(properties.getQueueAsyncConcurrent());
+
         configurer.configure(factory, connectionFactory);
         return factory;
     }

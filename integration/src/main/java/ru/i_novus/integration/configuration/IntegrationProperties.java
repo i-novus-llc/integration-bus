@@ -26,7 +26,11 @@ public class IntegrationProperties {
     @Value("${integration.internal-ws-timeout}")
     Long internalWsTimeOut;
     @Value("${sender.queue.concurrent.consumers:5}")
-    String queueConcurrent;
+    String queueSenderConcurrent;
+    @Value("${preparation.queue.concurrent.consumers:5}")
+    String queuePreparationConcurrent;
+    @Value("${async.queue.concurrent.consumers:5}")
+    String queueAsyncConcurrent;
 
 
 }
