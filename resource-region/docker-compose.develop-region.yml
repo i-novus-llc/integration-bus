@@ -10,7 +10,7 @@ services:
       - '9100:8080'
     environment:
       INTEGRATION_ENV-CODE: 'region'
-      SPRING_CLOUD_CONSUL_CONFIG_PREFIX: "integration-region"
+      SPRING_CLOUD_CONSUL_CONFIG_PREFIX: integration-region
     deploy:
       resources:
         limits:

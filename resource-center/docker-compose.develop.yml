@@ -10,7 +10,7 @@ services:
       - '8100:8080'
     environment:
       INTEGRATION_ENV-CODE: 'center'
-      SPRING_CLOUD_CONSUL_CONFIG_PREFIX: "integration-center"
+      SPRING_CLOUD_CONSUL_CONFIG_PREFIX: integration-center
     deploy:
       resources:
         limits:
@@ -29,7 +29,7 @@ services:
     ports:
       - '8101:8080'
     environment:
-      SPRING_CLOUD_CONSUL_CONFIG_PREFIX: "integration-ui-center"
+      SPRING_CLOUD_CONSUL_CONFIG_PREFIX: integration-ui-center
     deploy:
       placement:
         constraints:
@@ -119,4 +119,3 @@ volumes:
       o: bind
       type: none
       device: /opt/share/erz/center/data
-        
