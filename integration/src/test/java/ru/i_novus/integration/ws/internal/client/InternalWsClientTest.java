@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.integration.support.MessageBuilder;
-import ru.i_novus.integration.common.api.MonitoringModel;
-import ru.i_novus.integration.configuration.PlaceholdersProperty;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.service.MonitoringService;
@@ -34,7 +34,7 @@ public class InternalWsClientTest {
 
     @Mock
     @SuppressWarnings("unused")
-    private PlaceholdersProperty placeholdersProperty;
+    private IntegrationProperties properties;
 
     @InjectMocks
     private InternalWsClient client;
@@ -42,14 +42,14 @@ public class InternalWsClientTest {
     @Test
     public void sendRequest() {
         try {
-            when(placeholdersProperty.getInternalWsTimeOut()).thenReturn(10000L);
+            when(properties.getInternalWsTimeOut()).thenReturn(10000L);
             client.sendRequest("", "not_exists_url", "");
         } catch (Exception e) {
             assertTrue(e.getMessage().contains("ServiceConstructionException"));
         }
 
         try {
-            when(placeholdersProperty.getInternalWsTimeOut()).thenReturn(1L);
+            when(properties.getInternalWsTimeOut()).thenReturn(1L);
             client.sendRequest("", "not_exists_url", "");
         } catch (Exception e) {
             assertTrue(e.getMessage().contains("TimeoutException"));

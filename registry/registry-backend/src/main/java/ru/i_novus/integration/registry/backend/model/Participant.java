@@ -16,6 +16,8 @@ import java.io.Serializable;
 @ApiModel("Системы - участницы")
 public class Participant implements Serializable {
 
+    private static final long serialVersionUID = -7210017035760441083L;
+
     @ApiModelProperty(value = "Код участника")
     private String code;
 

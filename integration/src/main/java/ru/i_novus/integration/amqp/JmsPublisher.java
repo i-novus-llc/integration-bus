@@ -3,7 +3,7 @@ package ru.i_novus.integration.amqp;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.common.api.MonitoringModel;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
 import ru.i_novus.integration.model.CommonModel;
 
 @Component
