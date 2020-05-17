@@ -24,9 +24,11 @@ public class IntegrationFileUtils {
         try (FileOutputStream out = new FileOutputStream(outFile)) {
             for (File file : files) {
                 try (FileInputStream in = new FileInputStream(file)) {
-                    byte[] buffer = new byte[BUF_SIZE];
-                    int sz = in.read(buffer);
-                    out.write(buffer, 0, sz);
+                    if (in.available() != 0) {
+                        byte[] buffer = new byte[BUF_SIZE];
+                        int sz = in.read(buffer);
+                        out.write(buffer, 0, sz);
+                    }
                 }
             }
         }
