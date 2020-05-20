@@ -30,8 +30,4 @@
     <int:chain input-channel="asyncQueueChannel">
         <int:service-activator ref="messagePrepareService" method="prepareAsyncRequest"/>
     </int:chain>
-
-    <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
-                 default-reply-timeout="3000" error-channel="errorChannel"/>
-
 </beans>

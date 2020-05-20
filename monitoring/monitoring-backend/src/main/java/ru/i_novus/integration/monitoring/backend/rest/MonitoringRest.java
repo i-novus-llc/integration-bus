@@ -1,8 +1,8 @@
 package ru.i_novus.integration.monitoring.backend.rest;
 
 import org.springframework.data.domain.Page;
-import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.monitoring.backend.criteria.SentMessageStageCriteria;
 import ru.i_novus.integration.monitoring.backend.model.ErrorModel;
 import ru.i_novus.integration.monitoring.backend.model.SentMessageModel;
@@ -21,7 +21,7 @@ public interface MonitoringRest {
 
     @POST
     @Path(("/save"))
-    void getServiceInfo(@BeanParam MonitoringModel model);
+    SentMessageStageModel save(MonitoringModel model);
 
     @GET
     @Path("/stage")

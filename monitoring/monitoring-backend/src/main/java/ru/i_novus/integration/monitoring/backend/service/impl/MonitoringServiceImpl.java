@@ -6,8 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
+import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.monitoring.backend.criteria.SentMessageStageCriteria;
 import ru.i_novus.integration.monitoring.backend.entity.SentMessageEntity;
 import ru.i_novus.integration.monitoring.backend.entity.SentMessageStageEntity;
@@ -44,13 +44,14 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Override
     public ErrorModel getErrorStackTrace(Integer id) {
         ErrorModel errorModel = new ErrorModel();
-        errorModel.setError(sentMessageStageRepository.findById(id).orElseThrow().getError());
-
+        SentMessageStageEntity sentMessageStageEntity = sentMessageStageRepository.findById(id).orElseThrow();
+        errorModel.setId(sentMessageStageEntity.getId());
+        errorModel.setError(sentMessageStageEntity.getError());
         return errorModel;
     }
 
     @Override
-    public void save(MonitoringModel model) {
+    public SentMessageStageModel save(MonitoringModel model) {
         Optional<SentMessageEntity> messageEntity = sentMessageRepository.findByUidAndSenderAndReceiver(model.getUid(),
                 model.getSender(), model.getReceiver());
         Integer sentMessageId;
@@ -61,8 +62,9 @@ public class MonitoringServiceImpl implements MonitoringService {
             sentMessageId = sentMessageRepository.save(new SentMessageEntity(model.getUid(), model.getDateTime(),
                     model.getSender(), model.getReceiver(), model.getOperation(), model.getStatus(), model.getComment())).getId();
         }
-        sentMessageStageRepository.save(new SentMessageStageEntity(sentMessageId, model.getDateTime(), model.getStatus(),
-                model.getError(), model.getComment()));
+        return sentMessageStageRepository.save(new SentMessageStageEntity(sentMessageId, model.getDateTime(), model.getStatus(),
+                model.getError(), model.getComment())).fillSentMessageStageModel();
+
     }
 
     private Page<SentMessageEntity> findSentMessage(SentMessageCriteria criteria) {

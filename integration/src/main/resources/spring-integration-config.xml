@@ -16,13 +16,13 @@
         <int:service-activator ref="jmsPublisher" method="preparation"/>
     </int:chain>
 
-    <int:chain input-channel="preparationQueueChannel" >
+    <int:chain input-channel="preparationQueueChannel">
         <int:service-activator ref="internalRequestPreparationService" method="preparePackage"/>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
         <int:service-activator ref="jmsPublisher" method="sender"/>
     </int:chain>
 
     <int:chain input-channel="senderQueueChannel">
-    <int:service-activator ref="internalWsClient" method="sendInternal"/>
+        <int:service-activator ref="internalWsClient" method="sendInternal"/>
     </int:chain>
 </beans>

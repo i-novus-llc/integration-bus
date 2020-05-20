@@ -5,7 +5,7 @@
 
     <regions>
         <region place="single">
-            <form>
+            <form query-id="monitoring_error_form">
                 <fields>
                     <text-area id="error"/>
                 </fields>

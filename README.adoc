@@ -9,6 +9,8 @@ link:++https://ci.i-novus.ru/view/platform/job/integration-bus.master.build/++[i
 * Пример `+bootstrap.properties+`:
 [source,java]
 ----
+spring.cloud.consul.host=consul-agent.local #хост consul'а
+spring.cloud.consul.port=8500 #порт consul'а
 spring.cloud.consul.config.prefix=integration #префикс пути настроек в consul
 ----
 Для отключения настроек из consul, добавить `+spring.cloud.consul.config.enabled=false+`
@@ -29,9 +31,6 @@ audit.rest.url='http://docker.one:8816/api'
 integration.env-code='код окружения'
 integration.central-adapter-url='url центрального сегмента (http://localhost:8080/ws/internal)'
 integration.internal-ws-timeout='таймаут отправки файлов (300000L)'
-sign.soap.key.store.password='пароль для keystore'
-sign.soap.key.store.region.alias.name='alias ключа ситемы'
-sign.soap.key.store.region.alias.password='пароль для alias'
 sender.queue.concurrent.consumers='количество слушателей sender.queue'
 preparation.queue.concurrent.consumers='количество слушателей preparation.queue'
 async.queue.concurrent.consumers='количество слушателей async.queue'

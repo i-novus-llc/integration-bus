@@ -23,12 +23,12 @@ public class MonitoringModel implements Serializable {
     private String error;
     private String comment;
 
-    public MonitoringModel(String uid, LocalDateTime dateTime, String sender, String receiver, String status, String comment) {
+    public MonitoringModel(String uid, LocalDateTime dateTime, String sender, String receiver, String operation, String status) {
         this.uid = uid;
         this.dateTime = dateTime;
         this.sender = sender;
         this.receiver = receiver;
+        this.operation = operation;
         this.status = status;
-        this.comment = comment;
     }
 }
