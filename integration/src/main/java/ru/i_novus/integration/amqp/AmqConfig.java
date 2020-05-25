@@ -4,11 +4,20 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.core.JmsTemplate;
 import ru.i_novus.integration.configuration.IntegrationProperties;
 
+import javax.jms.ConnectionFactory;
+
 @Configuration
+@EnableJms
 public class AmqConfig {
     private static final String SENDER_QUEUE = "sender.queue";
     private static final String RECEIVER_QUEUE = "receiver.queue";
@@ -25,25 +34,76 @@ public class AmqConfig {
 
 
     @Bean
+    public ActiveMQConnectionFactory jmsConnectionFactory(RedeliveryPolicy redeliveryPolicy) {
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+        connectionFactory.setBrokerURL(properties.getAmqBrokerUrl());
+        connectionFactory.setNonBlockingRedelivery(true);
+        connectionFactory.setRedeliveryPolicy(redeliveryPolicy);
+        connectionFactory.setTrustAllPackages(true);
+
+        return connectionFactory;
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setSessionTransacted(true);
+
+        return jmsTemplate;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                            DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsSenderListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+        factory.setConcurrency(properties.getQueueSenderConcurrent());
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsPreparationListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+        factory.setConcurrency(properties.getQueuePreparationConcurrent());
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> jmsAsyncListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setSessionTransacted(true);
+        factory.setConcurrency(properties.getQueueAsyncConcurrent());
+
+        configurer.configure(factory, connectionFactory);
+        return factory;
+    }
+
+    @Bean
     public RedeliveryPolicy redeliveryPolicy() {
         RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
         redeliveryPolicy.setUseCollisionAvoidance(true);
-        redeliveryPolicy.setRedeliveryDelay(1800000);
+        redeliveryPolicy.setRedeliveryDelay(180000);
         redeliveryPolicy.setUseExponentialBackOff(false);
         redeliveryPolicy.setMaximumRedeliveries(-1);
 
         return redeliveryPolicy;
-    }
-
-    @Bean
-    public ActiveMQConnectionFactory jmsConnectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL(properties.getAmqBrokerUrl());
-        connectionFactory.setNonBlockingRedelivery(true);
-        connectionFactory.setRedeliveryPolicy(redeliveryPolicy());
-        connectionFactory.setTrustAllPackages(true);
-
-        return connectionFactory;
     }
 
     @Bean

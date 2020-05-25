@@ -1,45 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
-       xmlns:int-http="http://www.springframework.org/schema/integration/http"
-       xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
-       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-       http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
-       http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
-       http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd">
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
     <import resource="si-monitoring-config.xml"/>
 
     <int:channel id="internalRequestChannel"/>
-    <int:channel id="mqOutChannel"/>
+    <int:channel id="preparationQueueChannel"/>
+    <int:channel id="senderQueueChannel"/>
 
-    <int:chain input-channel="internalRequestChannel">
+    <int:chain input-channel="internalRequestChannel" send-timeout="30000">
         <int:service-activator expression="@monitoringService.create(payload, 1)"/>
-        <int:header-enricher>
-            <int:header name="jms_correlationId" type="java.lang.String"
-                        expression="payload.monitoringModel.sender + ' -> '
-                        + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true"/>
-        </int:header-enricher>
-        <int-jms:outbound-channel-adapter id="jmsPreparationIn" destination="preparationQueue"/>
+        <int:service-activator ref="jmsPublisher" method="preparation"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsPreparation" destination="preparationQueue" channel="mqOutChannel"/>
-
-    <int:chain input-channel="mqOutChannel">
+    <int:chain input-channel="preparationQueueChannel">
         <int:service-activator ref="internalRequestPreparationService" method="preparePackage"/>
         <int:service-activator expression="@monitoringService.create(payload, 3)"/>
-        <int-jms:outbound-channel-adapter id="jmsSendIn" destination="senderQueue"/>
+        <int:service-activator ref="jmsPublisher" method="sender"/>
     </int:chain>
 
-    <int-jms:message-driven-channel-adapter id="jmsSend" destination="senderQueue" channel="mqSendChannel"
-                                            concurrent-consumers="2"/>
-
-    <int:chain input-channel="mqSendChannel">
+    <int:chain input-channel="senderQueueChannel">
         <int:service-activator ref="internalWsClient" method="sendInternal"/>
     </int:chain>
 </beans>

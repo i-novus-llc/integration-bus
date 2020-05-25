@@ -12,6 +12,7 @@ import ru.i_novus.integration.service.CommonModelPrepareService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,11 @@ public class ServiceIntegrationRest {
     public ServiceIntegrationRest(InboundGateway inboundGateway, CommonModelPrepareService modelPrepareService) {
         this.inboundGateway = inboundGateway;
         this.modelPrepareService = modelPrepareService;
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello at " + LocalDateTime.now();
     }
 
     /**
@@ -68,14 +74,16 @@ public class ServiceIntegrationRest {
     @PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Object> post(@RequestBody RequestModel model) {
         List<Object> result = new ArrayList<>();
-        modelPrepareService.requestModelPreparation(model).forEach(commonModel -> {
-            if (commonModel.getParticipantModel().isSync()) {
-                result.add(inboundGateway.syncRequest(commonModel).getPayload());
-            } else {
-                inboundGateway.aSyncRequest(commonModel);
-                result.add(HttpStatus.OK);
-            }
-        });
+        modelPrepareService.requestModelPreparation(model)
+                .parallelStream()
+                .forEach(commonModel -> {
+                    if (commonModel.getParticipantModel().isSync()) {
+                        result.add(inboundGateway.syncRequest(commonModel).getPayload());
+                    } else {
+                        inboundGateway.aSyncRequest(commonModel);
+                        result.add(HttpStatus.OK);
+                    }
+                });
 
         return result;
     }

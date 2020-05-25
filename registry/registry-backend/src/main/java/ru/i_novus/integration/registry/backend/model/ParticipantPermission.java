@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("Сервисы систем участников")
+@ApiModel("Права систем участников")
 public class ParticipantPermission {
 
     @ApiModelProperty(value = "Идентификатор сервиса")

@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @Component
 public class FileService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     private static final String TEMP_PATH = "tmp";
     private static final String MERGE_FILE_PATH = "merge";
@@ -43,7 +43,12 @@ public class FileService {
         if (!tmpDirectory.exists()) {
             tmpDirectory.mkdirs();
         }
-        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + UUID.randomUUID());
+        File[] filesCount = tmpDirectory.listFiles();
+        int count = 1;
+        if (filesCount != null) {
+            count = count + filesCount.length;
+        }
+        File tempFile = new File(tmpDirectory.getPath() + URL_SPLIT + count);
 
         try (OutputStream outputStream = new FileOutputStream(tempFile)) {
             IOUtils.copy(data.getSplitDocument().getBinaryData().getInputStream(), outputStream);
@@ -53,13 +58,15 @@ public class FileService {
             margeDir.mkdirs();
             File concatFile = new File(margeDir.getPath() + URL_SPLIT + data.getDocName());
             File[] fileList = new File(tmpDirectory.getPath()).listFiles();
-            IntegrationFileUtils.sortedFilesByName(fileList);
+            if (fileList != null && fileList.length != 1) {
+                IntegrationFileUtils.sortedFilesByName(fileList);
+            }
             IntegrationFileUtils.mergeFile(concatFile, fileList);
 
             try (InputStream in = new FileInputStream(concatFile);
                  FileOutputStream out = new FileOutputStream(new File(property.getTempPath() + URL_SPLIT + data.getDocName()))) {
                 IOUtils.copy(in, out);
-                LOGGER.info("file " + data.getDocName() + "put to" + property.getTempPath());
+                logger.info("file {} put to {}", data.getDocName(), property.getTempPath());
             }
             FileUtils.deleteDirectory(tmpDirectory);
             Files.deleteIfExists(Paths.get(concatFile.getPath()));
@@ -67,7 +74,7 @@ public class FileService {
     }
 
     SplitDocumentModel prepareSplitModel(String filePath, String uid) throws IOException {
-        File splitDir = new File(getTempPath() + uid);
+        File splitDir = new File(getTempPath() + uid + "_");
         splitDir.mkdirs();
         SplitDocumentModel splitModel = new SplitDocumentModel();
         splitModel.setTemporaryPath(splitDir.getPath());
@@ -81,6 +88,7 @@ public class FileService {
                 URL_SPLIT + LocalDate.now().getYear() +
                 URL_SPLIT + LocalDate.now().getMonth() +
                 URL_SPLIT + LocalDate.now().getDayOfMonth() +
+                URL_SPLIT + UUID.randomUUID() +
                 URL_SPLIT;
     }
 

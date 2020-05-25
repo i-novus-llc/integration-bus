@@ -2,7 +2,6 @@ package ru.i_novus.integration.service;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -10,18 +9,13 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
-import ru.i_novus.integration.configuration.IntegrationProperties;
+import ru.i_novus.integration.common.api.model.MonitoringModel;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
-import ru.i_novus.integration.model.InternalRequestModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
-import ru.i_novus.integration.model.RequestModel;
-import ru.i_novus.integration.common.api.model.MonitoringModel;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Objects;
 
 @Component
 @EnableAsync
@@ -29,17 +23,12 @@ public class MonitoringService {
 
     private final MonitoringGateway monitoringGateway;
 
-    private final IntegrationProperties property;
-
-    private final MessageSource messageSource;
-
     @Autowired
-    public MonitoringService(MonitoringGateway monitoringGateway, IntegrationProperties property, MessageSource messageSource) {
+    public MonitoringService(MonitoringGateway monitoringGateway) {
         this.monitoringGateway = monitoringGateway;
-        this.property = property;
-        this.messageSource = messageSource;
     }
 
+    @SuppressWarnings("unused")
     public Message<CommonModel> create(@Payload CommonModel commonModel, String status) {
         MonitoringModel monitoringModel = commonModel.getMonitoringModel();
         if (!monitoringModel.getReceiver().equals("nsi")) {
@@ -63,8 +52,13 @@ public class MonitoringService {
         MonitoringModel model;
         if (message.getPayload() instanceof MessageHandlingException) {
             MessageHandlingException exceptionMessage = (MessageHandlingException) message.getPayload();
-            CommonModel commonModel = (CommonModel) exceptionMessage.getFailedMessage().getPayload();
-            model = commonModel.getMonitoringModel();
+            Object payload = Objects.requireNonNull(exceptionMessage.getFailedMessage()).getPayload();
+            if (payload instanceof CommonModel) {
+                CommonModel commonModel = (CommonModel) payload;
+                model = commonModel.getMonitoringModel();
+            } else {
+                model = (MonitoringModel) payload;
+            }
             model.setStatus(MessageStatusEnum.ERROR.getId());
             model.setDateTime(LocalDateTime.now());
             model.setError(exceptionMessage.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(exceptionMessage));
@@ -73,35 +67,6 @@ public class MonitoringService {
             model.setStatus(MessageStatusEnum.ERROR.getId());
             model.setDateTime(LocalDateTime.now());
         }
-
         monitoringGateway.putToQueue(MessageBuilder.withPayload(model).build());
     }
-
-    MonitoringModel prepareModel(Object values, String recipient, String method) {
-        MonitoringModel monitoringModel = null;
-        String envCode;
-        if (values instanceof Map) {
-            Map<String, String> map = (Map<String, String>) values;
-            envCode = map.get("envCode") != null ? map.get("envCode") : property.getEnvCode();
-            monitoringModel = new MonitoringModel(UUID.randomUUID().toString(), LocalDateTime.now(), envCode,
-                    recipient, method, MessageStatusEnum.CREATE.getId());
-        }
-        if (values instanceof InternalRequestModel) {
-            InternalRequestModel model = (InternalRequestModel) values;
-            envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
-            monitoringModel = new MonitoringModel(model.getUid(),
-                    LocalDateTime.now(), envCode, recipient, method, MessageStatusEnum.CREATE.getId());
-
-            monitoringModel.setComment(messageSource.getMessage("send.file.operation", null, Locale.ENGLISH) +
-                    model.getDataModel().getName());
-        }
-        if (values instanceof RequestModel) {
-            RequestModel model = (RequestModel) values;
-            envCode = model.getEnvCode() != null ? model.getEnvCode() : property.getEnvCode();
-            monitoringModel = new MonitoringModel(model.getUid(),
-                    LocalDateTime.now(), envCode, recipient, method, MessageStatusEnum.CREATE.getId());
-        }
-        return monitoringModel;
-    }
-
 }

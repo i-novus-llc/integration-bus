@@ -24,9 +24,11 @@ public class IntegrationFileUtils {
         try (FileOutputStream out = new FileOutputStream(outFile)) {
             for (File file : files) {
                 try (FileInputStream in = new FileInputStream(file)) {
-                    byte[] buffer = new byte[BUF_SIZE];
-                    int sz = in.read(buffer);
-                    out.write(buffer, 0, sz);
+                    if (in.available() != 0) {
+                        byte[] buffer = new byte[BUF_SIZE];
+                        int sz = in.read(buffer);
+                        out.write(buffer, 0, sz);
+                    }
                 }
             }
         }
@@ -42,12 +44,16 @@ public class IntegrationFileUtils {
 
         try (FileInputStream fis = new FileInputStream(toSplit); BufferedInputStream bis = new BufferedInputStream(fis)) {
             int amount;
-            while ((amount = bis.read(buffer)) > 0) {
-                File partFile = new File(dir + "/" + counter++);
+            if (fis.available() != 0) {
+                while ((amount = bis.read(buffer)) > 0) {
+                    File partFile = new File(dir + "/" + counter++);
 
-                try (FileOutputStream out = new FileOutputStream(partFile)) {
-                    out.write(buffer, 0, amount);
+                    try (FileOutputStream out = new FileOutputStream(partFile)) {
+                        out.write(buffer, 0, amount);
+                    }
                 }
+            } else {
+                new File(dir + "/" + counter).createNewFile();
             }
         }
     }

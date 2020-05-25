@@ -25,7 +25,7 @@
             <select mapping="['sentDateTime']"/>
             <filters>
                 <more filter-id="sentDateTime.begin">sentDateTime={sentDateTime.begin}</more>
-                <less filter-id="sentDateTime.end">sentDateTime={sentDateTime.end}</less>
+                <less filter-id="sentDateTime.end">dateTo={sentDateTime.end}</less>
             </filters>
             <sorting mapping="['direction']">sort=sentDateTime,{direction}</sorting>
         </field>

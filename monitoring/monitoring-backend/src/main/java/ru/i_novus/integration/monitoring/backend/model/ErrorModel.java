@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorModel {
-    public String error;
+    private Integer id;
+    private String error;
 }

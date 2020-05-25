@@ -4,7 +4,7 @@
     <form id="main" object-id="registry" query-id="sys_permission" default-values-query-id="permission_default">
         <fields>
             <select id="participant" label="Идентификатор участника" required="true"
-                    query-id="participant" label-field-id="id" search-field-id="id" cleanable="false">
+                    query-id="registry" label-field-id="id" search-field-id="id" cleanable="false">
                 <pre-filters>
                     <eq field-id="participant_method_id" value="{participant_method_id}"/>
                 </pre-filters>

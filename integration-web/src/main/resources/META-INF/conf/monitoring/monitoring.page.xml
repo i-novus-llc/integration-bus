@@ -27,9 +27,9 @@
                         <input-text id="uid" label="Идентификатор"/>
                         <date-interval id="sentDateTime" label="Дата/время отправки" date-format="DD.MM.YYYY HH.mm"/>
                         <input-select id="sender" type="single" label="Отправитель"
-                                      query-id="participant" label-field-id="name"/>
+                                      query-id="registry" label-field-id="name"/>
                         <input-select id="receiver" type="single" label="Получатель"
-                                      query-id="participant" label-field-id="name"/>
+                                      query-id="registry" label-field-id="name"/>
                         <select id="status" label="Статус">
                             <options>
                                 <option id="CREATE" name="Создан"/>

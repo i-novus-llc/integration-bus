@@ -10,6 +10,9 @@
     <fields>
         <field id="id" domain="integer">
             <select mapping="['id']"/>
+            <filters>
+                <eq filter-id="id">id={id}</eq>
+            </filters>
         </field>
 
         <field id="error" domain="string">

@@ -3,11 +3,15 @@ package ru.i_novus.integration.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpMessageConverterExtractor;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
@@ -16,14 +20,19 @@ import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
 import ru.i_novus.integration.model.PostResultModel;
+import ru.i_novus.integration.model.StringClientHttpResponse;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class MessagePrepareService {
@@ -69,14 +78,16 @@ public class MessagePrepareService {
 
         Message message = null;
         Object result = null;
-        ResponseEntity<Object> responseEntity = null;
+        ResponseEntity<Object> responseEntity;
         try {
             if (participantModel.getIntegrationType().equals("REST_GET")) {
                 String url = participantModel.getUrl();
                 responseEntity = restTemplate.getForEntity(new URI(url), Object.class);
                 message = MessageBuilder.withPayload(responseEntity.getBody()).build();
 
-                checkError(responseEntity, messageCommonModel);
+                if (!participantModel.isSync())
+                    checkError(responseEntity, messageCommonModel);
+
                 result = responseEntity.getBody();
 
                 if (messageCommonModel.getPayload().getMonitoringModel().getReceiver().equals("nsi")) {
@@ -100,10 +111,21 @@ public class MessagePrepareService {
                 return message;
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
-                responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
-                        messageCommonModel.getPayload().getObject(), Object.class);
+                try {
+                    responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
+                            messageCommonModel.getPayload().getObject(), Object.class);
+                } catch (RestClientResponseException e) {
+                    if (!participantModel.isSync()) {
+                        monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
+                        throw new RuntimeException(e.getResponseBodyAsString());
+                    } else {
+                        StringClientHttpResponse response = new StringClientHttpResponse(e);
+                        Object payload = new HttpMessageConverterExtractor<>(Object.class, restTemplate.getMessageConverters())
+                                .extractData(response);
+                        responseEntity = new ResponseEntity<>(payload, response.getStatusCode());
+                    }
+                }
 
-                checkError(responseEntity, messageCommonModel);
                 result = responseEntity.getBody();
                 if (participantModel.isSync() && result != null) {
                     PostResultModel postResultModel = new PostResultModel();

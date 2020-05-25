@@ -3,12 +3,12 @@ package ru.i_novus.integration.ws.internal.client;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -23,17 +23,12 @@ import ru.i_novus.integration.ws.internal.api.SplitDocumentModel;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.ws.Binding;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
-import javax.xml.ws.soap.SOAPBinding;
 import java.io.File;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * WsClient.
@@ -41,14 +36,14 @@ import java.util.List;
  * @author asamoilov
  */
 @Component
+@SuppressWarnings("WeakerAccess")
 public class InternalWsClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(InternalWsClient.class);
 
     private final IntegrationProperties property;
     private final MonitoringService monitoringService;
     private final MonitoringGateway monitoringGateway;
 
-    @Autowired
     public InternalWsClient(IntegrationProperties property, MonitoringService monitoringService, MonitoringGateway monitoringGateway) {
         this.property = property;
         this.monitoringService = monitoringService;
@@ -58,83 +53,120 @@ public class InternalWsClient {
     /**
      * Отправка сообщения потребителю
      */
-    public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) throws Exception {
-        return getPort(recipientUrl).invoke(method, integrationMessage, recipientUrl, method);
-    }
+    public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) {
 
-    /**
-     * Отправка сообщения на адаптер для переадрисации потребителю
-     */
-    private Object[] sendAdapter(String integrationMessage, String recipientUrl, String method) throws Exception {
-        return getPort(property.getAdapterUrl()).invoke("adapter", integrationMessage, recipientUrl, method);
+        logger.info("Try to getPort {}", recipientUrl);
+        Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3 + 1);
+
+        logger.info("Try to invoke {}", recipientUrl);
+        try {
+            Object[] invoke = port.invoke(method, integrationMessage, recipientUrl, method);
+            logger.info("Invocation completed");
+            return invoke;
+        } catch (Exception e) {
+            logger.error("Failed sendRequest to recipient {}, method {}, integrationMessage {}",
+                    recipientUrl, method, integrationMessage, e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Подготовка и отправка файла потребителю
      */
     public void sendInternal(Message<CommonModel> request) {
-        if (request.getPayload().getObject() != null) {
-            try {
-                IntegrationMessage message = (IntegrationMessage) request.getPayload().getObject();
-                SplitDocumentModel splitModel = message.getMessage().getAppData().getSplitDocument();
-                File[] files = new File(splitModel.getTemporaryPath()).listFiles();
-                IntegrationFileUtils.sortedFilesByName(files);
+        if (request.getPayload().getObject() == null) {
+            logger.error("Empty object in message: {}", request.getPayload());
+            return;
+        }
 
-                if (files != null) {
-                    Client wsClient = getPort(property.getAdapterUrl());
-                    //поочередная отправка файлов потребителю
-                    for (int index = 1; index <= files.length; index++) {
-                        splitModel.setBinaryData(IntegrationFileUtils.prepareDataHandler(files[index - 1].getPath()));
-                        splitModel.setCount(index);
-                        message.getMessage().getAppData().setSplitDocument(splitModel);
-                        if (index == files.length) {
-                            splitModel.setIsLast(true);
-                        }
-                        List result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getHeaders().get("url", String.class),
-                                request.getHeaders().get("method", String.class))[0];
-                        if (result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0)) {
-                            Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
-                        } else {
-                            throw new RuntimeException(result != null ? String.join(", ", result) : "result = null");
+        IntegrationMessage message = (IntegrationMessage) request.getPayload().getObject();
+        SplitDocumentModel splitModel = message.getMessage().getAppData().getSplitDocument();
+
+        try {
+            File[] files = new File(splitModel.getTemporaryPath()).listFiles();
+
+            if (files == null || files.length == 0) {
+                throw new RuntimeException("No file parts for " + splitModel.getTemporaryPath());
+            }
+
+            IntegrationFileUtils.sortedFilesByName(files);
+            logger.info("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
+
+            //поочередная отправка файлов потребителю
+            for (int index = 1; index <= files.length; index++) {
+                logger.info("Try to send part {}: {}", index - 1, files[index - 1].getPath());
+                splitModel.setBinaryData(IntegrationFileUtils.prepareDataHandler(files[index - 1].getPath()));
+                splitModel.setCount(index);
+                message.getMessage().getAppData().setSplitDocument(splitModel);
+                if (index == files.length) {
+                    splitModel.setIsLast(true);
+                }
+                List result = null;
+                boolean success = false;
+                int retriesCount = 0;
+                do {
+                    retriesCount++;
+                    try {
+                        Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut());
+                        result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getPayload().getParticipantModel().getUrl(),
+                                request.getPayload().getParticipantModel().getMethod())[0];
+                        success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
+                    } catch (Fault e) {
+                        logger.error("Failed try number {} to send part {}: {}, error: {}",
+                                retriesCount, index - 1, files[index - 1].getPath(), e.getMessage());
+                        if (retriesCount >= 10) {
+                            throw new RuntimeException(
+                                    String.format("Sending part %s retries exceeded, remains %s parts",
+                                    files[index - 1].getPath(), files.length - index), e);
                         }
                     }
-                }
+                } while (!success);
+                logger.info("Successfully sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
 
-                FileUtils.deleteDirectory(new File(splitModel.getTemporaryPath()));
-                monitoringService.fineStatus(request.getPayload());
-            } catch (Exception e) {
-                request.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
-                monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
-
-                throw new RuntimeException(e);
+                Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
             }
+
+            FileUtils.deleteDirectory(new File(splitModel.getTemporaryPath()));
+            monitoringService.fineStatus(request.getPayload());
+        } catch (Exception e) {
+            logger.error("Error on sending part of {}, to adapter {}, receiver {}",
+                    splitModel.getTemporaryPath(), property.getAdapterUrl(),
+                    request.getPayload().getParticipantModel() == null ?
+                            "<empty>" : request.getPayload().getParticipantModel().getReceiver(),
+                    e);
+            request.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
+            monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
+            throw new RuntimeException(e);
         }
     }
 
     /**
      * Подготовка клиента по wsdl url
      */
-    private Client getPort(String wsdlUrl) {
+    private Client getPort(String serviceUrl, Long timeout) {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient(wsdlUrl + "?wsdl");
+        Client client;
+        String wsdlUrl = serviceUrl + "?wsdl";
 
-        HTTPConduit conduit = (HTTPConduit) client.getConduit();
+        ExecutorService executorService = new ThreadPoolExecutor(0, 10,
+                timeout, TimeUnit.MILLISECONDS,
+                new SynchronousQueue<>());
+
+        try {
+            Future<Client> future = executorService.submit(() -> dcf.createClient(wsdlUrl));
+            client = future.get(timeout, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            logger.error("Can not create port by wsdl {}", wsdlUrl);
+            throw new RuntimeException(e);
+        }
+
         HTTPClientPolicy policy = new HTTPClientPolicy();
         policy.setAutoRedirect(true);
-        policy.setReceiveTimeout(Long.valueOf(property.getInternalWsTimeOut()));
-        policy.setConnectionTimeout(Long.valueOf(property.getInternalWsTimeOut()));
-        conduit.setClient(policy);
+        policy.setReceiveTimeout(timeout);
+        policy.setConnectionTimeout(timeout);
+        ((HTTPConduit) client.getConduit()).setClient(policy);
 
         return client;
-    }
-
-    private void bindingSOAPHandler(Object port, SOAPHandler<SOAPMessageContext> soapHandler) {
-        BindingProvider provider = (BindingProvider) port;
-        Binding binding = provider.getBinding();
-        ((SOAPBinding) binding).setMTOMEnabled(true);
-        List<Handler> handlerChain = binding.getHandlerChain();
-        handlerChain.add(soapHandler);
-        binding.setHandlerChain(handlerChain);
     }
 
     private String jaxbToString(IntegrationMessage message) throws JAXBException {
@@ -142,7 +174,6 @@ public class InternalWsClient {
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         StringWriter sw = new StringWriter();
         jaxbMarshaller.marshal(message, sw);
-
         return sw.toString();
     }
 }

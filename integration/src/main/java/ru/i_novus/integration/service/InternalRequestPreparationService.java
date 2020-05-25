@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import ru.i_novus.integration.gateway.MonitoringGateway;
@@ -22,11 +21,13 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
 @Component
 public class InternalRequestPreparationService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InternalWsClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(InternalWsClient.class);
 
     private final MonitoringGateway monitoringGateway;
     private final FileService storageService;
@@ -53,7 +54,8 @@ public class InternalRequestPreparationService {
             DocumentData documentData = new DocumentData();
             documentData.setDocFormat(dataModel.getMime());
             documentData.setDocName(dataModel.getName());
-            documentData.setSplitDocument(storageService.prepareSplitModel(dataModel.getPath(), messageData.getGroupUid()));
+            documentData.setSplitDocument(storageService.prepareSplitModel(dataModel.getPath(),
+                    modelMessage.getPayload().getMonitoringModel().getUid()));
             messageData.setAppData(documentData);
 
             MessageInfo messageInfo = new MessageInfo();
@@ -74,16 +76,12 @@ public class InternalRequestPreparationService {
 
             Files.deleteIfExists(Paths.get(dataModel.getPath()));
         } catch (Exception e) {
-            LOGGER.info(ExceptionUtils.getStackTrace(e));
+            logger.error("Error on preparePackage", e);
             modelMessage.getPayload().getMonitoringModel().setError(e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
             monitoringGateway.createError(MessageBuilder.withPayload(modelMessage.getPayload().getMonitoringModel()).build());
         }
-        Map<String, Object> messageHeaders = new HashMap<>();
-        messageHeaders.put("url", modelMessage.getPayload().getParticipantModel().getUrl());
-        messageHeaders.put("method", modelMessage.getPayload().getParticipantModel().getMethod());
 
-        return MessageBuilder.createMessage(integrationRequest,
-                new MessageHeaders(messageHeaders));
+        return MessageBuilder.withPayload(integrationRequest).build();
 
     }
 

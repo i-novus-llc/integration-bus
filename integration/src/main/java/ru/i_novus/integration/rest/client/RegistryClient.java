@@ -1,8 +1,8 @@
 package ru.i_novus.integration.rest.client;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -15,31 +15,29 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Locale;
 
 @Component
 public class RegistryClient {
     private final IntegrationProperties property;
     private final MessageSource messageSource;
+    private final JacksonJsonProvider provider;
 
     @Autowired
-    public RegistryClient(IntegrationProperties property, MessageSource messageSource) {
+    public RegistryClient(IntegrationProperties property, MessageSource messageSource, JacksonJsonProvider provider) {
         this.property = property;
         this.messageSource = messageSource;
+        this.provider = provider;
     }
 
     public ParticipantModel getServiceParticipant(String receiver, String sender, String method) throws IOException {
-        List<Object> providers = new ArrayList<>();
-        providers.add(new JacksonJsonProvider());
-
         RegistryInfoModel registryInfoModel = new RegistryInfoModel();
         registryInfoModel.setSender(sender);
         registryInfoModel.setReceiver(receiver);
         registryInfoModel.setMethod(method);
-        WebClient client = WebClient.create(property.getRegistryAddress() + "/service/prepareRequest", providers)
-                .type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+        WebClient client = WebClient.create(property.getRegistryAddress() + "/service/prepareRequest",
+                Collections.singletonList(provider)).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
         try {
             Response response = client.post(registryInfoModel);

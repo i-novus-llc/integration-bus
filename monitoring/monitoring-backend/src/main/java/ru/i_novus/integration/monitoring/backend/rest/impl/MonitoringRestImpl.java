@@ -3,7 +3,6 @@ package ru.i_novus.integration.monitoring.backend.rest.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.i_novus.integration.common.api.model.MonitoringModel;
 import ru.i_novus.integration.monitoring.backend.criteria.SentMessageCriteria;
 import ru.i_novus.integration.monitoring.backend.criteria.SentMessageStageCriteria;
@@ -25,8 +24,8 @@ public class MonitoringRestImpl implements MonitoringRest {
     }
 
     @Override
-    public void getServiceInfo(@RequestBody MonitoringModel model) {
-        service.save(model);
+    public SentMessageStageModel save(MonitoringModel model) {
+        return service.save(model);
     }
 
     @Override
