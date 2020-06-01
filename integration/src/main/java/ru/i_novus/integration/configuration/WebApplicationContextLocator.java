@@ -6,7 +6,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 @Configuration
 public class WebApplicationContextLocator implements ServletContextInitializer {
@@ -18,7 +17,7 @@ public class WebApplicationContextLocator implements ServletContextInitializer {
     }
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext servletContext) {
         webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
     }
 }

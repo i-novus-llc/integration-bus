@@ -27,4 +27,7 @@ public class ParticipantEntity {
     @Column(name = "disable")
     private Boolean disable;
 
+    @Column(name = "has_auth")
+    private Boolean hasAuth;
+
 }

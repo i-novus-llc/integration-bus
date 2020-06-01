@@ -8,6 +8,7 @@ import ru.i_novus.integration.gateway.InboundGateway;
 import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.InternalRequestModel;
 import ru.i_novus.integration.model.RequestModel;
+import ru.i_novus.integration.rest.client.RegistryClient;
 import ru.i_novus.integration.service.CommonModelPrepareService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +26,13 @@ public class ServiceIntegrationRest {
 
     private final CommonModelPrepareService modelPrepareService;
 
-    public ServiceIntegrationRest(InboundGateway inboundGateway, CommonModelPrepareService modelPrepareService) {
+    private final RegistryClient registryClient;
+
+    public ServiceIntegrationRest(InboundGateway inboundGateway, CommonModelPrepareService modelPrepareService,
+                                  RegistryClient registryClient) {
         this.inboundGateway = inboundGateway;
         this.modelPrepareService = modelPrepareService;
+        this.registryClient = registryClient;
     }
 
     @GetMapping("/hello")
@@ -48,7 +53,7 @@ public class ServiceIntegrationRest {
     @GetMapping(path = "/get/{service}/{method}/**")
     public Object get(HttpServletRequest request, @PathVariable("service") String service, @PathVariable("method") String method,
                       @RequestParam Map<String, String> requestParams) throws IOException {
-
+        registryClient.checkAuthorization(request.getHeader("Authorization"), service);
         CommonModel commonModel = modelPrepareService.getRequestModelPrepare(requestParams, method, service);
         String url = commonModel.getParticipantModel().getUrl() +
                 (request.getRequestURI().replace("/integration/get/" + service + "/" + method, "")) +
@@ -72,7 +77,9 @@ public class ServiceIntegrationRest {
      * @throws IOException
      */
     @PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Object> post(@RequestBody RequestModel model) {
+    public List<Object> post(HttpServletRequest request, @RequestBody RequestModel model) {
+        model.getRecipient().forEach(recipient ->
+                registryClient.checkAuthorization(request.getHeader("Authorization"), recipient));
         List<Object> result = new ArrayList<>();
         modelPrepareService.requestModelPreparation(model)
                 .parallelStream()
@@ -104,8 +111,8 @@ public class ServiceIntegrationRest {
      * @throws IOException
      */
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void internalRequest(@RequestBody InternalRequestModel model) throws IOException {
-
+    public void internalRequest(HttpServletRequest request, @RequestBody InternalRequestModel model) throws IOException {
+        registryClient.checkAuthorization(request.getHeader("Authorization"), model.getRecipient());
         inboundGateway.internalRequest(modelPrepareService.requestModelPreparation(model));
     }
 }
