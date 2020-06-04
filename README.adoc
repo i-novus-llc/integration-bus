@@ -34,7 +34,7 @@ integration.internal-ws-timeout='таймаут отправки файлов (3
 sender.queue.concurrent.consumers='количество слушателей sender.queue'
 preparation.queue.concurrent.consumers='количество слушателей preparation.queue'
 async.queue.concurrent.consumers='количество слушателей async.queue'
-keycloak.url='адрес keycloak (http://localhost:8180)'
+keycloak.url='адрес keycloak (http://keycloak:8080)'
 keycloak.realm='область keycloak (master)'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
