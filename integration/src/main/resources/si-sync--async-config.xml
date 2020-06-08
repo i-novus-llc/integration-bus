@@ -13,7 +13,7 @@
     <int:channel id="asyncQueueChannel"/>
 
     <int:chain input-channel="requestSyncChannel" output-channel="responseSyncChannel">
-        <int:service-activator expression="@monitoringService.create(payload, 1)"/>
+        <int:service-activator expression="@monitoringService.create(payload, 1, headers)"/>
         <int:service-activator ref="messagePrepareService" method="prepareSyncRequest"/>
     </int:chain>
 
@@ -23,7 +23,7 @@
                         expression="payload.monitoringModel.sender + ' -> '
                         + payload.monitoringModel.receiver + ' uid:' + payload.monitoringModel.uid" overwrite="true"/>
         </int:header-enricher>
-        <int:service-activator expression="@monitoringService.create(payload, 3)"/>
+        <int:service-activator expression="@monitoringService.create(payload, 3, headers)"/>
         <int:service-activator ref="jmsPublisher" method="async"/>
     </int:chain>
 

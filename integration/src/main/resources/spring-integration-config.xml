@@ -12,13 +12,13 @@
     <int:channel id="senderQueueChannel"/>
 
     <int:chain input-channel="internalRequestChannel" send-timeout="30000">
-        <int:service-activator expression="@monitoringService.create(payload, 1)"/>
+        <int:service-activator expression="@monitoringService.create(payload, 1, headers)"/>
         <int:service-activator ref="jmsPublisher" method="preparation"/>
     </int:chain>
 
     <int:chain input-channel="preparationQueueChannel">
         <int:service-activator ref="internalRequestPreparationService" method="preparePackage"/>
-        <int:service-activator expression="@monitoringService.create(payload, 3)"/>
+        <int:service-activator expression="@monitoringService.create(payload, 3, headers)"/>
         <int:service-activator ref="jmsPublisher" method="sender"/>
     </int:chain>
 

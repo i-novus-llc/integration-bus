@@ -3,10 +3,7 @@ package ru.i_novus.integration.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.*;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -24,11 +21,10 @@ import ru.i_novus.integration.model.StringClientHttpResponse;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -79,10 +75,12 @@ public class MessagePrepareService {
         Message message = null;
         Object result = null;
         ResponseEntity<Object> responseEntity;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", (String) messageCommonModel.getHeaders().get("Authorization"));
         try {
             if (participantModel.getIntegrationType().equals("REST_GET")) {
                 String url = participantModel.getUrl();
-                responseEntity = restTemplate.getForEntity(new URI(url), Object.class);
+                responseEntity = doRequest(url, HttpMethod.GET, httpHeaders, "");
                 message = MessageBuilder.withPayload(responseEntity.getBody()).build();
 
                 if (!participantModel.isSync())
@@ -112,8 +110,7 @@ public class MessagePrepareService {
             }
             if (participantModel.getIntegrationType().equals("REST_POST")) {
                 try {
-                    responseEntity = restTemplate.postForEntity(participantModel.getUrl(),
-                            messageCommonModel.getPayload().getObject(), Object.class);
+                    responseEntity = doRequest(participantModel.getUrl(), HttpMethod.POST, httpHeaders, messageCommonModel.getPayload().getObject());
                 } catch (RestClientResponseException e) {
                     if (!participantModel.isSync()) {
                         monitoringGateway.createError(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
@@ -174,6 +171,11 @@ public class MessagePrepareService {
         monitoringRequestMessage(participantModel.getMethod(), messageCommonModel.getPayload().getMonitoringModel(), MessageStatusEnum.SEND.getId());
         monitoringGateway.putToQueue(MessageBuilder.withPayload(messageCommonModel.getPayload().getMonitoringModel()).build());
         return message;
+    }
+
+    private ResponseEntity<Object> doRequest(String url, HttpMethod method, HttpHeaders httpHeaders, Object body) throws URISyntaxException {
+        HttpEntity<Object> entity = new HttpEntity<>(body, new HttpHeaders(httpHeaders));
+        return restTemplate.exchange(new URI(url), method, entity, Object.class);
     }
 
     private void checkError(ResponseEntity responseEntity, Message<CommonModel> modelMessage) {
