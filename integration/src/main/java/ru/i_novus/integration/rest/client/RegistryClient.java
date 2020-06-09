@@ -3,6 +3,8 @@ package ru.i_novus.integration.rest.client;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import java.util.Locale;
 
 @Component
 public class RegistryClient {
+    private static final Logger logger = LoggerFactory.getLogger(RegistryClient.class);
     private final IntegrationProperties property;
     private final MessageSource messageSource;
     private final JacksonJsonProvider provider;
@@ -36,8 +39,7 @@ public class RegistryClient {
         registryInfoModel.setSender(sender);
         registryInfoModel.setReceiver(receiver);
         registryInfoModel.setMethod(method);
-        WebClient client = WebClient.create(property.getRegistryAddress() + "/service/prepareRequest",
-                Collections.singletonList(provider)).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+        WebClient client = getWebClient("/service/prepareRequest");
 
         try {
             Response response = client.post(registryInfoModel);
@@ -47,6 +49,30 @@ public class RegistryClient {
             if (client.getResponse() != null)
                 client.getResponse().close();
         }
+    }
+
+    public void checkAuthorization(String authToken, String receiver) {
+        RegistryInfoModel registryInfoModel = new RegistryInfoModel();
+        registryInfoModel.setReceiver(receiver);
+        registryInfoModel.setAuthToken(authToken);
+        WebClient client = getWebClient("/service/checkAuthorization");
+        Response response = client.post(registryInfoModel);
+        if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
+            throw new RuntimeException("Participant "
+                    + receiver
+                    + " is not authorized. "
+                    + response.readEntity(String.class));
+        }
+        try {
+            checkResponseError(response);
+        } catch (IOException e) {
+            logger.error("toString method", e);
+        }
+    }
+
+    private WebClient getWebClient(String path) {
+        return WebClient.create(property.getRegistryAddress() + path,
+                Collections.singletonList(provider)).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
     }
 
     private void checkResponseError(Response response) throws IOException {

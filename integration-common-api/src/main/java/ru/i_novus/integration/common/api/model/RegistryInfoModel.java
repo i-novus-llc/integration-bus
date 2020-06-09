@@ -11,4 +11,5 @@ public class RegistryInfoModel {
     private String sender;
     private String receiver;
     private String method;
+    private String authToken;
 }

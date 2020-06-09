@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.i_novus.integration.common.api.model.ParticipantModel;
 import ru.i_novus.integration.common.api.model.RegistryInfoModel;
 import ru.i_novus.integration.registry.backend.api.PrepareRequestService;
+import ru.i_novus.integration.registry.backend.client.KeycloakClient;
 import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
@@ -12,6 +13,7 @@ import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepos
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +23,16 @@ public class ServiceInfoRest implements PrepareRequestService {
     private ParticipantRepository participantRepository;
     private ParticipantMethodRepository participantMethodRepository;
     private ParticipantPermissionRepository participantPermissionRepository;
+    private KeycloakClient client;
 
-    public ServiceInfoRest(ParticipantRepository participantRepository, ParticipantMethodRepository participantMethodRepository, ParticipantPermissionRepository participantPermissionRepository) {
+    public ServiceInfoRest(ParticipantRepository participantRepository,
+                           ParticipantMethodRepository participantMethodRepository,
+                           ParticipantPermissionRepository participantPermissionRepository,
+                           KeycloakClient client) {
         this.participantRepository = participantRepository;
         this.participantMethodRepository = participantMethodRepository;
         this.participantPermissionRepository = participantPermissionRepository;
+        this.client = client;
     }
 
     @Override
@@ -62,5 +69,18 @@ public class ServiceInfoRest implements PrepareRequestService {
         }
 
         return participantModel;
+    }
+
+    @Override
+    public Response checkAuthorization(RegistryInfoModel model) {
+        Optional<ParticipantEntity> opt = participantRepository.findById(model.getReceiver());
+        if (opt.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity(model.getReceiver() + " not found").build();
+        }
+        ParticipantEntity participant = opt.get();
+        if (participant.getHasAuth() != null && participant.getHasAuth()) {
+            return client.checkToken(model.getAuthToken());
+        }
+        return Response.status(Response.Status.OK).build();
     }
 }
