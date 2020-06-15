@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
@@ -54,7 +53,7 @@ public class AmqConfig {
 
     @Bean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory,
-                                                                            DefaultJmsListenerContainerFactoryConfigurer configurer) {
+                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setSessionTransacted(true);
 
@@ -64,7 +63,7 @@ public class AmqConfig {
 
     @Bean
     public JmsListenerContainerFactory<?> jmsSenderListenerContainerFactory(ConnectionFactory connectionFactory,
-                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+                                                                            DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setSessionTransacted(true);
         factory.setConcurrency(properties.getQueueSenderConcurrent());
@@ -75,7 +74,7 @@ public class AmqConfig {
 
     @Bean
     public JmsListenerContainerFactory<?> jmsPreparationListenerContainerFactory(ConnectionFactory connectionFactory,
-                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+                                                                                 DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setSessionTransacted(true);
         factory.setConcurrency(properties.getQueuePreparationConcurrent());
@@ -86,7 +85,7 @@ public class AmqConfig {
 
     @Bean
     public JmsListenerContainerFactory<?> jmsAsyncListenerContainerFactory(ConnectionFactory connectionFactory,
-                                                                      DefaultJmsListenerContainerFactoryConfigurer configurer) {
+                                                                           DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setSessionTransacted(true);
         factory.setConcurrency(properties.getQueueAsyncConcurrent());

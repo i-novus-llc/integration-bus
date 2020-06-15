@@ -32,7 +32,10 @@ public class JmsPublisher {
     }
 
     public void async(Message<CommonModel> apple) {
-        jmsTemplate.convertAndSend("async.queue", apple);
+        jmsTemplate.convertAndSend("async.queue", apple, (message) -> {
+            message.setStringProperty("Authorization", (String) apple.getHeaders().get("Authorization"));
+            return message;
+        });
     }
 
     public void monitoring(Message<MonitoringModel> apple) {
