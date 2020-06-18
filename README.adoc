@@ -36,6 +36,7 @@ preparation.queue.concurrent.consumers='количество слушателе�
 async.queue.concurrent.consumers='количество слушателей async.queue'
 keycloak.url='адрес keycloak (http://keycloak:8080)'
 keycloak.realm='область keycloak (master)'
+integration.monitoring.client='клиент мониторинга'
 ----
 * файл `+placeholders.properties+` необходимо поместить в
 '/opt/integration/' приложения вместе с `+keystore (алгоритм RSA (SHA-256 with RSA))+`
