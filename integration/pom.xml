@@ -146,6 +146,21 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>oms</id>
+            <properties>
+                <integration.monitoring.client>monitoringClient</integration.monitoring.client>
+            </properties>
+        </profile>
+        <profile>
+            <id>epmp</id>
+            <properties>
+                <integration.monitoring.client>IntegrationAuditClient</integration.monitoring.client>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>integration</finalName>
         <plugins>

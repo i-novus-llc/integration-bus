@@ -68,8 +68,20 @@
             <artifactId>n2o-web</artifactId>
             <version>${n2o.version}</version>
         </dependency>
-
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>oms</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ru.i-novus.ffoms</groupId>
+                    <artifactId>ffoms-theme-n2o7</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>integration-control-ui</finalName>
