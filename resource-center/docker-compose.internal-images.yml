@@ -3,17 +3,17 @@ version: "3.6"
 services:
 
   integration:
-    image: "cr.yandex/crpm4vdqh47ppohdbm3j/is/integration:${TAG}"
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/integration:${TAG}"
 
   integration-control-ui:
-    image: "cr.yandex/crpm4vdqh47ppohdbm3j/is/integration-control-ui:${TAG}"
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/integration-control-ui:${TAG}"
 
   monitoring-service:
-    image: "cr.yandex/crpm4vdqh47ppohdbm3j/is/monitoring-service:${TAG}"
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/monitoring-service:${TAG}"
 
   registry-service:
-    image: "cr.yandex/crpm4vdqh47ppohdbm3j/is/registry-service:${TAG}"
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/registry-service:${TAG}"
 
   security-admin-backend:
-    image: "cr.yandex/crpm4vdqh47ppohdbm3j/is/security-admin-backend:${TAG}"
+    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/security-admin-backend:${TAG}"
 
