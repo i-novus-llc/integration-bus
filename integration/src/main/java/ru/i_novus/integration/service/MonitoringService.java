@@ -4,6 +4,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
@@ -15,6 +17,7 @@ import ru.i_novus.integration.model.CommonModel;
 import ru.i_novus.integration.model.MessageStatusEnum;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Objects;
 
 @Component
@@ -29,14 +32,15 @@ public class MonitoringService {
     }
 
     @SuppressWarnings("unused")
-    public Message<CommonModel> create(@Payload CommonModel commonModel, String status) {
+    public Message<CommonModel> create(@Payload CommonModel commonModel, String status,
+                                       @Headers Map<String, Object> headers) {
         MonitoringModel monitoringModel = commonModel.getMonitoringModel();
         if (!monitoringModel.getReceiver().equals("nsi")) {
             monitoringModel.setStatus(status);
             monitoringModel.setDateTime(LocalDateTime.now());
             monitoringGateway.putToQueue(MessageBuilder.withPayload(monitoringModel).build());
         }
-        return MessageBuilder.withPayload(commonModel).build();
+        return MessageBuilder.createMessage(commonModel, new MessageHeaders(headers));
     }
 
     @Async

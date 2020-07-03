@@ -14,9 +14,7 @@ import ru.i_novus.integration.service.CommonModelPrepareService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -53,17 +51,20 @@ public class ServiceIntegrationRest {
     @GetMapping(path = "/get/{service}/{method}/**")
     public Object get(HttpServletRequest request, @PathVariable("service") String service, @PathVariable("method") String method,
                       @RequestParam Map<String, String> requestParams) throws IOException {
-        registryClient.checkAuthorization(request.getHeader("Authorization"), service);
+        Enumeration<String> authHeaders = request.getHeaders("Authorization");
+        registryClient.checkAuthorization(getSpecificHeader(authHeaders, "Bearer"), service);
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("Authorization", getSpecificHeader(authHeaders, "Basic"));
         CommonModel commonModel = modelPrepareService.getRequestModelPrepare(requestParams, method, service);
         String url = commonModel.getParticipantModel().getUrl() +
                 (request.getRequestURI().replace("/integration/get/" + service + "/" + method, "")) +
                 (request.getQueryString() == null ? "" : "?" + request.getQueryString());
         commonModel.getParticipantModel().setUrl(url);
         if (commonModel.getParticipantModel().isSync()) {
-            Message result = inboundGateway.syncRequest(commonModel);
+            Message result = inboundGateway.syncRequest(commonModel, headers);
             return result == null ? null : result.getPayload();
         } else {
-            inboundGateway.aSyncRequest(commonModel);
+            inboundGateway.aSyncRequest(commonModel, headers);
         }
 
         return HttpStatus.ACCEPTED;
@@ -78,16 +79,19 @@ public class ServiceIntegrationRest {
      */
     @PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Object> post(HttpServletRequest request, @RequestBody RequestModel model) {
+        Enumeration<String> authHeaders = request.getHeaders("Authorization");
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("Authorization", getSpecificHeader(authHeaders, "Basic"));
         model.getRecipient().forEach(recipient ->
-                registryClient.checkAuthorization(request.getHeader("Authorization"), recipient));
+                registryClient.checkAuthorization(getSpecificHeader(authHeaders, "Bearer"), recipient));
         List<Object> result = new ArrayList<>();
         modelPrepareService.requestModelPreparation(model)
                 .parallelStream()
                 .forEach(commonModel -> {
                     if (commonModel.getParticipantModel().isSync()) {
-                        result.add(inboundGateway.syncRequest(commonModel).getPayload());
+                        result.add(inboundGateway.syncRequest(commonModel, headers).getPayload());
                     } else {
-                        inboundGateway.aSyncRequest(commonModel);
+                        inboundGateway.aSyncRequest(commonModel, headers);
                         result.add(HttpStatus.OK);
                     }
                 });
@@ -101,7 +105,7 @@ public class ServiceIntegrationRest {
     @GetMapping(path = "/syncRequest/{method}")
     public Object syncRequest(@RequestParam Map<String, String> requestParams, @PathVariable("method") String method) throws IOException {
 
-        return inboundGateway.syncRequest(modelPrepareService.getRequestModelPrepare(requestParams, method, requestParams.get("recipient"))).getPayload();
+        return inboundGateway.syncRequest(modelPrepareService.getRequestModelPrepare(requestParams, method, requestParams.get("recipient")), new HashMap<>()).getPayload();
     }
 
     /**
@@ -112,7 +116,22 @@ public class ServiceIntegrationRest {
      */
     @PostMapping(path = "/aSyncRequest", produces = MediaType.APPLICATION_JSON_VALUE)
     public void internalRequest(HttpServletRequest request, @RequestBody InternalRequestModel model) throws IOException {
-        registryClient.checkAuthorization(request.getHeader("Authorization"), model.getRecipient());
+        Enumeration<String> authHeaders = request.getHeaders("Authorization");
+        registryClient.checkAuthorization(getSpecificHeader(authHeaders, "Bearer"), model.getRecipient());
         inboundGateway.internalRequest(modelPrepareService.requestModelPreparation(model));
+    }
+
+    private String getSpecificHeader(Enumeration<String> headers, String tokenType) {
+        Iterator<String> iterator = headers.asIterator();
+        while (iterator.hasNext()) {
+            String header = iterator.next();
+            String[] headerParts = header.split(" ");
+            if (headerParts.length > 0) {
+                if (headerParts[0].equals(tokenType)) {
+                    return header;
+                }
+            }
+        }
+        return "";
     }
 }
