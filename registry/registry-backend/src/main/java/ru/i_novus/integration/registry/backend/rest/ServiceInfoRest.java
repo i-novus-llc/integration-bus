@@ -4,8 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.i_novus.integration.common.api.model.ParticipantModel;
 import ru.i_novus.integration.common.api.model.RegistryInfoModel;
+import ru.i_novus.integration.registry.backend.api.AuthorizationService;
 import ru.i_novus.integration.registry.backend.api.PrepareRequestService;
-import ru.i_novus.integration.registry.backend.client.KeycloakClient;
 import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
@@ -23,16 +23,16 @@ public class ServiceInfoRest implements PrepareRequestService {
     private ParticipantRepository participantRepository;
     private ParticipantMethodRepository participantMethodRepository;
     private ParticipantPermissionRepository participantPermissionRepository;
-    private KeycloakClient client;
+    private AuthorizationService authorizationService;
 
     public ServiceInfoRest(ParticipantRepository participantRepository,
                            ParticipantMethodRepository participantMethodRepository,
                            ParticipantPermissionRepository participantPermissionRepository,
-                           KeycloakClient client) {
+                           AuthorizationService authorizationService) {
         this.participantRepository = participantRepository;
         this.participantMethodRepository = participantMethodRepository;
         this.participantPermissionRepository = participantPermissionRepository;
-        this.client = client;
+        this.authorizationService = authorizationService;
     }
 
     @Override
@@ -43,7 +43,8 @@ public class ServiceInfoRest implements PrepareRequestService {
         if (!sender.isPresent()) throw new RuntimeException("service :" + model.getSender() + " disable");
         if (!receiver.isPresent()) throw new RuntimeException("service :" + model.getReceiver() + " disable");
 
-        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.findEnabled(model.getReceiver(), model.getMethod());
+        Optional<ParticipantMethodEntity> senderMethod = participantMethodRepository.findEnabled(model.getReceiver(),
+                model.getMethod());
 
         List<ParticipantPermissionEntity> permissions;
         if (senderMethod.isPresent()) {
@@ -53,8 +54,9 @@ public class ServiceInfoRest implements PrepareRequestService {
             throw new RuntimeException("method :" + model.getMethod() + "is not present to : " + model.getReceiver());
         }
 
-        Optional<ParticipantPermissionEntity> permission = permissions.isEmpty() ? Optional.empty() : permissions.stream()
-                .filter(p -> p.getParticipantCode() != null).findFirst();
+        Optional<ParticipantPermissionEntity> permission = permissions.isEmpty() ? Optional.empty() :
+                permissions.stream()
+                        .filter(p -> p.getParticipantCode() != null).findFirst();
 
 
         ParticipantModel participantModel = new ParticipantModel();
@@ -79,7 +81,10 @@ public class ServiceInfoRest implements PrepareRequestService {
         }
         ParticipantEntity participant = opt.get();
         if (participant.getHasAuth() != null && participant.getHasAuth()) {
-            return client.checkToken(model.getAuthToken());
+            boolean isValid = authorizationService.isValidToken(model.getAuthToken());
+            if (!isValid) {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
         }
         return Response.status(Response.Status.OK).build();
     }
