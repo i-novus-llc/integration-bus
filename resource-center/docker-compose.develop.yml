@@ -7,7 +7,7 @@ networks:
 services:
   integration:
     ports:
-      - '8100:8080'
+      - '33450:8080'
     environment:
       INTEGRATION_ENV-CODE: 'center'
       SPRING_CLOUD_CONSUL_CONFIG_PREFIX: integration-center
@@ -22,12 +22,12 @@ services:
       filebeat: "springboot"
     depends_on:
       - activemq
-    volumes:
-      - 'integration-shared-data:/share/esb/output'
+#    volumes:
+#      - 'integration-shared-data:/share/esb/output'
 
   integration-control-ui:
     ports:
-      - '8101:8080'
+      - '33451:8080'
     environment:
       SPRING_CLOUD_CONSUL_CONFIG_PREFIX: integration-ui-center
     deploy:
@@ -39,12 +39,12 @@ services:
 
   monitoring-service:
     ports:
-      - '8102:8080'
+      - '33452:8080'
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://172.30.1.29:5432/integration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/integration
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
-      SPRING_DATASOURCE_USERNAME: integration
-      SPRING_DATASOURCE_PASSWORD: integration
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     deploy:
       placement:
         constraints:
@@ -56,12 +56,12 @@ services:
 
   registry-service:
     ports:
-      - '8104:8080'
+      - '33453:8080'
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://172.30.1.29:5432/integration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/integration
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
-      SPRING_DATASOURCE_USERNAME: integration
-      SPRING_DATASOURCE_PASSWORD: integration
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     deploy:
       placement:
         constraints:
@@ -73,12 +73,12 @@ services:
 
   security-admin-backend:
     ports:
-      - '8103:8080'
+      - '33454:8080'
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://172.30.1.29:5432/integration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/integration
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
-      SPRING_DATASOURCE_USERNAME: integration
-      SPRING_DATASOURCE_PASSWORD: integration
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     deploy:
       resources:
         limits:
@@ -91,8 +91,8 @@ services:
 
   activemq:
     ports:
-      - '8105:8161'
-      - '8106:61616'
+      - '33455:8161'
+      - '33456:61616'
     image: 'webcenter/activemq:5.14.3'
     environment:
       ACTIVEMQ_NAME: amq
@@ -112,62 +112,27 @@ services:
 
   db:
     ports:
-      - '8132:5432'
+      - '33457:5432'
     image: postgres:11
     command: postgres -c 'max_connections=250'
     environment:
       POSTGRES_PASSWORD: 'postgres'
       POSTGRES_USER: 'postgres'
-      POSTGRES_DB: 'postgres'
+      POSTGRES_DB: 'integration'
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - integration-bus-db-dev:/var/lib/postgresql/data
     deploy:
       resources:
         limits:
           memory: 2000M
-      placement:
-        constraints:
-          - node.labels.type == db
-
-  postgres:
-    ports:
-      - '8107:5432'
-    image: 'postgres:11.8'
-    environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_DB: 'keycloak'
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    deploy:
-      resources:
-        limits:
-          memory: 2000M
-      placement:
-        constraints:
-          - node.labels.type == db
-
-  keycloak:
-    ports:
-      - '8108:8080'
-    image: 'jboss/keycloak:9.0.3'
-    environment:
-      KEYCLOAK_USER: 'admin'
-      KEYCLOAK_PASSWORD: 'password'
-      DB_USER: 'postgres'
-      DB_PASSWORD: 'postgres'
-      DB_ADDR: 'postgres'
-      DB_PORT: '5432'
-    depends_on:
-      - 'postgres'
 
 volumes:
   activemq-data:
   activemq-log:
-  postgres-data:
-  integration-shared-data:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /opt/share/erz/center/data
+  integration-bus-db-dev:
+#  integration-shared-data:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: /opt/share/erz/center/data

@@ -4,6 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <includeAll path="changelog/" relativeToChangelogFile="true"/>
+    <include file="db/changelog/201808271501_create_monitoring_table.xml"/>
+    <include file="db/changelog/201809111033_change_date_time_type.xml"/>
+    <include file="db/changelog/201809211720_update_size_uid.xml"/>
+    <include file="db/changelog/201810241306_add_column_comment_table_monitoring.xml"/>
+    <include file="db/changelog/201901231618_change_type_comment_colum.xml"/>
+    <include file="db/changelog/202002211123_create_sent_package.xml"/>
+    <include file="db/changelog/202005201200_change_uid_length.xml"/>
 
 </databaseChangeLog>

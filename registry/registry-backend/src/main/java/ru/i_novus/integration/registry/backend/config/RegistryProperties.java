@@ -11,4 +11,6 @@ import org.springframework.stereotype.Component;
 public class RegistryProperties {
     @Value("${keycloak.user-info-url}")
     private String keycloakUserInfoUrl;
+    @Value("${auth.gateway.public-key.url}")
+    private String authGatewayCertsUrl;
 }

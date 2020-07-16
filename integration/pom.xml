@@ -149,6 +149,9 @@
     <profiles>
         <profile>
             <id>oms</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <integration.monitoring.client>monitoringClient</integration.monitoring.client>
             </properties>
@@ -156,7 +159,7 @@
         <profile>
             <id>epmp</id>
             <properties>
-                <integration.monitoring.client>IntegrationAuditClient</integration.monitoring.client>
+                <integration.monitoring.client>integrationAuditClient</integration.monitoring.client>
             </properties>
         </profile>
     </profiles>
