@@ -3,17 +3,17 @@ version: "3.6"
 services:
 
   integration:
-    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/integration:${TAG}"
+    image: "${DOCKER_REGISTRY}/is/integration:${TAG}"
 
   integration-control-ui:
-    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/integration-control-ui:${TAG}"
+    image: "${DOCKER_REGISTRY}/is/integration-control-ui:${TAG}"
 
   monitoring-service:
-    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/monitoring-service:${TAG}"
+    image: "${DOCKER_REGISTRY}/is/monitoring-service:${TAG}"
 
   registry-service:
-    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/registry-service:${TAG}"
+    image: "${DOCKER_REGISTRY}/is/registry-service:${TAG}"
 
   security-admin-backend:
-    image: "538721144237.dkr.ecr.eu-west-1.amazonaws.com/integration-bus/security-admin-backend:${TAG}"
+    image: "${DOCKER_REGISTRY}/is/security-admin-backend:${TAG}"
 

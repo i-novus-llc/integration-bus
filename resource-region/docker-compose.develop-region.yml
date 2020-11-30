@@ -11,6 +11,8 @@ services:
     environment:
       INTEGRATION_ENV-CODE: 'region'
       SPRING_CLOUD_CONSUL_CONFIG_PREFIX: integration-region
+      AUDIT_CLIENT_EBABLED: false
+      AUDIT_SERVICE_URL: https://epmp.master.i-novus.ru/audit/service/api
     deploy:
       resources:
         limits:

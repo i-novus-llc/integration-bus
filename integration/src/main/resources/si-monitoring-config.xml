@@ -19,7 +19,7 @@
         <int:service-activator ref="jmsPublisher" method="monitoring"/>
     </int:chain>
 
-    <int:service-activator input-channel="monitoringQueueChannel" ref="${integration.monitoring.client}"
+    <int:service-activator input-channel="monitoringQueueChannel" ref="integrationAuditClient"
                            method="sendMonitoringMessage"/>
 
     <int:gateway id="inboundGateway" service-interface="ru.i_novus.integration.gateway.InboundGateway"
