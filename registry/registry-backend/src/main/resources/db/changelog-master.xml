@@ -4,11 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="db/changelog/201809191022_create_participant.xml"/>
-    <include file="db/changelog/201809241321_add_constraint.xml"/>
-    <include file="db/changelog/201824091728_drop_notNull_participant_method_integration_type.xml"/>
-    <include file="db/changelog/201908151127_fill_integration_type.xml"/>
-    <include file="db/changelog/201909091238_return_callbackUrl_to_particiapant_permission.xml"/>
-    <include file="db/changelog/202005261600_add_has_auth_column_to_participant.xml"/>
+    <includeAll path="changelog/" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
