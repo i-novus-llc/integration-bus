@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+
+  integration:
+    image: "${DOCKER_REGISTRY}/integration-bus/integration:${TAG}"
+
+  integration-control-ui:
+    image: "${DOCKER_REGISTRY}/integration-bus/integration-control-ui:${TAG}"
+
+  monitoring-service:
+    image: "${DOCKER_REGISTRY}/integration-bus/monitoring-service:${TAG}"
+
+  registry-service:
+    image: "${DOCKER_REGISTRY}/integration-bus/registry-service:${TAG}"
+
+  security-admin-backend:
+    image: "${DOCKER_REGISTRY}/integration-bus/security-admin-backend:${TAG}"
+
