@@ -3,7 +3,7 @@ version: "3.6"
 services:
 
   integration:
-    image: "${DOCKER_REGISTRY}/integration-bus/integration:${TAG}"
+    image: "${DOCKER_REGISTRY}/integration-bus/integration-service:${TAG}"
 
   integration-control-ui:
     image: "${DOCKER_REGISTRY}/integration-bus/integration-control-ui:${TAG}"
