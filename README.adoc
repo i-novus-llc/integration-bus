@@ -78,6 +78,8 @@ datasource.password='password'
 создать db (общая с registry-backend) и в Tomcat создать ресурс jdbc/integration
 ----
 
-
-
-
+=== Варианты сборки
+Сборка всех модулей: maven-профиль `build-all-modules`.
+----
+mvn clean package -Pbuild-all-modules
+----

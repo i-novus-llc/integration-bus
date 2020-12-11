@@ -12,13 +12,8 @@
 
     <modules>
         <module>integration-common-api</module>
-        <module>registry</module>
-        <module>integration</module>
-        <module>integration-web</module>
-        <module>monitoring</module>
-        <module>integration-example</module>
-        <module>integration-security-admin</module>
-        <module>integration-control-ui</module>
+        <module>registry/registry-api</module>
+        <module>monitoring/monitoring-api</module>
     </modules>
 
     <parent>
@@ -51,6 +46,21 @@
     </dependencies>
 
     <profiles>
+        <profile>
+            <id>build-all-modules</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>integration</module>
+                <module>integration-web</module>
+                <module>integration-example</module>
+                <module>integration-security-admin</module>
+                <module>integration-control-ui</module>
+                <module>registry/registry-backend</module>
+                <module>monitoring/monitoring-backend</module>
+            </modules>
+        </profile>
         <profile>
             <id>center</id>
             <build>
