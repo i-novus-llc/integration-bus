@@ -16,6 +16,7 @@
 
     <modules>
         <module>registry-backend</module>
+        <module>registry-api</module>
     </modules>
 
     <properties>

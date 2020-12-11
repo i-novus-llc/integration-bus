@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
-import ru.i_novus.integration.registry.backend.api.ParticipantPermissionRestService;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantPermissionCriteria;
+import ru.i_novus.integration.registry.api.rest.ParticipantPermissionRestService;
+import ru.i_novus.integration.registry.api.criteria.ParticipantPermissionCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
-import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
+import ru.i_novus.integration.registry.api.model.ParticipantPermission;
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.specifications.ParticipantPermissionSpecifications;
 

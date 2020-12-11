@@ -2,7 +2,7 @@ package ru.i_novus.integration.monitoring.backend.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.i_novus.integration.monitoring.backend.model.SentMessageModel;
+import ru.i_novus.integration.monitoring.api.model.SentMessageModel;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

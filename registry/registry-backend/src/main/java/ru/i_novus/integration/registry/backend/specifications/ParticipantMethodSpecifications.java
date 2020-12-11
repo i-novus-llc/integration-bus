@@ -1,7 +1,7 @@
 package ru.i_novus.integration.registry.backend.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
+import ru.i_novus.integration.registry.api.criteria.ParticipantMethodCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity_;
 

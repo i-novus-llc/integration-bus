@@ -1,7 +1,7 @@
 package ru.i_novus.integration.registry.backend.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantPermissionCriteria;
+import ru.i_novus.integration.registry.api.criteria.ParticipantPermissionCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity_;
 
