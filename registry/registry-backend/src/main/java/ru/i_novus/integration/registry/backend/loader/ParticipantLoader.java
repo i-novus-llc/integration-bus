@@ -4,7 +4,7 @@ import net.n2oapp.platform.loader.server.ServerLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.i_novus.integration.registry.backend.model.Participant;
+import ru.i_novus.integration.registry.api.model.Participant;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
 import ru.i_novus.integration.registry.backend.rest.Mappers;
 

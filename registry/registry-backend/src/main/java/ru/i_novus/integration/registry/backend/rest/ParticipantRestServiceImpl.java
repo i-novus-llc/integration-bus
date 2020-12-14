@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
-import ru.i_novus.integration.registry.backend.api.ParticipantRestService;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantCriteria;
+import ru.i_novus.integration.registry.api.rest.ParticipantRestService;
+import ru.i_novus.integration.registry.api.criteria.ParticipantCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantEntity;
-import ru.i_novus.integration.registry.backend.model.Participant;
+import ru.i_novus.integration.registry.api.model.Participant;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;
 import ru.i_novus.integration.registry.backend.specifications.ParticipantSpecifications;
 

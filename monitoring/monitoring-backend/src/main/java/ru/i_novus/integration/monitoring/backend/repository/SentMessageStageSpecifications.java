@@ -1,7 +1,7 @@
 package ru.i_novus.integration.monitoring.backend.repository;
 
 import org.springframework.data.jpa.domain.Specification;
-import ru.i_novus.integration.monitoring.backend.criteria.SentMessageStageCriteria;
+import ru.i_novus.integration.monitoring.api.criteria.SentMessageStageCriteria;
 import ru.i_novus.integration.monitoring.backend.entity.SentMessageStageEntity;
 import ru.i_novus.integration.monitoring.backend.entity.SentMessageStageEntity_;
 

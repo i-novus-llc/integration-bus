@@ -2,8 +2,8 @@ package ru.i_novus.integration.registry.backend.loader;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.i_novus.integration.registry.backend.model.ParticipantMethod;
-import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
+import ru.i_novus.integration.registry.api.model.ParticipantMethod;
+import ru.i_novus.integration.registry.api.model.ParticipantPermission;
 
 import java.util.List;
 

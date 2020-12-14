@@ -12,9 +12,9 @@ import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntit
 import ru.i_novus.integration.registry.backend.loader.ParticipantLoader;
 import ru.i_novus.integration.registry.backend.loader.ParticipantMethodInfo;
 import ru.i_novus.integration.registry.backend.loader.ParticipantMethodLoader;
-import ru.i_novus.integration.registry.backend.model.IntegrationType;
-import ru.i_novus.integration.registry.backend.model.Participant;
-import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
+import ru.i_novus.integration.registry.api.model.IntegrationType;
+import ru.i_novus.integration.registry.api.model.Participant;
+import ru.i_novus.integration.registry.api.model.ParticipantPermission;
 import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantRepository;

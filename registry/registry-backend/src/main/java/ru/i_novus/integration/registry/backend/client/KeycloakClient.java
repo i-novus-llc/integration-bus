@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.i_novus.integration.registry.backend.api.AuthorizationService;
+import ru.i_novus.integration.registry.api.service.AuthorizationService;
 import ru.i_novus.integration.registry.backend.config.RegistryProperties;
 
 import javax.ws.rs.core.MediaType;

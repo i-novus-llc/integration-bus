@@ -1,7 +1,10 @@
 package ru.i_novus.integration.registry.backend.rest;
 
+import ru.i_novus.integration.registry.api.model.IntegrationType;
+import ru.i_novus.integration.registry.api.model.Participant;
+import ru.i_novus.integration.registry.api.model.ParticipantMethod;
+import ru.i_novus.integration.registry.api.model.ParticipantPermission;
 import ru.i_novus.integration.registry.backend.entity.*;
-import ru.i_novus.integration.registry.backend.model.*;
 
 /**
  * Мапперы для приведения Entity к Model и обратно

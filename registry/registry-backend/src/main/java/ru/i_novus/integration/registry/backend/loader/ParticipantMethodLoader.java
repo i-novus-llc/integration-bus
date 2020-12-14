@@ -4,12 +4,12 @@ import net.n2oapp.platform.loader.server.ServerLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantMethodCriteria;
-import ru.i_novus.integration.registry.backend.criteria.ParticipantPermissionCriteria;
+import ru.i_novus.integration.registry.api.criteria.ParticipantMethodCriteria;
+import ru.i_novus.integration.registry.api.criteria.ParticipantPermissionCriteria;
 import ru.i_novus.integration.registry.backend.entity.ParticipantMethodEntity;
 import ru.i_novus.integration.registry.backend.entity.ParticipantPermissionEntity;
 
-import ru.i_novus.integration.registry.backend.model.ParticipantPermission;
+import ru.i_novus.integration.registry.api.model.ParticipantPermission;
 import ru.i_novus.integration.registry.backend.repository.ParticipantMethodRepository;
 import ru.i_novus.integration.registry.backend.repository.ParticipantPermissionRepository;
 import ru.i_novus.integration.registry.backend.rest.Mappers;
