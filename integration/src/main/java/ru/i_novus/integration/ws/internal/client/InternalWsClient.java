@@ -29,8 +29,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * WsClient.
@@ -65,12 +69,16 @@ public class InternalWsClient {
         SplitDocumentModel splitModel = message.getMessage().getAppData().getSplitDocument();
 
         try {
-            File[] files = new File(splitModel.getTemporaryPath()).listFiles();
-            File sendDir = new File(splitModel.getTemporaryPath() + "_SEND");
+            List<File> fileDir = Files.walk(Paths.get(splitModel.getTemporaryPath()))
+                    .filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .collect(Collectors.toList());
+
+            File sendDir = new File(splitModel.getTemporaryPath() + "SEND");
             sendDir.mkdirs();
 
-            if (files == null || files.length == 0) {
-                if (sendDir.length() != splitModel.getCount()) {
+            if (fileDir.isEmpty()) {
+                if (sendDir.list() != null && sendDir.list().length != 0 && sendDir.list().length != splitModel.getCount()) {
                     request.getPayload().getMonitoringModel().setError(" count of files does not match the original count, send aborted!! ");
                     monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
                     deleteTempDirs(new File(splitModel.getTemporaryPath()), sendDir);
@@ -81,17 +89,17 @@ public class InternalWsClient {
                 }
                 return;
             }
+            List<File> files = prepareFilesToSend(fileDir, sendDir);
 
             IntegrationFileUtils.sortedFilesByName(files);
-            logger.info("Try to send {} parts for {}", files.length, splitModel.getTemporaryPath());
+            logger.info("Try to send {} parts for {}", files.size(), splitModel.getTemporaryPath());
 
             //поочередная отправка файлов потребителю
-            for (int index = 1; index <= files.length; index++) {
-                logger.info("Try to send part {}: {}", index - 1, files[index - 1].getPath());
-                splitModel.setBinaryData(IntegrationFileUtils.prepareDataHandler(files[index - 1].getPath()));
-
+            for (int index = 1; index <= files.size(); index++) {
+                logger.info("Try to send part {}: {}", index - 1, files.get(index - 1).getPath());
+                splitModel.setBinaryData(IntegrationFileUtils.prepareDataHandler(files.get(index - 1).getPath()));
                 message.getMessage().getAppData().setSplitDocument(splitModel);
-                if (index == files.length) {
+                if (index == files.size()) {
                     splitModel.setIsLast(true);
                 }
                 Object[] result = null;
@@ -107,18 +115,18 @@ public class InternalWsClient {
                         success = result != null && result.length != 0 && result[0] instanceof Boolean && (Boolean) result[0];
                     } catch (Fault e) {
                         logger.error("Failed try number {} to send part {}: {}, error: {}",
-                                retriesCount, index - 1, files[index - 1].getPath(), e.getMessage());
+                                retriesCount, index - 1, files.get(index - 1).getPath(), e.getMessage());
                         if (retriesCount >= 10) {
                             throw new RuntimeException(
                                     String.format("Sending part %s retries exceeded, remains %s parts",
-                                            files[index - 1].getPath(), files.length - index), e);
+                                            files.get(index - 1).getPath(), files.size() - index), e);
                         }
                     }
                 } while (!success);
-                logger.info("Successfully sent part {}: {}. Result: {}", index - 1, files[index - 1].getPath(), result);
+                logger.info("Successfully sent part {}: {}. Result: {}", index - 1, files.get(index - 1).getPath(), result);
 
-                Files.copy(Paths.get(sendDir.getPath()), new FileOutputStream(files[index - 1].getPath()));
-                Files.deleteIfExists(Paths.get(files[index - 1].getPath()));
+                File sendFile = new File(sendDir.getPath() + "/" + index);
+                FileUtils.copyFile(files.get(index - 1), new FileOutputStream(sendFile));
             }
 
             deleteTempDirs(new File(splitModel.getTemporaryPath()), sendDir);
@@ -136,8 +144,28 @@ public class InternalWsClient {
     }
 
     private void deleteTempDirs(File prepareDir, File sendDir) throws IOException {
-        FileUtils.deleteDirectory(prepareDir);
-        FileUtils.deleteDirectory(sendDir);
+        Files.deleteIfExists(prepareDir.toPath());
+        Files.deleteIfExists(sendDir.toPath());
+    }
+
+    private List<File> prepareFilesToSend(List<File> fileDir, File sendDir) throws IOException {
+        List<File> sendFiles = Files.walk(sendDir.toPath())
+                .filter(Files::isRegularFile)
+                .map(Path::toFile)
+                .collect(Collectors.toList());
+        if (!sendFiles.isEmpty()) {
+            List<String> sendFileName = sendFiles
+                    .stream()
+                    .map(File::getName)
+                    .collect(Collectors.toList());
+
+            return fileDir.stream()
+                    .filter(file -> !sendFileName
+                            .contains(file.getName()))
+                    .collect(Collectors.toList());
+        } else {
+            return fileDir;
+        }
     }
 
     /**

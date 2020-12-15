@@ -18,7 +18,7 @@ public class IntegrationFileUtils {
     /**
      * Соединение массива файлов в один файл
      */
-    static void mergeFile(File outFile, File[] files) throws IOException {
+    static void mergeFile(File outFile, List<File> files) throws IOException {
         if (files == null)
             return;
         try (FileOutputStream out = new FileOutputStream(outFile)) {
@@ -61,8 +61,8 @@ public class IntegrationFileUtils {
     /**
      * Сортировка массива файлов по имени
      */
-    public static void sortedFilesByName(File[] files) {
-        Arrays.sort(files, new Comparator<File>() {
+    public static void sortedFilesByName(List<File> files) {
+        files.sort(new Comparator<File>() {
             @Override
             public int compare(File o1, File o2) {
                 int n1 = extractNumber(o1.getName());

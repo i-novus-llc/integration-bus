@@ -19,6 +19,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -57,8 +59,8 @@ public class FileService {
             File margeDir = new File(property.getTempPath() + URL_SPLIT + MERGE_FILE_PATH);
             margeDir.mkdirs();
             File concatFile = new File(margeDir.getPath() + URL_SPLIT + data.getDocName());
-            File[] fileList = new File(tmpDirectory.getPath()).listFiles();
-            if (fileList != null && fileList.length != 1) {
+            List<File> fileList = Arrays.asList(new File(tmpDirectory.getPath()).listFiles());
+            if (!fileList.isEmpty()) {
                 IntegrationFileUtils.sortedFilesByName(fileList);
             }
             IntegrationFileUtils.mergeFile(concatFile, fileList);
@@ -79,7 +81,7 @@ public class FileService {
         SplitDocumentModel splitModel = new SplitDocumentModel();
         splitModel.setTemporaryPath(splitDir.getPath());
         IntegrationFileUtils.splitFile(new File(filePath), new File(splitModel.getTemporaryPath()));
-        splitModel.setCount(new File(splitModel.getTemporaryPath()).listFiles().length);
+        splitModel.setCount(splitDir.list().length);
 
         return splitModel;
     }
