@@ -10,10 +10,8 @@ import ru.i_novus.integration.configuration.WebApplicationContextLocator;
 import ru.i_novus.integration.service.FileService;
 
 import javax.jws.WebService;
-import javax.xml.bind.JAXBException;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.SOAPBinding;
-import java.io.IOException;
 
 @Service
 @WebService(endpointInterface = "ru.i_novus.integration.ws.internal.endpoint.InternalWsEndpoint", serviceName = "InternalWsEndpoint",
@@ -34,9 +32,14 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     }
 
     @Override
-    public Boolean internal(String message) throws IOException, JAXBException {
+    public Boolean internal(String message) {
         logger.info("receive 'internal' call, message.length {}", message.length());
-        fileService.saveDocumentInStorage(message);
+        try {
+            fileService.saveDocumentInStorage(message);
+        } catch (Exception e) {
+            logger.info("file save ERROR {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
         logger.info("'internal' call completed");
         return true;
     }

@@ -18,6 +18,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -54,8 +55,9 @@ public class FileService {
 
         try (OutputStream outputStream = new FileOutputStream(tempFile)) {
             IOUtils.copy(data.getSplitDocument().getBinaryData().getInputStream(), outputStream);
+            logger.info("file path {} name {} count {} file size {}", tmpDirectory.getPath(), data.getDocName(), count, tempFile.length());
         }
-        if (data.getSplitDocument().isIsLast() != null && data.getSplitDocument().isIsLast()) {
+        if (data.getSplitDocument().getCount() == tmpDirectory.listFiles().length) {
             File margeDir = new File(property.getTempPath() + URL_SPLIT + MERGE_FILE_PATH);
             margeDir.mkdirs();
             File concatFile = new File(margeDir.getPath() + URL_SPLIT + data.getDocName());
@@ -63,14 +65,15 @@ public class FileService {
             if (!fileList.isEmpty()) {
                 IntegrationFileUtils.sortedFilesByName(fileList);
             }
+            logger.info("merge path {} dir size{}", tmpDirectory.getPath(), fileList.size());
             IntegrationFileUtils.mergeFile(concatFile, fileList);
 
-            File prepareFile = new File(property.getTempPath() + URL_SPLIT + data.getDocName());
+            logger.info("concat file size{}", concatFile.length());
 
-            try (InputStream in = new FileInputStream(concatFile); FileOutputStream out = new FileOutputStream(prepareFile)) {
-                IOUtils.copy(in, out);
-                logger.info("file {} put to {} file size {}", data.getDocName(), property.getTempPath(), prepareFile.length());
-            }
+            Files.move(concatFile.toPath(), new File(property.getTempPath() + URL_SPLIT + data.getDocName()).toPath(),
+                    StandardCopyOption.ATOMIC_MOVE);
+            logger.info("file {} put to {} file size {}", data.getDocName(), property.getTempPath(),
+                    new File(property.getTempPath() + URL_SPLIT + data.getDocName()).length());
             FileUtils.deleteDirectory(tmpDirectory);
             Files.deleteIfExists(Paths.get(concatFile.getPath()));
         }
