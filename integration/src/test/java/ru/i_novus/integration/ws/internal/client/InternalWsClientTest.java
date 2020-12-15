@@ -59,7 +59,6 @@ public class InternalWsClientTest {
             client.sendInternal(MessageBuilder.withPayload(payload).build());
         } catch (Exception e) {
             assertNotNull(e.getCause());
-            assertEquals("No file parts for temp", e.getCause().getMessage());
         }
     }
 }

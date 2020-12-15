@@ -1,6 +1,7 @@
 package ru.i_novus.integration.amqp;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQPrefetchPolicy;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,17 @@ public class AmqConfig {
         connectionFactory.setNonBlockingRedelivery(true);
         connectionFactory.setRedeliveryPolicy(redeliveryPolicy);
         connectionFactory.setTrustAllPackages(true);
+        connectionFactory.setPrefetchPolicy(activeMQPrefetchPolicy());
 
         return connectionFactory;
+    }
+
+    @Bean
+    public ActiveMQPrefetchPolicy activeMQPrefetchPolicy() {
+        ActiveMQPrefetchPolicy prefetchPolicy = new ActiveMQPrefetchPolicy();
+        prefetchPolicy.setQueuePrefetch(1);
+
+        return prefetchPolicy;
     }
 
     @Bean
