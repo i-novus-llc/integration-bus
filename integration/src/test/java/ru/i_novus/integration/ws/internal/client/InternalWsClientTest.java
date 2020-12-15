@@ -40,24 +40,6 @@ public class InternalWsClientTest {
     private InternalWsClient client;
 
     @Test
-    public void sendRequest() {
-        try {
-            when(properties.getInternalWsTimeOut()).thenReturn(10000L);
-            client.sendRequest("", "not_exists_url", "");
-        } catch (Exception e) {
-            assertTrue(e.getMessage().contains("ServiceConstructionException"));
-        }
-
-        try {
-            when(properties.getInternalWsTimeOut()).thenReturn(1L);
-            client.sendRequest("", "not_exists_url", "");
-        } catch (Exception e) {
-            assertTrue(e.getMessage().contains("TimeoutException"));
-        }
-
-    }
-
-    @Test
     public void sendInternal() {
         client.sendInternal(MessageBuilder.withPayload(new CommonModel()).build());
         verify(monitoringService, Mockito.never()).createError(any());

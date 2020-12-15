@@ -25,8 +25,6 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     private static final Logger logger = LoggerFactory.getLogger(InternalWsEndpointImpl.class);
 
     @Autowired
-    private InternalWsClient client;
-    @Autowired
     private FileService fileService;
 
     public InternalWsEndpointImpl() {
@@ -45,11 +43,9 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     }
 
     @Override
+    @Deprecated
     public Object[] adapter(String message, String recipientUrl, String method) {
-        logger.info("receive 'adapter' call, recipientUrl {}, method {}", recipientUrl, method);
-        Object[] objects = client.sendRequest(message, recipientUrl, method);
-        logger.info("'adapter' call completed");
-        return objects;
+        throw new UnsupportedOperationException();
     }
 
 }

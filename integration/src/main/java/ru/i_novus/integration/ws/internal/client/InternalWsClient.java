@@ -51,26 +51,6 @@ public class InternalWsClient {
     }
 
     /**
-     * Отправка сообщения потребителю
-     */
-    public Object[] sendRequest(String integrationMessage, String recipientUrl, String method) {
-
-        logger.info("Try to getPort {}", recipientUrl);
-        Client port = getPort(recipientUrl, property.getInternalWsTimeOut() / 3 + 1);
-
-        logger.info("Try to invoke {}", recipientUrl);
-        try {
-            Object[] invoke = port.invoke(method, integrationMessage, recipientUrl, method);
-            logger.info("Invocation completed");
-            return invoke;
-        } catch (Exception e) {
-            logger.error("Failed sendRequest to recipient {}, method {}, integrationMessage {}",
-                    recipientUrl, method, integrationMessage, e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Подготовка и отправка файла потребителю
      */
     public void sendInternal(Message<CommonModel> request) {
