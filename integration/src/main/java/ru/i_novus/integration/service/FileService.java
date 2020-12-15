@@ -65,10 +65,11 @@ public class FileService {
             }
             IntegrationFileUtils.mergeFile(concatFile, fileList);
 
-            try (InputStream in = new FileInputStream(concatFile);
-                 FileOutputStream out = new FileOutputStream(new File(property.getTempPath() + URL_SPLIT + data.getDocName()))) {
+            File prepareFile = new File(property.getTempPath() + URL_SPLIT + data.getDocName());
+
+            try (InputStream in = new FileInputStream(concatFile); FileOutputStream out = new FileOutputStream(prepareFile)) {
                 IOUtils.copy(in, out);
-                logger.info("file {} put to {}", data.getDocName(), property.getTempPath());
+                logger.info("file {} put to {} file size {}", data.getDocName(), property.getTempPath(), prepareFile.length());
             }
             FileUtils.deleteDirectory(tmpDirectory);
             Files.deleteIfExists(Paths.get(concatFile.getPath()));
@@ -76,11 +77,13 @@ public class FileService {
     }
 
     SplitDocumentModel prepareSplitModel(String filePath, String uid) throws IOException {
+        File file = new File(filePath);
         File splitDir = new File(getTempPath() + uid + "_");
+        logger.info("prepare split file {} file size {}", filePath, file.length());
         splitDir.mkdirs();
         SplitDocumentModel splitModel = new SplitDocumentModel();
         splitModel.setTemporaryPath(splitDir.getPath());
-        IntegrationFileUtils.splitFile(new File(filePath), new File(splitModel.getTemporaryPath()));
+        IntegrationFileUtils.splitFile(file, new File(splitModel.getTemporaryPath()));
         splitModel.setCount(splitDir.list().length);
 
         return splitModel;
