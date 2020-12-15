@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import ru.i_novus.integration.configuration.WebApplicationContextLocator;
 import ru.i_novus.integration.service.FileService;
-import ru.i_novus.integration.ws.internal.client.InternalWsClient;
 
 import javax.jws.WebService;
 import javax.xml.bind.JAXBException;
@@ -47,5 +46,4 @@ public class InternalWsEndpointImpl implements InternalWsEndpoint {
     public Object[] adapter(String message, String recipientUrl, String method) {
         throw new UnsupportedOperationException();
     }
-
 }

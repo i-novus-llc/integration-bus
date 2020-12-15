@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import ru.i_novus.integration.common.api.model.ParticipantModel;
 import ru.i_novus.integration.configuration.IntegrationProperties;
 import ru.i_novus.integration.gateway.MonitoringGateway;
 import ru.i_novus.integration.model.CommonModel;
@@ -29,7 +30,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -78,8 +78,8 @@ public class InternalWsClient {
                 } else {
                     request.getPayload().getMonitoringModel().setError(" split files dir is empty, send aborted!! ");
                     monitoringGateway.createError(MessageBuilder.withPayload(request.getPayload().getMonitoringModel()).build());
-                    return;
                 }
+                return;
             }
 
             IntegrationFileUtils.sortedFilesByName(files);
@@ -94,16 +94,17 @@ public class InternalWsClient {
                 if (index == files.length) {
                     splitModel.setIsLast(true);
                 }
-                List result = null;
+                Object[] result = null;
                 boolean success = false;
                 int retriesCount = 0;
                 do {
                     retriesCount++;
                     try {
+                        ParticipantModel participantModel = request.getPayload().getParticipantModel();
                         Client wsClient = getPort(property.getAdapterUrl(), property.getInternalWsTimeOut());
-                        result = (List) wsClient.invoke("adapter", jaxbToString(message), request.getPayload().getParticipantModel().getUrl(),
-                                request.getPayload().getParticipantModel().getMethod())[0];
-                        success = result != null && !result.isEmpty() && result.get(0) instanceof Boolean && (Boolean) result.get(0);
+                        result = wsClient.invoke(participantModel.getMethod(), jaxbToString(message));
+
+                        success = result != null && result.length != 0 && result[0] instanceof Boolean && (Boolean) result[0];
                     } catch (Fault e) {
                         logger.error("Failed try number {} to send part {}: {}, error: {}",
                                 retriesCount, index - 1, files[index - 1].getPath(), e.getMessage());
@@ -176,5 +177,3 @@ public class InternalWsClient {
         return sw.toString();
     }
 }
-
-
