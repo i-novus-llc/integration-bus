@@ -144,8 +144,20 @@ public class InternalWsClient {
     }
 
     private void deleteTempDirs(File prepareDir, File sendDir) throws IOException {
-        Files.deleteIfExists(prepareDir.toPath());
-        Files.deleteIfExists(sendDir.toPath());
+        deleteAllFileInDir(prepareDir);
+        deleteAllFileInDir(sendDir);
+    }
+
+    public static void deleteAllFileInDir(File file) throws IOException {
+        if (!file.exists())
+            return;
+
+        if (file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                deleteAllFileInDir(f);
+            }
+        }
+        file.delete();
     }
 
     private List<File> prepareFilesToSend(List<File> fileDir, File sendDir) throws IOException {
