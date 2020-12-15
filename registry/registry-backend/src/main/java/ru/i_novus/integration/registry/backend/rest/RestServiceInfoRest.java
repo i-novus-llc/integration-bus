@@ -67,9 +67,9 @@ public class RestServiceInfoRest implements PrepareRequestRestService {
             participantModel.setIntegrationType(senderMethod.get().getIntegrationType().getCode());
             participantModel.setMethod(senderMethod.get().getMethodCode());
         } else {
-            throw new RuntimeException("permission" + model.getSender() + "to" + model.getReceiver() + "not present");
+            throw new RuntimeException("permission " + model.getSender() + " to " + model.getReceiver() +
+                    " not present method " + model.getMethod());
         }
-
         return participantModel;
     }
 
