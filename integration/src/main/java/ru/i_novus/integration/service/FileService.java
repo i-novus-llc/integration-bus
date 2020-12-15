@@ -79,6 +79,7 @@ public class FileService {
         SplitDocumentModel splitModel = new SplitDocumentModel();
         splitModel.setTemporaryPath(splitDir.getPath());
         IntegrationFileUtils.splitFile(new File(filePath), new File(splitModel.getTemporaryPath()));
+        splitModel.setCount(new File(splitModel.getTemporaryPath()).listFiles().length);
 
         return splitModel;
     }
