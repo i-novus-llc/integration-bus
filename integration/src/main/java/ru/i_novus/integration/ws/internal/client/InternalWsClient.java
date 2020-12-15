@@ -31,10 +31,10 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * WsClient.
@@ -68,11 +68,19 @@ public class InternalWsClient {
         IntegrationMessage message = (IntegrationMessage) request.getPayload().getObject();
         SplitDocumentModel splitModel = message.getMessage().getAppData().getSplitDocument();
 
-        try {
-            List<File> fileDir = Files.walk(Paths.get(splitModel.getTemporaryPath()))
-                    .filter(Files::isRegularFile)
+        List<File> fileDir;
+        try (Stream<Path> stream = Files.walk(Paths.get(splitModel.getTemporaryPath()))){
+            fileDir = stream.filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
+
+        } catch (IOException e) {
+            request.getPayload().getMonitoringModel()
+                    .setError(" split files get has critical errors, send aborted!! "
+                            + e.getMessage() + " StackTrace: " + ExceptionUtils.getStackTrace(e));
+            return;
+        }
+        try {
 
             File sendDir = new File(splitModel.getTemporaryPath() + "SEND");
             sendDir.mkdirs();
@@ -161,10 +169,13 @@ public class InternalWsClient {
     }
 
     private List<File> prepareFilesToSend(List<File> fileDir, File sendDir) throws IOException {
-        List<File> sendFiles = Files.walk(sendDir.toPath())
-                .filter(Files::isRegularFile)
-                .map(Path::toFile)
-                .collect(Collectors.toList());
+        List<File> sendFiles;
+        try (Stream<Path> stream = Files.walk(sendDir.toPath())){
+            sendFiles = stream
+                    .filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .collect(Collectors.toList());
+        }
         if (!sendFiles.isEmpty()) {
             List<String> sendFileName = sendFiles
                     .stream()
