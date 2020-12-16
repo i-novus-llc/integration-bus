@@ -16,6 +16,20 @@ spring.cloud.consul.config.prefix=integration #префикс пути наст�
 Для отключения настроек из consul, добавить `+spring.cloud.consul.config.enabled=false+`
 
 
+=== Требования
+- Openjdk 11
+- PostgreSQL 12
+- ActiveMQ - 5.15
+
+=== Стек технологий
+- Java 11
+- JDBC
+- JMS
+- Spring Boot 2.0.4
+- Liquibase 3.6.2
+- N2O UI Framework 7
+
+
 === Модули
 *integration:*
 
