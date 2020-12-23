@@ -27,11 +27,7 @@ public class ParticipantPermissionRestServiceImpl implements ParticipantPermissi
     @Override
     public Page<ParticipantPermission> findAll(ParticipantPermissionCriteria criteria) {
         Specification<ParticipantPermissionEntity> specification = new ParticipantPermissionSpecifications(criteria);
-        if (criteria.getOrders() == null) {
-            criteria.setOrders(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "id")));
-        } else {
-            criteria.getOrders().add(new Sort.Order(Sort.Direction.ASC, "id"));
-        }
+
         Page<ParticipantPermissionEntity> participantPermissions = repository.findAll(specification, criteria);
         return participantPermissions.map(this::map);
     }

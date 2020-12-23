@@ -68,21 +68,15 @@ public class MonitoringServiceImpl implements MonitoringService {
     }
 
     private Page<SentMessageEntity> findSentMessage(SentMessageCriteria criteria) {
-        Pageable pageable = PageRequest.of(
-                criteria.getPageNumber(), criteria.getPageSize(),
-                (nonNull(criteria.getOrders()) && !criteria.getOrders().isEmpty()) ?
-                        Sort.by(criteria.getOrders()) : Sort.by(Sort.Direction.DESC, "sentDateTime")
-        );
+        PageRequest pageable = PageRequest.of(criteria.getPageNumber(), criteria.getPageSize(),
+                criteria.getSort());
         return sentMessageRepository.findAll(SentMessageSpecifications.equalCriteriaParams(criteria), pageable);
     }
 
 
     private Page<SentMessageStageEntity> findSentMessageStage(SentMessageStageCriteria criteria) {
-        Pageable pageable = PageRequest.of(
-                criteria.getPageNumber(), criteria.getPageSize(),
-                (nonNull(criteria.getOrders()) && !criteria.getOrders().isEmpty()) ?
-                        Sort.by(criteria.getOrders()) : Sort.by(Sort.Direction.DESC, "dateTime")
-        );
+        PageRequest pageable = PageRequest.of(criteria.getPageNumber(), criteria.getPageSize(),
+                criteria.getSort());
         return sentMessageStageRepository.findAll(SentMessageStageSpecifications.equalCriteriaParams(criteria), pageable);
     }
 }

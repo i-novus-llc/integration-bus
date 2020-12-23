@@ -34,11 +34,7 @@ public class ParticipantMethodRestServiceImpl implements ParticipantMethodRestSe
     @Override
     public Page<ParticipantMethod> findAll(ParticipantMethodCriteria criteria) {
         Specification<ParticipantMethodEntity> specification = new ParticipantMethodSpecifications(criteria);
-        if (criteria.getOrders() == null) {
-            criteria.setOrders(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "id")));
-        } else {
-            criteria.getOrders().add(new Sort.Order(Sort.Direction.ASC, "id"));
-        }
+
         Page<ParticipantMethodEntity> participants = repository.findAll(specification, criteria);
         return participants.map(this::map);
     }

@@ -29,11 +29,6 @@ public class ParticipantRestServiceImpl implements ParticipantRestService, Mappe
     @Override
     public Page<Participant> findAll(ParticipantCriteria criteria) {
         Specification<ParticipantEntity> specification = new ParticipantSpecifications(criteria);
-        if (criteria.getOrders() == null) {
-            criteria.setOrders(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "code")));
-        } else {
-            criteria.getOrders().add(new Sort.Order(Sort.Direction.ASC, "code"));
-        }
         Page<ParticipantEntity> participants = repository.findAll(specification, criteria);
         return participants.map(this::map);
     }
