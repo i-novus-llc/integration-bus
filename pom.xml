@@ -19,8 +19,8 @@
 
     <modules>
         <module>integration-common-api</module>
-        <module>registry/registry-api</module>
-        <module>monitoring/monitoring-api</module>
+        <module>registry-api</module>
+        <module>monitoring-api</module>
     </modules>
 
     <parent>
@@ -64,8 +64,8 @@
                 <module>integration-example</module>
                 <module>integration-security-admin</module>
                 <module>integration-control-ui</module>
-                <module>registry/registry-backend</module>
-                <module>monitoring/monitoring-backend</module>
+                <module>registry-backend</module>
+                <module>monitoring-backend</module>
             </modules>
         </profile>
         <profile>
