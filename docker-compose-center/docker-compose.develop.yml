@@ -62,8 +62,8 @@ services:
       SERVER_TOMCAT_ACCESSLOG_ENABLED: "true"
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      KEYCLOAK_USER-INFO-URL: http://keycloak.i-novus.ru/auth/realms/integration-bus/protocol/openid-connect/userinfo
-      AUTH_GATEWAY_PUBLIC-KEY_URL: https://epmp.master.i-novus.ru/auth/oauth/token_key
+      KEYCLOAK_USER_INFO_URL: http://keycloak.i-novus.ru/auth/realms/integration-bus/protocol/openid-connect/userinfo
+      AUTH_GATEWAY_PUBLIC_KEY_URL: https://epmp.master.i-novus.ru/auth/oauth/token_key
     deploy:
       placement:
         constraints:
