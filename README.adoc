@@ -17,12 +17,12 @@ spring.cloud.consul.config.prefix=integration #префикс пути наст�
 
 
 === Требования
-- Openjdk 11
+- Openjdk 14
 - PostgreSQL 12
 - ActiveMQ - 5.15
 
 === Стек технологий
-- Java 11
+- Java 14
 - JDBC
 - JMS
 - Spring Boot 2.0.4
