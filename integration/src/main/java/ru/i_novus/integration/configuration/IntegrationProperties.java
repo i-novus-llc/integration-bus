@@ -31,6 +31,4 @@ public class IntegrationProperties {
     String queuePreparationConcurrent;
     @Value("${async.queue.concurrent.consumers:5-10}")
     String queueAsyncConcurrent;
-    @Value("${integration.monitoring.client}")
-    String monitoringClient;
 }
