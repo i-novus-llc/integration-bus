@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import ru.i_novus.integration.registry.api.service.AuthorizationService;
 import ru.i_novus.integration.registry.backend.client.AuthGatewayClient;
-import ru.i_novus.integration.registry.backend.client.KeycloakClient;
 
 @Configuration
 public class RegistryConfiguration {

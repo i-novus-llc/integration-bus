@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 @Getter
 @PropertySource(value = "application.properties", ignoreResourceNotFound = true)
 public class RegistryProperties {
-    @Value("${keycloak.user-info-url}")
-    private String keycloakUserInfoUrl;
     @Value("${auth.gateway.public-key.url}")
     private String authGatewayCertsUrl;
 }
