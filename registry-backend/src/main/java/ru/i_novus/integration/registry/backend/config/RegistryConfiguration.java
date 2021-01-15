@@ -14,10 +14,4 @@ public class RegistryConfiguration {
     public AuthorizationService getAuthGateway(RegistryProperties properties) {
         return new AuthGatewayClient(properties);
     }
-
-    @Bean
-    @Conditional(KeycloakCondition.class)
-    public AuthorizationService getKeycloakClient(RegistryProperties properties) {
-        return new KeycloakClient(properties);
-    }
 }
