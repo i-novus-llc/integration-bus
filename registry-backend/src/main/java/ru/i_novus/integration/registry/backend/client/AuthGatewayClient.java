@@ -2,15 +2,20 @@ package ru.i_novus.integration.registry.backend.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.security.jwt.crypto.sign.SignatureVerifier;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.i_novus.integration.registry.api.service.AuthorizationService;
+import ru.i_novus.integration.registry.backend.config.AuthGatewayCondition;
 import ru.i_novus.integration.registry.backend.config.RegistryProperties;
 
 import java.util.Map;
 
+@Component
+@Conditional(AuthGatewayCondition.class)
 public class AuthGatewayClient implements AuthorizationService {
     private static final Logger logger = LoggerFactory.getLogger(AuthGatewayClient.class);
     private RegistryProperties properties;
