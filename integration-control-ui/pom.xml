@@ -16,7 +16,7 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <security.admin.version>4.0-SNAPSHOT</security.admin.version>
+        <security.admin.version>4.20</security.admin.version>
     </properties>
 
     <dependencies>
