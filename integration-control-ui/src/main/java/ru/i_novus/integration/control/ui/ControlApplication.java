@@ -1,5 +1,6 @@
 package ru.i_novus.integration.control.ui;
 
+import net.n2oapp.framework.boot.N2oSqlAutoConfiguration;
 import net.n2oapp.security.admin.api.service.UserDetailsService;
 import net.n2oapp.security.admin.rest.client.AdminRestClientConfiguration;
 import net.n2oapp.security.admin.web.AdminWebConfiguration;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {N2oSqlAutoConfiguration.class})
 @Import({AdminWebConfiguration.class, AdminRestClientConfiguration.class})
 public class ControlApplication extends SpringBootServletInitializer {
 
@@ -22,7 +23,7 @@ public class ControlApplication extends SpringBootServletInitializer {
     @Bean
     @Primary
     public AuthoritiesPrincipalExtractor principalExtractor(UserDetailsService service) {
-        return new AuthoritiesPrincipalExtractor(service);
+        return new AuthoritiesPrincipalExtractor(service, "system");
     }
 
 }
