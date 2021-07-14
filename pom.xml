@@ -4,7 +4,7 @@
 
     <groupId>ru.i_novus.is</groupId>
     <artifactId>base</artifactId>
-    <version>3.3-SNAPSHOT</version>
+    <version>3.3</version>
     <packaging>pom</packaging>
 
     <name>integration-bus</name>
@@ -13,7 +13,7 @@
         <connection>scm:git:${scm.connection.git.url}.git</connection>
         <url>${scm.connection.git.url}</url>
         <developerConnection>scm:git:${scm.connection.git.url}.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>3.3</tag>
     </scm>
 
     <modules>
@@ -29,7 +29,7 @@
     </parent>
 
     <properties>
-        <scm.connection.git.url/>
+        <scm.connection.git.url />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
