@@ -33,11 +33,6 @@ public class ServiceIntegrationRest {
         this.registryClient = registryClient;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello at " + LocalDateTime.now();
-    }
-
     /**
      * Обработка get запросов
      *
