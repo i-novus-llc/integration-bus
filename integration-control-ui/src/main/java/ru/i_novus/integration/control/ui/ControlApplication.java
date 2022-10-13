@@ -5,6 +5,8 @@ import net.n2oapp.security.admin.api.service.UserDetailsService;
 import net.n2oapp.security.admin.rest.client.AdminRestClientConfiguration;
 import net.n2oapp.security.admin.web.AdminWebConfiguration;
 import net.n2oapp.security.auth.common.AuthoritiesPrincipalExtractor;
+import net.n2oapp.security.auth.common.UserAttributeKeys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -20,10 +22,13 @@ public class ControlApplication extends SpringBootServletInitializer {
         SpringApplication.run(ControlApplication.class, args);
     }
 
+    @Autowired
+    private UserAttributeKeys userAttributeKeys;
+
     @Bean
     @Primary
     public AuthoritiesPrincipalExtractor principalExtractor(UserDetailsService service) {
-        return new AuthoritiesPrincipalExtractor(service, "system");
+        return new AuthoritiesPrincipalExtractor(service, "system", userAttributeKeys);
     }
 
 }

@@ -35,9 +35,9 @@
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
         <java.version>14</java.version>
         <config.server.enable>false</config.server.enable>
-        <n2o.version>7.16.3</n2o.version>
-        <audit.version>2.3.2</audit.version>
-        <security.admin.version>4.20</security.admin.version>
+        <n2o.version>7.20.20</n2o.version>
+        <audit.version>2.4.27</audit.version>
+        <security.admin.version>6.1.1</security.admin.version>
     </properties>
 
     <dependencies>
