@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
  * Конфигурация spring security
  */
 @Configuration
-@ComponentScan("net.n2oapp.framework.security.auth.simple")
+@ComponentScan("net.n2oapp.security.auth.simple")
 public class SecurityConfig extends IntegrationSecurityConfigurerAdapter {
 
     public SecurityConfig(DaoAuthenticationProvider daoAuthenticationProvider) {
