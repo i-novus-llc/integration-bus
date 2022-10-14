@@ -1,36 +1,49 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<simple-page xmlns="http://n2oapp.net/framework/config/schema/page-3.0"
+<page xmlns="http://n2oapp.net/framework/config/schema/page-3.0"
              name="Доступы">
-
-
-    <table id="main" name="Доступы" query-id="sys_permission" object-id="registry">
-        <toolbar>
-            <button id="add" color="primary" icon="fa fa-plus" model="filter">
-                <show-modal page-id="permission_form" submit-operation-id="permissionCreate"
-                            refresh-after-submit="true" upload="defaults">
-                    <query-param name="participant_method_id" value="{participant_method_id}"
-                                 ref-model="resolve"
-                                 ref-widget-id="main"/>
-                </show-modal>
-            </button>
-        </toolbar>
-        <columns>
-            <column text-field-id="participant.id" label="Код системы"/>
-            <column text-field-id="actions" label=" ">
+    <regions>
+        <region>
+            <form id="auxiliaryForm" visible="false">
+                <fields>
+                    <hidden id="part_method_id" param="part_method_id"/>
+                </fields>
+            </form>
+        </region>
+        <region>
+            <table id="main" name="Доступы" query-id="sys_permission" object-id="registry"
+                   depends-on="auxiliaryForm" fetch-on-init="true">
                 <toolbar>
-                    <button id="delete" icon="fa fa-trash" label="Удалить" confirm="true"
-                            confirm-text="Вы действительно хотите удалить доступ?">
-                        <invoke operation-id="permissionDelete"/>
+                    <button id="add" color="primary" icon="fa fa-plus" model="filter">
+                        <show-modal page-id="permission_form" submit-operation-id="permissionCreate"
+                                    refresh-after-submit="true" upload="defaults">
+                            <query-param name="participant_method_id" value="{part_method_id}"
+                                         ref-model="resolve"
+                                         ref-widget-id="auxiliaryForm"/>
+                        </show-modal>
                     </button>
                 </toolbar>
-            </column>
-        </columns>
-        <rows>
-            <click>
-                <show-modal page-id="permission_form" submit-operation-id="permissionUpdate"
-                            refresh-after-submit="true" detail-field-id="id"/>
-            </click>
-        </rows>
-    </table>
+                <columns>
+                    <column text-field-id="participant.id" label="Код системы"/>
+                    <column text-field-id="actions" label=" ">
+                        <toolbar>
+                            <button id="delete" icon="fa fa-trash" label="Удалить" confirm="true"
+                                    confirm-text="Вы действительно хотите удалить доступ?">
+                                <invoke operation-id="permissionDelete"/>
+                            </button>
+                        </toolbar>
+                    </column>
+                </columns>
+                <rows>
+                    <click>
+                        <show-modal page-id="permission_form" submit-operation-id="permissionUpdate"
+                                    refresh-after-submit="true" detail-field-id="id"/>
+                    </click>
+                </rows>
+                <pre-filters>
+                    <eq field-id="participant_method_id" param="part_method_id"/>
+                </pre-filters>
+            </table>
+        </region>
+    </regions>
 
-</simple-page>
+</page>

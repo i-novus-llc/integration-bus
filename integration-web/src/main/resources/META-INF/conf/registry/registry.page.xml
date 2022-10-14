@@ -68,9 +68,11 @@
                                 <invoke operation-id="deleteMethod"/>
                             </button>
                             <button id="permission" label="Доступы" icon="fa fa-key" type="icon">
-                                <open-page page-id="reg_permission" master-field-id="id"
-                                           detail-field-id="participant_method_id"
-                                           refresh-after-submit="true"/>
+                                <open-page page-id="reg_permission"
+                                           refresh-after-submit="true"
+                                           route="/:part_method_id/permission">
+                                    <path-param name="part_method_id" value="{id}"/>
+                                </open-page>
                             </button>
                         </toolbar>
                     </column>
