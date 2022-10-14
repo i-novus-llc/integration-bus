@@ -3,7 +3,7 @@
              name="Доступы">
     <regions>
         <region>
-            <form id="auxiliaryForm" visible="false">
+            <form id="auxiliaryForm" visible="false" route="/auxiliaryForm">
                 <fields>
                     <hidden id="part_method_id" param="part_method_id"/>
                 </fields>
@@ -11,11 +11,11 @@
         </region>
         <region>
             <table id="main" name="Доступы" query-id="sys_permission" object-id="registry"
-                   depends-on="auxiliaryForm" fetch-on-init="true">
+                   depends-on="auxiliaryForm" fetch-on-init="true" route="/main">
                 <toolbar>
                     <button id="add" color="primary" icon="fa fa-plus" model="filter">
                         <show-modal page-id="permission_form" submit-operation-id="permissionCreate"
-                                    refresh-after-submit="true" upload="defaults">
+                                    refresh-after-submit="true" upload="defaults" route="/create">
                             <query-param name="participant_method_id" value="{part_method_id}"
                                          ref-model="resolve"
                                          ref-widget-id="auxiliaryForm"/>
@@ -36,7 +36,9 @@
                 <rows>
                     <click>
                         <show-modal page-id="permission_form" submit-operation-id="permissionUpdate"
-                                    refresh-after-submit="true" detail-field-id="id"/>
+                                    refresh-after-submit="true" detail-field-id="id" route="/:id/update">
+                            <path-param name="id" value="{id}"/>
+                        </show-modal>
                     </click>
                 </rows>
                 <pre-filters>
