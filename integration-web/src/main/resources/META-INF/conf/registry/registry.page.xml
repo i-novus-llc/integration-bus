@@ -4,11 +4,12 @@
 
     <regions>
         <region place="top">
-            <table name="Системы" query-id="registry" id="main" route="/">
+            <table name="Системы" query-id="registry" id="main" route="/systems">
                 <toolbar>
                     <button id="createParticipant" label="Создать" model="filter" color="primary">
                         <show-modal page-id="registry_create" submit-operation-id="createParticipant"
-                                    refresh-after-submit="true" upload="defaults" object-id="registry"/>
+                                    refresh-after-submit="true" upload="defaults" object-id="registry"
+                                    route="/create"/>
                     </button>
                 </toolbar>
                 <columns>
@@ -21,7 +22,10 @@
                         <toolbar>
                             <button id="updateParticipant" label="Изменить" icon="fa fa-pencil" type="icon">
                                 <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
-                                            refresh-after-submit="true" detail-field-id="id" object-id="registry"/>
+                                            refresh-after-submit="true" detail-field-id="id" object-id="registry"
+                                            route="/:id/update">
+                                    <path-param name="id" value="{id}"/>
+                                </show-modal>
                             </button>
                             <button id="deleteParticipant" label="Удалить" confirm="true" icon="fa fa-trash" type="icon"
                                     confirm-text="Вы действительно хотите удалить систему?">
@@ -46,12 +50,13 @@
         </region>
         <region place="bottom">
             <table id="service" master-field-id="id" detail-field-id="participant_code" depends-on="main"
-                   name="Код сервиса (операции)" query-id="method">
+                   name="Код сервиса (операции)" query-id="method" route="/services">
                 <toolbar>
                     <button id="createMethod" label="Создать" model="resolve" widget-id="main" color="primary">
                         <show-modal page-id="method" submit-operation-id="createMethod"
                                     master-field-id="id" detail-field-id="participant_code"
-                                    refresh-after-submit="true" upload="defaults"/>
+                                    refresh-after-submit="true" upload="defaults"
+                                    route="/create"/>
                     </button>
                 </toolbar>
                 <columns>
@@ -68,9 +73,11 @@
                                 <invoke operation-id="deleteMethod"/>
                             </button>
                             <button id="permission" label="Доступы" icon="fa fa-key" type="icon">
-                                <open-page page-id="reg_permission" master-field-id="id"
-                                           detail-field-id="participant_method_id"
-                                           refresh-after-submit="true"/>
+                                <open-page page-id="reg_permission"
+                                           refresh-after-submit="true"
+                                           route="/:part_method_id/permission">
+                                    <path-param name="part_method_id" value="{id}"/>
+                                </open-page>
                             </button>
                         </toolbar>
                     </column>
@@ -78,7 +85,10 @@
                 <rows>
                     <click>
                         <show-modal page-id="method" submit-operation-id="updateMethod"
-                                    detail-field-id="id" refresh-after-submit="true"/>
+                                    detail-field-id="id" refresh-after-submit="true"
+                                    route="/:id/update">
+                            <path-param name="id" value="{id}"/>
+                        </show-modal>
                     </click>
                 </rows>
             </table>

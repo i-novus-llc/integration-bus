@@ -5,7 +5,7 @@
 
     <regions>
         <region place="single">
-            <table id="monitoring" name="Мониторинг" query-id="monitoring">
+            <table id="monitoring" name="Мониторинг" query-id="monitoring" route="/">
                 <toolbar place="topRight" generate="filters, resize">
                     <button id="view" label="Просмотр">
                         <show-modal page-id="monitoring_form" master-param="id" detail-field-id="sent_message_id"/>

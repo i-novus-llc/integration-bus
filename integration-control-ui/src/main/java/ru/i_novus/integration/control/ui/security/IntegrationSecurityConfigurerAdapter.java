@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
@@ -38,6 +39,12 @@ public abstract class IntegrationSecurityConfigurerAdapter extends N2oSecurityCo
 
     public ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry configureAuthorizeAuthRequests(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry url) throws Exception {
         return ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) url.antMatchers(new String[]{"/registration/**", "/registrationServlet/**", "/dist/**", "/integration/**", "/favicon.ico"})).permitAll();
+    }
+
+    @Override
+    protected void ignore(WebSecurity.IgnoredRequestConfigurer ignore) {
+        super.ignore(ignore);
+        ignore.antMatchers("/css/**", "/serviceWorker.js");
     }
 
     @Override
