@@ -25,7 +25,7 @@ spring.cloud.consul.config.prefix=integration #префикс пути наст�
 - Java 14
 - JDBC
 - JMS
-- Spring Boot 2.0.4
+- Spring Boot 2.5
 - Liquibase 3.6.2
 - N2O UI Framework 7
 
