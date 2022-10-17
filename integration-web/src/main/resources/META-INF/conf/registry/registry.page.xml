@@ -9,7 +9,7 @@
                     <button id="createParticipant" label="Создать" model="filter" color="primary">
                         <show-modal page-id="registry_create" submit-operation-id="createParticipant"
                                     refresh-after-submit="true" upload="defaults" object-id="registry"
-                                    route="/create"/>
+                                    route="/createParticipant"/>
                     </button>
                 </toolbar>
                 <columns>
@@ -23,7 +23,7 @@
                             <button id="updateParticipant" label="Изменить" icon="fa fa-pencil" type="icon">
                                 <show-modal page-id="registry_update" submit-operation-id="updateParticipant"
                                             refresh-after-submit="true" detail-field-id="id" object-id="registry"
-                                            route="/:id/update">
+                                            route="/:id/updateParticipant">
                                     <path-param name="id" value="{id}"/>
                                 </show-modal>
                             </button>
@@ -56,7 +56,7 @@
                         <show-modal page-id="method" submit-operation-id="createMethod"
                                     master-field-id="id" detail-field-id="participant_code"
                                     refresh-after-submit="true" upload="defaults"
-                                    route="/create"/>
+                                    route="/createMethod"/>
                     </button>
                 </toolbar>
                 <columns>
@@ -86,7 +86,7 @@
                     <click>
                         <show-modal page-id="method" submit-operation-id="updateMethod"
                                     detail-field-id="id" refresh-after-submit="true"
-                                    route="/:id/update">
+                                    route="/:id/updateMethod">
                             <path-param name="id" value="{id}"/>
                         </show-modal>
                     </click>
