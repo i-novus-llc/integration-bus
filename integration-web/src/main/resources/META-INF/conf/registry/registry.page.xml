@@ -54,9 +54,10 @@
                 <toolbar>
                     <button id="createMethod" label="Создать" model="resolve" widget-id="main" color="primary">
                         <show-modal page-id="method" submit-operation-id="createMethod"
-                                    master-field-id="id" detail-field-id="participant_code"
-                                    refresh-after-submit="true" upload="defaults"
-                                    route="/createMethod"/>
+                                    refresh-after-submit="true" upload="defaults" refresh-widget-id="service"
+                                    route="/:participantCode/createMethod">
+                            <path-param name="participantCode" value="{id}"/>
+                        </show-modal>
                     </button>
                 </toolbar>
                 <columns>
